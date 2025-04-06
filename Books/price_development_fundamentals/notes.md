@@ -5,6 +5,7 @@
 Helpful Links
 - [Book source code](https://github.com/markjprice/cs13net9)
 - [Answers to Test Your Knowledge questions](https://static.packt-cdn.com/downloads/9781835881224_Appendix.pdf?link_from_packtlink=yes)
+- [Errata](https://github.com/markjprice/cs13net9/blob/main/docs/errata/README.md)
 
 Helpful Dotnet Commands
 
