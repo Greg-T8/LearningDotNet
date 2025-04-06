@@ -14,9 +14,10 @@ dotnet --list-sdks
 dotnet --list-runtimes
 dotnet --infoa
 
-# Solution and console
+# Solution and project setup
 dotnet new sln --name Chapter01
 dotnet new console --output HelloCS
 dotnet sln add HelloCS
-
+dotnet new console -o AboutMyEnvironment --use-program-main
+dotnet sln add .\AboutMyEnvironment\
 ```
