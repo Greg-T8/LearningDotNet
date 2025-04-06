@@ -12,7 +12,7 @@
 
 **Helpful Dotnet Commands**
 
-```powershell
+```cmd
 # General info
 dotnet --list-sdks
 dotnet --list-runtimes
