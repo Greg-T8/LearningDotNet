@@ -16,7 +16,8 @@
 # General info
 dotnet --list-sdks
 dotnet --list-runtimes
-dotnet --infoa
+dotnet --info
+dotnet new --list        # List all templates
 
 # Solution and project setup
 dotnet new sln --name Chapter01

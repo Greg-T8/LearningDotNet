@@ -4,6 +4,15 @@
 Resources
 - [Book Code](https://github.com/isaacabraham/fsharp-in-action)
 
+Helpful Commands
+```cmd
+# Create a new F# project
+dotnet new console -lang F# -o HelloFSharp
+dotnet new sln --name HelloFSharp
+dotnet sln add HelloFSharp
+```
+
+
 Mental model of the F# process
 
 <img src='images/20250408025610.png' width='450'/>
@@ -59,4 +68,3 @@ updated. This eliminates a whole class of bugs (like null reference exceptions)
 *at compile time* without relying on unit tests. The result is fewer runtime
 surprises and less debugging, all thanks to the compiler doing more of the work
 for you.
-
