@@ -25,6 +25,7 @@ dotnet new console --output HelloCS                             # Create a new c
 dotnet sln add HelloCS
 dotnet new console -o AboutMyEnvironment --use-program-main     # Create a new console app without using top-level statements
 dotnet sln add .\AboutMyEnvironment\
+dotnet build
 ```
 
 ## C# and .NET Resources
