@@ -8,7 +8,7 @@
 - [Book Discord](https://packt.link/csharp13dotnet9)
 - [Errata](https://github.com/markjprice/cs13net9/blob/main/docs/errata/README.md)
 
-## Helpful Dotnet Commands
+## Dotnet Commands
 
 ```cmd
 # General info
@@ -30,6 +30,7 @@ dotnet build
 
 ## C# and .NET Resources
 - [Official .NET versions](https://versionsof.net/)
+- [C# Coding Conventions](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
 - [Alpha .NET versions](https://github.com/dotnet/sdk/blob/main/documentation/package-table.md)
 - [C# Language & Feature Timeline (Author's GitHub)](https://github.com/markjprice/cs13net9/blob/main/docs/ch02-features.md)
 - [C# Version History](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-version-history)
