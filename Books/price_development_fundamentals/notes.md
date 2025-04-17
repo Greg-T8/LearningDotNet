@@ -100,4 +100,17 @@ In the section above, the `System.Console` namespace is imported as a static cla
 WriteLine("Hello, World!");
 ```
 
+To disable implicitly imported namespaces, set the `ImplicitUsings` property to `disable` in the `.csproj` file.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>
+```
+
 See [Global Using Directives](https://learn.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#global-using-directives).
