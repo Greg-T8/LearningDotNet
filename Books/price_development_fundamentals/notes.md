@@ -72,7 +72,7 @@ Note that any project that targets .NET 6 or later, generates a `<Project-Name>.
 
 <img src='images/20250417040028.png' width='400'/>
 
-You can control which namespaces are imported by adding the <ItemGroup> element to your `.csproj` file:
+You can control which namespaces are imported by adding the `<ItemGroup>` element to your `.csproj` file:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
