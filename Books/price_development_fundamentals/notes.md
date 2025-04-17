@@ -46,3 +46,28 @@ Directives](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/p
 Run `dotnet build` to see the error message.
 
 <img src='images/20250412043618.png' width='500'/>
+
+### Implicitly and Globally Importing Namespaces
+
+Traditionally, namespaces were needed in all `.cs` files:
+
+```
+using System;
+using System.Linq;
+using System.Collections.Generic;
+```
+
+Starting with .NET 6, you can use the `global using` directive to import namespaces globally, so that you don't have to include them in every file. 
+
+```csharp
+/// File: Program.cs
+global using System;
+global using System.Linq;
+global using System.Collections.Generic;
+```
+
+The author recommends creating a dedicated `GlobalUsings.cs` file in the root of your project to contain all global usings.
+
+Note that any project that targets .NET 6 or later, generates a `<Project-Name>.GlobalUsings.g.cs` file in the `obj` folder to implicitly globally import some common namespaces like `System`.
+
+<img src='images/20250417040028.png' width='400'/>
