@@ -26,6 +26,7 @@ dotnet sln add HelloCS
 dotnet new console -o AboutMyEnvironment --use-program-main     # Create a new console app without using top-level statements
 dotnet sln add .\AboutMyEnvironment\
 dotnet build
+dotnet clean
 ```
 
 ## C# and .NET Resources
@@ -114,3 +115,13 @@ To disable implicitly imported namespaces, set the `ImplicitUsings` property to 
 ```
 
 See [Global Using Directives](https://learn.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#global-using-directives).
+
+### Types vs Classes
+
+The term **type** is often confused with **class**. In C#, every type can be classified as `class`, `enum`, `struct`, `interface`, or `delegate`. As an example, the C# keyword `string` is a `class`, but  `int` is a `struct`. 
+
+The C# language only has a few keywords for types, and the C# language does not define any types. Rather, the .NET platform provides thousands of types to C#, including `System.Int32`, which is the C# keyword alias that `int` maps to.
+
+The program [Types](./ch02/Types/Program.cs) reveals the extent of the C# vocabulary by showing the number of types available in the namespaces imported from the `.csproj` file.
+
+<img src='images/20250417044503.png' width='400'/>
