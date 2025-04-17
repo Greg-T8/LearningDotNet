@@ -71,3 +71,33 @@ The author recommends creating a dedicated `GlobalUsings.cs` file in the root of
 Note that any project that targets .NET 6 or later, generates a `<Project-Name>.GlobalUsings.g.cs` file in the `obj` folder to implicitly globally import some common namespaces like `System`.
 
 <img src='images/20250417040028.png' width='400'/>
+
+You can control which namespaces are imported by adding the <ItemGroup> element to your `.csproj` file:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Remove="System.Threading" />
+    <Using Include="System.Numerics" />
+    <Using Include="System.Console" Static="true" />
+    <Using Include="System.Environment" Alias="Env" />
+  </ItemGroup>
+</Project>
+```
+
+Upon saving, changes to the `.csproj` file will automatically update the `obj/<Project-Name>.GlobalUsings.g.cs` file.
+
+In the section above, the `System.Console` namespace is imported as a static class, allowing you to call its methods without specifying the class name. 
+
+```csharp
+// Instead of Console.WriteLine("Hello, World!");
+WriteLine("Hello, World!");
+```
+
+See [Global Using Directives](https://learn.microsoft.com/en-us/dotnet/core/tutorials/top-level-templates#global-using-directives).
