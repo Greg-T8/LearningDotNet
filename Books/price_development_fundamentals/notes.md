@@ -100,7 +100,7 @@ In the section above, the `System.Console` namespace is imported as a static cla
 WriteLine("Hello, World!");
 ```
 
-To disable implicitly imported namespaces, set the `ImplicitUsings` property to `disable` in the `.csproj` file.
+To disable implicitly imported namespaces, set the `ImplicitUsings` property to `disable` in the `.csproj` file. You might choose to do this if you want to create a single file with all the `global using` statements. Author's recommendation is to keep it enabled and to change what is included in the auto-generated class file in the `obj` folder.
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
