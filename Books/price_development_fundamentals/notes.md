@@ -20,19 +20,35 @@
 # General info
 dotnet --version         # Show the SDK version used by the current project
 dotnet --info            # Show SDK and runtime versions
-dotnet --list-sdks
-dotnet --list-runtimes
+dotnet --list-sdks       # List all installed SDKs
+dotnet --list-runtimes   # List all installed runtimes
 dotnet new --list        # List all templates
 
 # Solution and project setup
-dotnet new sln --name Chapter01
-dotnet new console --help
-dotnet new console --output HelloCS                             # Create a new console app in the HelloCS folder
-dotnet sln add HelloCS
-dotnet new console -o AboutMyEnvironment --use-program-main     # Create a new console app without using top-level statements
-dotnet sln add .\AboutMyEnvironment\
-dotnet build
-dotnet clean
+
+# Create a new solution named Chapter01
+dotnet new sln --name Chapter01 
+
+# Show help for console project template
+dotnet new console --help                                        
+
+# Create a new console app in the HelloCS folder
+dotnet new console --output HelloCS                              
+
+# Add HelloCS project to solution
+dotnet sln add HelloCS                                           
+
+# Create a new console app without using top-level statements
+dotnet new console -o AboutMyEnvironment --use-program-main      
+
+# Add AboutMyEnvironment project to solution
+dotnet sln add .\AboutMyEnvironment\                             
+
+# Build the solution or project
+dotnet build                                                     
+
+# Clean the solution or project
+dotnet clean                                                     
 ```
 
 ## C# and .NET Resources
