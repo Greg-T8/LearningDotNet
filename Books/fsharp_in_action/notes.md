@@ -104,7 +104,8 @@ let time = System.DateTime.UtcNow
 printfn $"Hello from F#! My name is {name}, the time is {time}"
 ```
 
-See [HelloFSharp](./Books/fsharp_in_action/HelloFSharp) for the code.
+See [HelloFSharp](./ch02/HelloFSharp/Program.fs) for the code.
+
 
 ### F# Interactive (FSI)
 
