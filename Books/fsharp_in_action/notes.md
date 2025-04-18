@@ -18,6 +18,12 @@ dotnet new console -lang F# -o HelloFSharp
 
 # Add the project to the solution
 dotnet sln add HelloFSharp
+
+# Run the project
+dotnet run
+
+# Start the FSI (F# Interactive) REPL
+dotnet fsi
 ```
 
 ## Introduction to F#
@@ -99,3 +105,24 @@ printfn $"Hello from F#! My name is {name}, the time is {time}"
 ```
 
 See [HelloFSharp](./Books/fsharp_in_action/HelloFSharp) for the code.
+
+### F# Interactive (FSI)
+
+- FSI is a REPL (Read-Eval-Print Loop) for F#, which supports interactive coding.
+- Use `dotnet fsi` command to start the REPL.
+
+<img src='images/20250418040022.png' width='450'/>
+
+- Use two semicolons `;;` at the end to execute the text currently in the buffer.
+- `val` is the default symbol expressions are bound to if you don't use `let`.
+
+### F# Scripts
+
+- F# scripts are files with the `.fsx` extension.
+- F# scripts do not require a project or solution and can be executed as a single file.
+
+> When working in VS Code, use the [Ionide](https://github.com/ionide/ionide-vscode-fsharp) extension.
+
+- With the Ionide extension, use the VS Code command `FSI: Send Selection` to send the selected code to the REPL.
+
+<img src='images/20250418041304.png' width='450'/>
