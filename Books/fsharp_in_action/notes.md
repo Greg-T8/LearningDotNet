@@ -1,29 +1,39 @@
 # F# In Action
 <img src='images/20250408025735.png' width='250'/>
 
-Resources
-- [Book Code](https://github.com/isaacabraham/fsharp-in-action)
+<details>
 
-Helpful Commands
+<summary>Book Resources</summary>
+
+- [Book Code](https://github.com/isaacabraham/fsharp-in-action)
+</details>
+
+## DotNet Commands
 ```cmd
+# Create a new solution
+dotnet new sln --name HelloFSharp
+
 # Create a new F# project
 dotnet new console -lang F# -o HelloFSharp
-dotnet new sln --name HelloFSharp
+
+# Add the project to the solution
 dotnet sln add HelloFSharp
 ```
 
+## Introduction to F#
+<details>
+<summary>About F# and Functional Programming</summary>
 
-Mental model of the F# process
+**F# Mental Model**
 
 <img src='images/20250408025610.png' width='450'/>
 
-## Imperative Code
+**Imperative Code vs Declarative Code**
 
-**The what, not how**
+We are used to writing imperative code. F# is a functional-first language, which uses declarative code. According to the author, "if you're used to imperative model of developing, it can feel like giving up control. However, once you're used to [functional programming], it's very difficult to go back."
 
-Is how you implement something, and typically includes a set of lower-level
-instructions. Declarative code concentrates on what you want to achieve, leaving
-the low-level details to the compiler.
+- Imperative code - the low-level "how", which focuses on step-by-step instructions.
+- Declarative code - the high-level "what", which focuses on the end result, leaving the low-level details to the compiler
 
 <img src='images/20250408030753.png' width='400'/>
 
@@ -58,7 +68,8 @@ of the basket and a module with *stateless* functions such as `AddItem`,
 updated version of the basket, rather than modifying the original one. This
 generally leads to more predictable and testable code.
 
-**A smarter compiler**
+**A smarter compiler** 
+
 F# inevitably changes how you write code. F# helps a great deal in reducing
 boilerplate activities.
 
@@ -68,3 +79,23 @@ updated. This eliminates a whole class of bugs (like null reference exceptions)
 *at compile time* without relying on unit tests. The result is fewer runtime
 surprises and less debugging, all thanks to the compiler doing more of the work
 for you.
+
+**F# and .NET**
+
+- You can reference any .NET assembly from F#
+- You can consume and create classes with inheritance, interfaces, properties, and methods
+- F# permits you to mix both FP and OO styles
+
+<img src='images/20250418034314.png' width='300'/>
+
+</details>
+
+### Hello World
+
+```fsharp
+let name = "Greg"
+let time = System.DateTime.UtcNow
+printfn $"Hello from F#! My name is {name}, the time is {time}"
+```
+
+See [HelloFSharp](./Books/fsharp_in_action/HelloFSharp) for the code.
