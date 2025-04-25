@@ -2,7 +2,7 @@
 
 This is my learning space for C#, F#, and the .NET platform.
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Greg-T8/LearningDotNet)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Greg-T8/LearningDotNet)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Greg-T8/LearningDotNet)
 
 
