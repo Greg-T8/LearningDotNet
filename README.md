@@ -8,8 +8,8 @@ This is my learning space for C#, F#, and the .NET platform.
 
 
 ## Book Notes
-- [C#13 and .NET 9 Modern Cross-Platform Development Fundamentals](/Books/price_development_fundamentals/notes.md)
-- [F# In Action](/Books/fsharp_in_action/notes.md) 
+- [C#13 and .NET 9 Modern Cross-Platform Development Fundamentals](/Books/price_development_fundamentals/notes.md) - by Mark J. Price
+- [F# In Action](/Books/fsharp_in_action/notes.md) - by Isaac Abraham
 
 ## Learn More
 - [F# History](https://fsharp.org/history/)
