@@ -232,6 +232,57 @@ string xml = """
 The compiler looks at the indentation of the last three or more double quote characters, and then automatically removes the indentation from al
 the content inside the raw string literal. The results of the string would not be indented as is in the defining code but, instead, will be aligned with the left margin.
 
+**Result**: 
+
+```xml
+<person age="50">
+	<first_name>Mark</first_name>
+</person>
+```
+
+If the end three double quotes are aligned with the left margin, then the indentation would not be removed.
+
+```csharp
+string xml = """
+	<person age="50">
+		<first_name>Mark</first_name>
+	</person>
+""";
+```
+
+**Result**:
+
+```xml
+	<person age="50">
+		<first_name>Mark</first_name>
+	</person>
+```
+
 **Why three *or more* double quote characters?**
 
 If the content itself has three double quotes, you can use four double quotes to indicate the start and end of the string. Where the content has four double quotes, you can use five double quotes, and so on. 
+
+### Raw Interpolated String Literals
+
+You can mix interpolated strings that use curly braces `{}` with raw string literals. To do this, you specify the number of braces that indicate a replaced expression by adding the number of dollar signs `$` before the opening three double quotes. 
+
+```csharp
+var person = new { FirstName = "Greg", LastName = "Tate" };
+string json = $$"""
+	{
+		"first_name": "{{person.FirstName}}",
+		"last_name": "{{person.LastName}}"
+	}
+	""";
+```
+
+**Result**:
+
+```json
+{
+	"first_name": "Greg",
+	"last_name": "Tate"
+}
+```
+
+
