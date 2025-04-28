@@ -342,6 +342,73 @@ Console.WriteLine($"{hexadecimalNotation:X}"); // 1E8400
 ```
 
 **Output:**  
-<img src='images/20250428040136.png' width='450'/>
+<img src='images/20250428040136.png' width='400'/>
 
 #### Storing Real Numbers
+
+Computers cannot always represent real numbers exactly. For example, the decimal number `0.1` cannot be represented exactly in binary. This is because `0.1` is a repeating decimal in binary, just like `1/3` is a repeating decimal in decimal.
+
+Most programming languages implement the IEEE 754 standard for floating-point arithmetic, introduced in 1985.
+
+The following table shows how the number `12.75` is represented in binary:
+
+| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |   | 1/2 | 1/4 | 1/8 | 1/16 |
+|-----|----|----|----|---|---|---|---|---|-----|-----|-----|------|
+|  0  | 0  | 0  | 0  | 1 | 1 | 0 | 0 | . |  1  |  1  |  0  |  0   |
+
+Note the bits with the value `1` in the 8, 4, 1/2, and 1/4 columns.
+
+8 + 4 + 0.5 + 0.25 = 12.75
+
+So, `12.75` in decimal notation is `000011.1100` in binary notation.
+
+In this case, `12.75`  can be exactly represented in binary. However, most numbers can't.
+
+#### Exploring Number Sizes
+Use the `sizeof` operator to determine the size of a type in bytes.
+
+```csharp
+Console.WriteLine($"int uses {sizeof(int)} bytes and can store numbers from {int.MinValue:N0} to {int.MaxValue:N0}.");
+Console.WriteLine($"double uses {sizeof(double)} bytes and can store numbers from {double.MinValue:N0} to {double.MaxValue:N0}.");
+Console.WriteLine($"decimal uses {sizeof(decimal)} bytes and can store numbers from {decimal.MinValue:N0} to {decimal.MaxValue:N0}.");
+```
+
+**Output**:  
+<img src='images/20250428041745.png' width='1200'/>
+
+An `int` uses 4 bytes and can store positive or negative numbers up to about 2 billion. A `double` uses 8 bytes and can store much bigger values. A `decimal` uses 16 bytes and can store very large numbers, but not as big as a `double`. 
+
+#### Comparing Double and Decimal Types
+
+```csharp
+Console.WriteLine("Using doubles:");
+double a = 0.1;
+double b = 0.2;
+if (a + b == 0.3)
+{
+    Console.WriteLine($"{a} + {b} equals {0.3}");
+}
+else
+{
+    Console.WriteLine($"{a} + {b} does NOT equal {0.3}");
+}
+```
+
+**Output**:  
+<img src='images/20250428042359.png' width='450'/>
+
+Why doesn't `0.1 + 0.2` equal `0.3`?
+
+The `double` type cannot represent `0.1` exactly in binary, so the result of `0.1 + 0.2` is not exactly `0.3`. Instead, it is a number very close to `0.3`, but not exactly equal to it.
+
+If you were to try values, like `0.1 + 0.3 == 0.4`, you would find that it does equal `0.4`. This is because `0.3` can be represented exactly in binary.
+
+You can compare real numbers using the `float` type, which is less accurate than the `double` type, and the result would be `true`, but only b ecause of that lower accuracy.
+
+```csharp
+float a = 0.1f;
+float b = 0.2f;
+if (a + b == 0.3f) // True because float is less "accurate" than double
+...
+```
+
