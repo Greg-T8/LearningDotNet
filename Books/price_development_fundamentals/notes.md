@@ -153,7 +153,7 @@ The program [Types](./ch02/Types/Program.cs) reveals the extent of the C# vocabu
 
 ### Storing Text
 
-### `char` and `string` Types
+#### `char` and `string` Types
 A `char` is assigned using single quotes.
 
 ```csharp
@@ -179,7 +179,7 @@ string grinningEmoji = char.ConvertFromUtf32(0x1F600); // grinning face emoji, a
 
 ```
 
-### Outputting Emojis
+#### Outputting Emojis
 When outputting emojis, you must set the output encoding to UTF-8. This is done by setting the `Console.OutputEncoding` property to `System.Text.Encoding.UTF8`.
 
 ```csharp
@@ -188,7 +188,7 @@ string grinningEmoji = char.ConvertFromUtf32(0x1F600); // grinning face emoji
 Console.WriteLine(grinningEmoji); // Output: 😀
 ```
 
-### Verbatim Strings
+#### Verbatim Strings
 
 Strings allow for the use of an escape sequence, which often start with a backslash, `\`, followed by one or more characters. 
 
@@ -218,7 +218,7 @@ char esc = '\e'; // ESC character
 char esc = '\u001b'; // ESC character
 ```
 
-### Raw String Literals
+#### Raw String Literals
 
 Raw string literals, introduced in C# 11, allow you to create multi-line strings without needing to escape characters. This makes it useful to define literals containing other languages like XML, HTML, or JSON.
 
@@ -262,7 +262,7 @@ string xml = """
 
 If the content itself has three double quotes, you can use four double quotes to indicate the start and end of the string. Where the content has four double quotes, you can use five double quotes, and so on. 
 
-### Raw Interpolated String Literals
+#### Raw Interpolated String Literals
 
 You can mix interpolated strings that use curly braces `{}` with raw string literals. To do this, you specify the number of braces that indicate a replaced expression by adding the number of dollar signs `$` before the opening three double quotes. 
 
@@ -285,4 +285,7 @@ string json = $$"""
 }
 ```
 
+The number of dollar signs tells the compiler how many braces are needed to become recognized as an interpolated expression.
+
+### Storing Numbers
 
