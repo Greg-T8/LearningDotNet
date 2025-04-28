@@ -448,3 +448,83 @@ else
 The `decimal` type can represent `0.1` exactly in binary, so the result of `0.1 + 0.2` is exactly `0.3`.
 
 **Good Practice:** Use `int` for whole numbers, `double` that will not be compared with `==`, and `decimal` for money, engineering, and wherever the accuracy of a real number is important.
+
+#### Special Real Numbers
+
+The `float` and `double` have some useful special values:
+- `NaN`: represents "Not a Number". This is the result of dividing zero by zero, or taking the square root of a negative number.
+- `Epsilon`: the smallest number that can be stored in a `float` or `double` that is not zero. This is useful for comparing two numbers to see if they are "close enough" to be considered equal.
+- `PostiveInfinity`: represents positive infinity. This is the result of dividing a positive number by zero.
+- `NegativeInfinity`: represents negative infinity. This is the result of dividing a negative number by zero.
+
+```csharp
+#region Special float and double values
+Console.WriteLine($"double.Epsilon: {double.Epsilon}"); // 4.94065645841247E-324
+Console.WriteLine($"double.Epsilon to 324 decimal places: {double.Epsilon:N324}"); // 0.
+Console.WriteLine($"double.Epsilon to 330 decimal places: {double.Epsilon:N330}"); // 0.
+const int col1 = 37; // First column width
+const int col2 = 6; // Second column width
+string line = new string('-', col1 + col2 + 3);
+Console.WriteLine(line);
+Console.WriteLine($"{"Expression",-col1} | {"Value",col2}");
+Console.WriteLine(line);
+Console.WriteLine($"{"double.NaN",-col1} | {double.NaN,col2}");
+Console.WriteLine($"{"double.PositiveInfinity",-col1} | {double.PositiveInfinity,col2}");
+Console.WriteLine($"{"double.NegativeInfinity",-col1} | {double.NegativeInfinity,col2}");
+Console.WriteLine(line);
+Console.WriteLine($"{"0.0 / 0.0",-col1} | {0.0 / 0.0,col2}");
+Console.WriteLine($"{"3.0 / 0.0",-col1} | {3.0 / 0.0,col2}");
+Console.WriteLine($"{"-3.0 / 0.0",-col1} | {-3.0 / 0.0,col2}");
+Console.WriteLine($"{"3.0 / 0.0 == double.PositiveInfinity",-col1} | {3.0 / 0.0 == double.PositiveInfinity,col2}");
+Console.WriteLine($"{"-3.0 / 0.0 == double.NegativeInfinity",-col1} | {-3.0 / 0.0 == double.NegativeInfinity,col2}");
+Console.WriteLine($"{"0.0 / 3.0",-col1} | {0.0 / 3.0,col2}");
+Console.WriteLine($"{"0.0 / -3.0",-col1} | {0.0 / -3.0,col2}");
+Console.WriteLine(line);
+#endregion
+```
+
+**Output**:  
+<img src='images/20250428045236' width='1100.png'/>
+
+Things to note:
+- `NaN` outputs as `NaN`.
+- `PositiveInfinity` outputs as `∞`.
+- `NegativeInfinity` outputs as `-∞`.
+- Zero divided by any positive real number is zero.
+- Zero divided by any negative real number is negative zero.
+- `Epsilon` is slightly less than `5E-324` represented in scientific notation. This is the smallest number that can be stored in a `double` that is not zero.
+
+#### New Number Types and Unsafe Code
+
+The `System.Half` type was introduced in .NET 5. Like `float` and `double`, it can store real numbers, but normally only uses 2 bytes of memory. This is useful for storing large arrays of numbers, such as in graphics processing.
+
+The `System.Int128` and `System.UInt128` types were introduced in .NET 7. These types can store very large whole numbers and normally use 16 bytes of memory. This is useful for storing large numbers, such as in cryptography.
+
+For these number types, the `sizeof` operator can be used to determine the size of the type in bytes.
+
+```csharp
+unsafe
+{
+    Console.WriteLine($"Half uses {sizeof(Half)} bytes and can store numbers from {Half.MinValue:N0} to {Half.MaxValue:N0}.");
+    Console.WriteLine($"Int128 uses {sizeof(Int128)} bytes and can store numbers from {Int128.MinValue:N0} to {Int128.MaxValue:N0}.");
+}
+
+```
+
+**Output**:  
+<img src='images/20250428050402.png' width='1100'/>
+
+**Note:**: To run unsafe code, you need to set the `AllowUnsafeBlocks` property to `true` in the `.csproj` file.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+</Project>
+```
+See [Unsafe Code](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/unsafe-code) for more information.
