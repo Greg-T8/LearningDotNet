@@ -96,7 +96,7 @@ The author recommends creating a dedicated `GlobalUsings.cs` file in the root of
 
 Note that any project that targets .NET 6 or later, generates a `<Project-Name>.GlobalUsings.g.cs` file in the `obj` folder to implicitly globally import some common namespaces like `System`.
 
-<img src='images/20250417040028.png' width='400'/>
+<img src='images/20250417040028.png' width='550'/>
 
 You can control which namespaces are imported by adding the `<ItemGroup>` element to your `.csproj` file:
 
@@ -344,3 +344,4 @@ Console.WriteLine($"{hexadecimalNotation:X}"); // 1E8400
 **Output:**  
 <img src='images/20250428040136.png' width='450'/>
 
+#### Storing Real Numbers
