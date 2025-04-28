@@ -49,3 +49,15 @@ else
 {
     Console.WriteLine($"{a} + {b} does NOT equal {0.3}");
 }
+
+Console.WriteLine("Using decimals:");
+decimal c = 0.1M; // M suffix makes it a decimal literal
+decimal d = 0.2M;
+if (c + d == 0.3M)
+{
+    Console.WriteLine($"{c} + {d} equals {0.3M}");
+}
+else
+{
+    Console.WriteLine($"{c} + {d} does NOT equal {0.3M}");
+}
