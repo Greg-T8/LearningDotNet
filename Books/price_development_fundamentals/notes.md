@@ -60,6 +60,9 @@ dotnet clean
 - [Configure C# Language Version](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version?utm_source=chatgpt.com)
 - [Configure Target Framework](https://learn.microsoft.com/en-us/dotnet/standard/frameworks?utm_source)
 
+
+## Chapter 2: Speaking C#
+
 ### Determine the In-Use Language Version
 
 You can verify the language version in use by including the `#error version`
@@ -147,3 +150,88 @@ The C# language only has a few keywords for types, and the C# language does not 
 The program [Types](./ch02/Types/Program.cs) reveals the extent of the C# vocabulary by showing the number of types available in the namespaces imported from the `.csproj` file.
 
 <img src='images/20250417044503.png' width='400'/>
+
+### Storing Text
+
+### `char` and `string` Types
+A `char` is assigned using single quotes.
+
+```csharp
+char letter = 'A';
+char digit = '1';
+char symbol = '$';
+char userChoice = GetChar();
+```
+
+Note:
+- Some chars, such as the Egyptian hieroglyph A002 (U+13001), need two `System.Char` values to represent them. This is called a surrogate pair.
+- Do not always assume one `char` equals one letter!
+
+A `string` is assigned using double quotes.
+
+```csharp
+string firstName = "Bob";
+string lastName = "Smith";
+string phoneNumber = "(215) 555-4256";
+string horizontalLine = new('-', 50); // 50 dashes, assigning a string returned from the string class constructor
+string address = GetAddressFromDatabase(id: 563);
+string grinningEmoji = char.ConvertFromUtf32(0x1F600); // grinning face emoji, assigning an emoji by converting a Unicode code point to a string
+
+```
+
+### Outputting Emojis
+When outputting emojis, you must set the output encoding to UTF-8. This is done by setting the `Console.OutputEncoding` property to `System.Text.Encoding.UTF8`.
+
+```csharp
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+string grinningEmoji = char.ConvertFromUtf32(0x1F600); // grinning face emoji
+Console.WriteLine(grinningEmoji); // Output: 😀
+```
+
+### Verbatim Strings
+
+Strings allow for the use of an escape sequence, which often start with a backslash, `\`, followed by one or more characters. 
+
+```csharp
+string fullNameWithTabSeparator = "Bob\tSmith"; // Bob and Smith separated by a tab character
+```
+
+**Issue:**  
+What if you are storing the path to a file in Windows?
+
+```csharp
+string filePath = "C:\televisions\sony\bravia.txt"; // Issue: \t is interpreted as a tab character
+```
+
+To avoid this issue, you can use a verbatim string literal by prefixing the string with an `@` symbol. This tells the compiler to ignore escape sequences and treat the string as-is.
+
+```csharp
+string filePath = @"C:\televisions\sony\bravia.txt"; // Correct: \t is treated as a backslash followed by a t
+```
+
+> **Note**: With C# 13 and later, you can represent the ESC character (Unicode U+001B) using the `\e` escape sequence.
+
+```csharp
+// C# 13 and later
+char esc = '\e'; // ESC character
+// C# 12 and earlier
+char esc = '\u001b'; // ESC character
+```
+
+### Raw String Literals
+
+Raw string literals, introduced in C# 11, allow you to create multi-line strings without needing to escape characters. This makes it useful to define literals containing other languages like XML, HTML, or JSON.
+
+```csharp
+string xml = """
+	<person age="50">
+		<first_name>Mark</first_name>
+	</person>
+	""";
+```
+The compiler looks at the indentation of the last three or more double quote characters, and then automatically removes the indentation from al
+the content inside the raw string literal. The results of the string would not be indented as is in the defining code but, instead, will be aligned with the left margin.
+
+**Why three *or more* double quote characters?**
+
+If the content itself has three double quotes, you can use four double quotes to indicate the start and end of the string. Where the content has four double quotes, you can use five double quotes, and so on. 
