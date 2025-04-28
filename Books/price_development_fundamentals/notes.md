@@ -352,9 +352,9 @@ Most programming languages implement the IEEE 754 standard for floating-point ar
 
 The following table shows how the number `12.75` is represented in binary:
 
-| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |   | 1/2 | 1/4 | 1/8 | 1/16 |
-|-----|----|----|----|---|---|---|---|---|-----|-----|-----|------|
-|  0  | 0  | 0  | 0  | 1 | 1 | 0 | 0 | . |  1  |  1  |  0  |  0   |
+| 128 | 64  | 32  | 16  | 8   | 4   | 2   | 1   |     | 1/2 | 1/4 | 1/8 | 1/16 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---- |
+| 0   | 0   | 0   | 0   | 1   | 1   | 0   | 0   | .   | 1   | 1   | 0   | 0    |
 
 Note the bits with the value `1` in the 8, 4, 1/2, and 1/4 columns.
 
@@ -379,6 +379,8 @@ Console.WriteLine($"decimal uses {sizeof(decimal)} bytes and can store numbers f
 An `int` uses 4 bytes and can store positive or negative numbers up to about 2 billion. A `double` uses 8 bytes and can store much bigger values. A `decimal` uses 16 bytes and can store very large numbers, but not as big as a `double`. 
 
 #### Comparing Double and Decimal Types
+
+##### Comparing `double` Values
 
 ```csharp
 Console.WriteLine("Using doubles:");
@@ -412,3 +414,37 @@ if (a + b == 0.3f) // True because float is less "accurate" than double
 ...
 ```
 
+As a rule of thumb, only use `double` when accuracy, especially when comparing the equality of two numbers, is not important. 
+
+The problem in the preceeding code deals with how the computer stores `0.1` in binary notation:
+
+
+| 4   | 2   | 1   |     | 1/2 | 1/4 | 1/8 | 1/16 | 1/32 | 1/64 | 1/128 | 1/256 | 1/512 | 1/1024 | 1/2048 |
+| --- | --- | --- | --- | --- | --- | --- | ---- | ---- | ---- | ----- | ----- | ----- | ------ | ------ |
+| 0   | 0   | 0   | .   | 0   | 0   | 0   | 1    | 1    | 0    | 0     | 1     | 1     | 0      | 0      |
+
+Note how the `1`'s after the decimal point repeat.
+
+**Good Practice:** Never compare `double` values using `==`.
+
+##### Comparing Decimal Values
+
+```csharp
+Console.WriteLine("Using decimals:");
+decimal c = 0.1M; // M suffix makes it a decimal literal
+decimal d = 0.2M;
+if (c + d == 0.3M)
+{
+    Console.WriteLine($"{c} + {d} equals {0.3M}");
+}
+else
+{
+    Console.WriteLine($"{c} + {d} does NOT equal {0.3M}");
+}
+```
+**Output**:  
+<img src='images/20250428043523.png' width='450'/>
+
+The `decimal` type can represent `0.1` exactly in binary, so the result of `0.1 + 0.2` is exactly `0.3`.
+
+**Good Practice:** Use `int` for whole numbers, `double` that will not be compared with `==`, and `decimal` for money, engineering, and wherever the accuracy of a real number is important.
