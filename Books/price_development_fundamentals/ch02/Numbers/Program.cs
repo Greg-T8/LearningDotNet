@@ -33,3 +33,19 @@ Console.WriteLine($"{hexadecimalNotation:N0}"); // 2,000,000
 Console.WriteLine($"{decimalNotation:X}"); // 1E8400
 Console.WriteLine($"{binaryNotation:X}"); // 1E8400
 Console.WriteLine($"{hexadecimalNotation:X}"); // 1E8400
+
+Console.WriteLine($"int uses {sizeof(int)} bytes and can store numbers from {int.MinValue:N0} to {int.MaxValue:N0}.");
+Console.WriteLine($"double uses {sizeof(double)} bytes and can store numbers from {double.MinValue:N0} to {double.MaxValue:N0}.");
+Console.WriteLine($"decimal uses {sizeof(decimal)} bytes and can store numbers from {decimal.MinValue:N0} to {decimal.MaxValue:N0}.");
+
+Console.WriteLine("Using doubles:");
+double a = 0.1;
+double b = 0.2;
+if (a + b == 0.3)
+{
+    Console.WriteLine($"{a} + {b} equals {0.3}");
+}
+else
+{
+    Console.WriteLine($"{a} + {b} does NOT equal {0.3}");
+}
