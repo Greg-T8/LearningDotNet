@@ -30,6 +30,13 @@ dotnet fsi
 <details>
 <summary>About F# and Functional Programming</summary>
 
+<br>
+
+> To use F# effectively, quoting Yoda, "you must unlearn what you have learned."
+
+<br>
+
+
 **F# Mental Model**
 
 <img src='images/20250408025610.png' width='450'/>
@@ -97,6 +104,9 @@ for you.
 </details>
 
 ## 2. Hands on with F#
+
+<details>
+<summary>Hands on with F# and the REPL</summary>
 
 ```fsharp
 let name = "Greg"
@@ -167,3 +177,4 @@ From there, you establish end-to-end tests and regression test.
 
 Furthermore, the author notes that no test-driven development is needed.
 
+</details>
