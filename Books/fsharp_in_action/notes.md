@@ -26,7 +26,7 @@ dotnet run
 dotnet fsi
 ```
 
-## Introduction to F#
+## 1. Introduction to F#
 <details>
 <summary>About F# and Functional Programming</summary>
 
@@ -96,7 +96,7 @@ for you.
 
 </details>
 
-### Hello World
+## 2. Hands on with F#
 
 ```fsharp
 let name = "Greg"
@@ -107,7 +107,7 @@ printfn $"Hello from F#! My name is {name}, the time is {time}"
 See [HelloFSharp](./ch02/HelloFSharp/Program.fs) for the code.
 
 
-### F# Interactive (FSI)
+### 2.5 REPL and F# Scripts
 
 - FSI is a REPL (Read-Eval-Print Loop) for F#, which supports interactive coding.
 - Use `dotnet fsi` command to start the REPL.
@@ -127,3 +127,15 @@ See [HelloFSharp](./ch02/HelloFSharp/Program.fs) for the code.
 - With the Ionide extension, use the VS Code command `FSI: Send Selection` to send the selected code to the REPL.
 
 <img src='images/20250418041304.png' width='450'/>
+
+#### State inthe REPL
+
+- The REPL is stateful in that it allows you to access data and arbitrarily interrogate and create new values from them.
+
+![Using the REPL](./images/2025-04-29_03-07-58.gif)
+
+Things to note from the above image:
+- You start (or restart) the FSI using the command `FSI: Start`.
+- You can execute lines using `FSI: Send Line`.
+- You can directly execute commands in the console, but you need to use `;;` to terminate the command.
+
