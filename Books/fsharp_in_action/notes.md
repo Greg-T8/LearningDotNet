@@ -109,6 +109,7 @@ See [HelloFSharp](./ch02/HelloFSharp/Program.fs) for the code.
 
 ### 2.5 REPL and F# Scripts
 
+- Use F# Interactive (FSI) to run F# code interactively.
 - FSI is a REPL (Read-Eval-Print Loop) for F#, which supports interactive coding.
 - Use `dotnet fsi` command to start the REPL.
 
@@ -117,7 +118,7 @@ See [HelloFSharp](./ch02/HelloFSharp/Program.fs) for the code.
 - Use two semicolons `;;` at the end to execute the text currently in the buffer.
 - `val` is the default symbol expressions are bound to if you don't use `let`.
 
-### F# Scripts
+### 2.5 F# Scripts
 
 - F# scripts are files with the `.fsx` extension.
 - F# scripts do not require a project or solution and can be executed as a single file.
@@ -128,7 +129,7 @@ See [HelloFSharp](./ch02/HelloFSharp/Program.fs) for the code.
 
 <img src='images/20250418041304.png' width='450'/>
 
-#### State inthe REPL
+#### 2.5.4 State inthe REPL
 
 - The REPL is stateful in that it allows you to access data and arbitrarily interrogate and create new values from them.
 
@@ -138,4 +139,31 @@ Things to note from the above image:
 - You start (or restart) the FSI using the command `FSI: Start`.
 - You can execute lines using `FSI: Send Line`.
 - You can directly execute commands in the console, but you need to use `;;` to terminate the command.
+
+#### 2.5.5 Creating your first function
+
+The following function takes in someone's name and agae and returns a string that's a greeting of the person.
+
+```fsharp
+let greetPerson name age =
+    $"Hello {name}. You are {age} years old."
+
+greetPerson "Fred" 21
+```
+<img src='images/20250429034812.png' width='550'/>
+
+Things to note:
+- `a` and `b` represent *generic* types, indicating `name` and `age` can be of any type&mdash;string, integer, or customer.
+
+### 2.6 Where scripts and the REPL fit in
+
+A lot of development can be done using scripts, particularly in the exploratory phase, where you create a new module or component in your application and want to start by sketching a rough idea before formalizing it.
+
+<img src='images/20250429035333.png' width='500'/>
+
+Typically, you start with a script and then port it into a full application, whether that application be console, background service, web application, etc.
+
+From there, you establish end-to-end tests and regression test.
+
+Furthermore, the author notes that no test-driven development is needed.
 
