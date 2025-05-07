@@ -528,3 +528,30 @@ unsafe
 </Project>
 ```
 See [Unsafe Code](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/unsafe-code) for more information.
+
+#### Storing Booleans
+
+A `bool` is assigned using the keywords `true` or `false`.
+
+```csharp
+bool happy = true;
+bool sad = false;
+```
+
+#### Storing any type of object
+
+A special type called `object` can store any type of object, but its flexibility comes at the cost of messier code and possible poor performance. For those two reasons, avoid using `object` unless you have a good reason to do so. 
+
+```csharp
+object height  = 1.88;                   // storing a double in an object
+object name    = "Amir";                 // storing a string in an object
+Console.WriteLine($"{name} is {height} meteres tall.");
+int    length1 = name.Length;            // compiler error: name is an object, not a string
+int    length2 = ((string)name).Length;  // casting the object to a string
+Console.WriteLine($"{name} has {length2} characters.");
+```
+
+The `object` type has been available since C# 1.0, but C# 2 and later have a better alternative called **generics** that provides the flexibility we want without the performance overhead of `object`. 
+
+#### Storing dynamic types
+
