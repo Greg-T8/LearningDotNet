@@ -60,6 +60,34 @@ dotnet clean
 - [Configure C# Language Version](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/configure-language-version?utm_source=chatgpt.com)
 - [Configure Target Framework](https://learn.microsoft.com/en-us/dotnet/standard/frameworks?utm_source)
 
+## Contents
+
+- [Dotnet Commands](#dotnet-commands)
+- [C# and .NET Resources](#c-and-net-resources)
+- [Contents](#contents)
+- [Chapter 2: Speaking C#](#chapter-2-speaking-c)
+  - [Determine the In-Use Language Version](#determine-the-in-use-language-version)
+  - [Implicitly and Globally Importing Namespaces](#implicitly-and-globally-importing-namespaces)
+  - [Types vs Classes](#types-vs-classes)
+  - [Storing Text](#storing-text)
+    - [`char` and `string` Types](#char-and-string-types)
+    - [Outputting Emojis](#outputting-emojis)
+    - [Verbatim Strings](#verbatim-strings)
+    - [Raw String Literals](#raw-string-literals)
+    - [Raw Interpolated String Literals](#raw-interpolated-string-literals)
+  - [Storing Numbers](#storing-numbers)
+    - [Storing Whole Numbers](#storing-whole-numbers)
+    - [Using Binary or Hexadecimal Notation](#using-binary-or-hexadecimal-notation)
+    - [Storing Real Numbers](#storing-real-numbers)
+    - [Exploring Number Sizes](#exploring-number-sizes)
+    - [Comparing Double and Decimal Types](#comparing-double-and-decimal-types)
+    - [Special Real Numbers](#special-real-numbers)
+    - [New Number Types and Unsafe Code](#new-number-types-and-unsafe-code)
+  - [Storing Booleans](#storing-booleans)
+  - [Storing any type of object](#storing-any-type-of-object)
+    - [Storing dynamic types](#storing-dynamic-types)
+  - [Declaring local variables](#declaring-local-variables)
+
 
 ## Chapter 2: Speaking C#
 
@@ -529,7 +557,7 @@ unsafe
 ```
 See [Unsafe Code](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/unsafe-code) for more information.
 
-#### Storing Booleans
+### Storing Booleans
 
 A `bool` is assigned using the keywords `true` or `false`.
 
@@ -538,7 +566,7 @@ bool happy = true;
 bool sad = false;
 ```
 
-#### Storing any type of object
+### Storing any type of object
 
 A special type called `object` can store any type of object, but its flexibility comes at the cost of messier code and possible poor performance. For those two reasons, avoid using `object` unless you have a good reason to do so. 
 
@@ -598,7 +626,7 @@ One limitation of `dynamic` is that code editors cannot show Intellisense to hel
 Dynamic types are most useful when interoperating with non-.NET systems, e.g. working with a class library written in F#, Python, or JavaScript.
 You might also need to interop with technologies like COM (Component Object Model), for example, when automating Excel or Word.
 
-#### Declaring local variables
+### Declaring local variables
 
 Value types are released while reference types must wait for garbage collection.
 
@@ -656,3 +684,54 @@ Use `var` when the type is obvious from the right-hand side of the assignment. A
 
 `var` is converted to the actual type by the compiler when you build the project. A variable declared using `var` has a specific, known, fixed data type. This differs from `dynamic`, which the compiler does not change; it remains a `System.Dynamic` type that can reference any object of any type. The actual type is only checked at runtime.
 
+##### What does `new` do?
+
+The `new` keyword allocates or initializes memory.
+
+There are two categories of types in C#:
+- Value types
+- Reference types
+
+Value types are simple and do not need to use the `new` keyword to explicitly allocate memory. But value types can use the `new` keyword to initialize their value. This is useful when there is no way to use a literal to set the value.
+
+Reference types are more complex and need to use the `new` keyword to explicitly allocate memory. At the same time, they can use the `new` keyword to initialize their state.
+
+When you declare variables, space is only allocated in memory for value types like `int` and `DateTime` but not for reference types like `Person`.
+
+```csharp
+/* Value types have memory allocated on the stack automatically. */
+short    age;         // Allocates 2 bytes on the stack to store a System.Int16 value.
+long     population;  // Allocates 8 bytes on the stack to store a System.Int64 value.
+DateTime birthDate;   // Allocates 8 bytes on the stack to store a System.DateTime value.
+Point    location;    // Allocates 8 bytes on the stack to store a System.Drawing.Point value.
+
+/* Reference types will only have memory allocated on the heap when new is used (but they automatically have some memory
+allocated on the stack to store information about themselves including the memory address of the object on the heap). */
+Person bob;  // Allocates memory on the stack that can point to a Person object in the heap. Initially, bob will have the value null. null.
+```
+**Note:**  
+- `age` has a value of `0` and 2 bytes of memory allocated on the stack.
+- `population` has a value of `0` and 8 bytes of memory allocated on the stack.
+- `birthDate` has a value of `01/01/0001` and 8 bytes of memory allocated on the stack.
+- `location` has a value of `0,0` and 8 bytes of memory allocated on the stack.
+- `bob` has a value of `null` and 4 bytes have been allocated on stack memory. No heap memory has been allocated for the object.
+
+```csharp
+age        = 45;                      // Initialize this variable to 45 using a literal value
+population = 68_000_000;              // Initialize this variable to 68 million using a literal value
+birthdate  = new(1995, 2, 23);        // Initialize this variable to February 23, 1995. C# does not support literal values for date/time values, so we must use `new`
+location   = new(10, 20):             // Initialize the X and Y coordinates of this value type
+bob        = new();                   // Allocate memory on the heap to store a Person. Any state will have default values. bob is no longer null.
+bob        = new("Bob", "Smith", 45)  // Allocate memory on the heap to store a Person and initialize state. bob is no longer null.
+ 
+// Older syntax with explicit types
+birthdate = new DateTime(1995, 2, 3);
+location = new Point(10, 20);
+bob = new Person();
+bob = new Person("Bob", "Smith", 45);
+```
+**Note:**
+- `age`, `population`, and `birthdate` have already had memory allocated for them on the stack. The `new` keyword is used to initialize their values if you want them to be different from the default values.
+- `bob` must use `new` to allocate heap memory for the object. The `=` assignment stores the memory address of that allocated memory on the stack. 
+
+##### Using target-typed `new` to instantiate objects
