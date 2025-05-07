@@ -555,3 +555,45 @@ The `object` type has been available since C# 1.0, but C# 2 and later have a bet
 
 #### Storing dynamic types
 
+The `dynamic` type, introduced in C# 4, can also store any type of data, but even more than `object`, it's flexibility comes at the cost of performance.
+
+Unlike `object`, the value stored the variable can have its members invoked without an explicit cast.
+
+```csharp
+dynamic something;
+// Storing an array of int values in a dynamic object.
+// An array of any type has a Length property.
+something = new[] { 3, 5, 7 };
+
+// Storing an int in a dynamic object.
+// int does not have a Length property.
+something = 12;
+
+// Storing a string in a dynamic object.
+// string has a Length property.
+something = "Ahmed";
+
+// This compiles, but might throw a runtime exception if something is not a string.
+Console.WriteLine($"The length of something is {something.Length}.");
+
+// Ouptut the type of the something variable.
+Console.WriteLine($"The type of something is {something.GetType()}.");
+```
+**Output**:  
+<img src='./images/1746606637094.png' width='500'/><br>
+
+In commenting out the statement assigning `something` to a string, the program would throw a runtime exception because `something` is not a string; it is now an `int`:
+
+<img src='./images/1746606817720.png' width='850'/></br>
+
+When commenting out the statements that assign `something` to a string and an `int`, leaving the assignment to an array of `int` values, the program runs because the array has a `Length` property:
+
+<img src='./images/1746607027998.png' width='650'/></br>
+
+**Output:**  
+<img src='./images/1746607064140.png' width='450'/></br>
+
+One limitation of `dynamic` is that code editors cannot show Intellisense to help you write the code. This is because the compiler does not know what type of object is stored in the `dynamic` variable until runtime. Instead, the CLR (Common Language Runtime) checks for the member at runtime and throws an exception if it is missing.
+
+Dynamic types are most useful when interoperating with non-.NET systems, e.g. working with a class library written in F#, Python, or JavaScript.
+You might also need to interop with technologies like COM (Component Object Model), for example, when automating Excel or Word.
