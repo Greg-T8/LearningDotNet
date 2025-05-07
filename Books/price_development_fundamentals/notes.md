@@ -597,3 +597,62 @@ One limitation of `dynamic` is that code editors cannot show Intellisense to hel
 
 Dynamic types are most useful when interoperating with non-.NET systems, e.g. working with a class library written in F#, Python, or JavaScript.
 You might also need to interop with technologies like COM (Component Object Model), for example, when automating Excel or Word.
+
+#### Declaring local variables
+
+Value types are released while reference types must wait for garbage collection.
+
+##### Specifying the type of a local variable
+
+```csharp
+int     population = 67_000_000;  // 67 million in UK
+double  weight     = 1.88;        // in kg
+decimal price      = 4.99M;       // in pounds sterling. The M suffix indicates a decimal value.
+string  fruit      = "Apples";    // string values use double quotes
+char    letter     = 'Z';         // char values use single quotes
+bool    happy      = true;        // Boolean values can be true or false
+```
+
+##### Inferring the type of a local variable
+
+Use the `var` keyword to declare local variables with C# 3 and later. The compiler infers the type of the variable from the value assigned to it. This happens at compile time, so `var` has no effect on runtime performance. 
+
+A literal number number without a decimal point is an `int` type. For other number types, you can use:
+- `L`: Compiler infers `long`
+- `UL`: Compiler infers `ulong`
+- `M`: Compiler infers `decimal`
+- `D`: Compiler infers `double`
+- `F`: Compiler infers `float`
+
+A literal number with a decimal point is inferred as a `double` type. To infer a `float`, you must use the `F` suffix.
+
+Declarations from the previous section can be rewritten using `var`:
+
+```csharp
+var population = 67_000_000;  // 67 million in UK
+var weight     = 1.88;        // in kg
+var price      = 4.99M;       // in pounds sterling. The M suffix indicates a decimal value.
+var fruit      = "Apples";    // string values use double quotes
+var letter     = 'Z';         // char values use single quotes
+var happy      = true;        // Boolean values can be true or fals
+```
+<img src='images/20250507035107.png' width='550'/>
+
+
+```csharp
+using System.Xml;
+
+// Good use of var because it avoids the repeated type as shown inthe more verbose second statement
+var xml1 = new XmlDocument();           // Works with C# 3 and later
+XmlDocument xml2 = new XmlDocument();   // Works with all versions of C#
+
+// Bad use of var because we cannot tell the type, so we should use a specific type declaration as shown in the second
+// statement
+var file1 = File.CreateText("something1.txt");
+StreamWriter file2 = File.CreateText("something2.txt");
+```
+
+Use `var` when the type is obvious from the right-hand side of the assignment. Avoid using `var` when the type is not obvious, such as when using LINQ queries or when calling methods that return `object` or `dynamic` types.
+
+`var` is converted to the actual type by the compiler when you build the project. A variable declared using `var` has a specific, known, fixed data type. This differs from `dynamic`, which the compiler does not change; it remains a `System.Dynamic` type that can reference any object of any type. The actual type is only checked at runtime.
+
