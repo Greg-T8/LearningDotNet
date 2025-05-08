@@ -50,6 +50,9 @@ dotnet fsi
       - [Readability](#readability)
       - [Sensible defaults](#sensible-defaults)
       - [Consistency](#consistency)
+      - [A worked example](#a-worked-example)
+    - [3.1.2 The `let` keyword](#312-the-let-keyword)
+  - [3.1.3 Scoping](#313-scoping)
 
 
 ## 1. Introducing F#
@@ -226,4 +229,53 @@ let mySimpleValue = 99      // The definition of mySimpleValue, an integer
 ```
 **Note:** both use `let` to declare a value or function. 
 
+##### A worked example
 
+```fsharp
+let addTenThenDouble theNumber =                            // 1.
+    let addedTen = theNumber + 10                           // 2.
+    let answer = addedTen * 2                               // 3.
+    printfn $"({theNumber} + 10) * 2 is {answer}"           // 4.
+    let website = System.Uri "https://fsharp.org"
+    answer                                                  // 5.
+```
+**Note:**
+1. *No parentheses*: F# uses parentheses in a few places, but they are usually not required to signify the start and end of arguments to a function.
+2. *No curly braces*: F# is whitespace-sensitive and expects all lines within any scope to start at the same column.
+3. *No semicolons*: F# doesn't require semicolons to terminate lines. 
+4. *No `new` keyword*: F# thinks of a constructor on a type as a static function instead of as some kind of unique construct.
+5. *No `return` keyword*: The last expression of a function is automatically the return value; therefore, there is no need to use the `return` keyword.
+6. *No type annotations*: F# doesn't require any guidance from you for the types of values, yet it is a type-safe language.
+
+#### 3.1.2 The `let` keyword
+
+The `let` keyword is the most important keyword in F#. It allows you to bind values to symbols.
+
+```fsharp
+let doACalculation theNumber =                          // Binds a function to the symbol doACalculation
+    let twenty = 20                                     // Binds the value 20 to the symbol twenty 
+    let answer = twenty + theNumber                     // Binds the result of the calculation to the symbol answer
+    let foo = System.Uri "https://www.fsharp.org"       // Binds a System.Uri object to the symbol foo
+    answer                                              
+```
+
+**Note:** Functions are just values. Some values take in arguments, and others don't. You can treat them the same way, i.e. you can pass them around in your application as arguments, bind them to symbols, and so on. 
+
+Think of `let` as a copy and paste instruction: whenever you see this symbol used in code, replace it with the value on the right-hand side of the `=` sign. 
+
+```fsharp
+let isaac = 42                  // Binds the value 42 to the symbol isaac
+let olderIsaac = isaac + 1      // References the symbol isaac to get the value 42
+let youngerIsaac = isaac - 1
+```
+
+Code above becomes:
+
+```fsharp
+let olderIsaac = 42 + 1
+let youngerIsaac = 42 - 1
+```
+
+**Note:** Some languages use the `var` keyword to perform what appears to be the same thing as `let`, but this is not the case. `var` declares variables, which can vary by being assigned different values or by being mutated. `let` creates an immutable reference to a value. Once you've bound a value to a symbol, you can't change it to reference another value later.
+
+### 3.1.3 Scoping
