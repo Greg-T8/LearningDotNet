@@ -279,3 +279,4 @@ let youngerIsaac = 42 - 1
 **Note:** Some languages use the `var` keyword to perform what appears to be the same thing as `let`, but this is not the case. `var` declares variables, which can vary by being assigned different values or by being mutated. `let` creates an immutable reference to a value. Once you've bound a value to a symbol, you can't change it to reference another value later.
 
 ### 3.1.3 Scoping
+
