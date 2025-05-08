@@ -8,6 +8,8 @@
 - [Book Code](https://github.com/isaacabraham/fsharp-in-action)
 </details>
 
+
+<!-- omit in toc -->
 ## DotNet Commands
 ```cmd
 # Create a new solution
@@ -26,22 +28,43 @@ dotnet run
 dotnet fsi
 ```
 
-## 1. Introduction to F#
-<details>
-<summary>About F# and Functional Programming</summary>
+<!-- omit in toc -->
+## Contents
 
-<br>
+- [1. Introducing F#](#1-introducing-f)
+  - [About F# and Functional Programming](#about-f-and-functional-programming)
+    - [Imperative Code vs Declarative Code](#imperative-code-vs-declarative-code)
+    - [Composability](#composability)
+    - [Data and behavior](#data-and-behavior)
+  - [A smarter compiler](#a-smarter-compiler)
+  - [F# and .NET](#f-and-net)
+- [2. Hands on with F#](#2-hands-on-with-f)
+  - [2.5 REPL and F# Scripts](#25-repl-and-f-scripts)
+  - [2.5 F# Scripts](#25-f-scripts)
+    - [2.5.4 State inthe REPL](#254-state-inthe-repl)
+    - [2.5.5 Creating your first function](#255-creating-your-first-function)
+  - [2.6 Where scripts and the REPL fit in](#26-where-scripts-and-the-repl-fit-in)
+- [3. F# Syntax Basics](#3-f-syntax-basics)
+  - [3.1 F# syntax basics](#31-f-syntax-basics)
+    - [3.1.1 Characteristics of F# syntax](#311-characteristics-of-f-syntax)
+      - [Readability](#readability)
+      - [Sensible defaults](#sensible-defaults)
+      - [Consistency](#consistency)
+
+
+## 1. Introducing F#
+
+### About F# and Functional Programming
+
 
 > To use F# effectively, quoting Yoda, "you must unlearn what you have learned."
 
-<br>
 
-
-**F# Mental Model**
+**F# Mental Model:**  
 
 <img src='images/20250408025610.png' width='450'/>
 
-**Imperative Code vs Declarative Code**
+#### Imperative Code vs Declarative Code
 
 We are used to writing imperative code. F# is a functional-first language, which uses declarative code. According to the author, "if you're used to imperative model of developing, it can feel like giving up control. However, once you're used to [functional programming], it's very difficult to go back."
 
@@ -54,7 +77,7 @@ In the example above, the imperative version takes ownership of *how* we want to
 filter the numbers&mdash;by creating an intermediary list, iterating through
 each one, etc.
 
-**Composability**
+#### Composability
 
 Functions are the main component of F# programs, rather than classes. F#
 emphasizes composition over inheritance, which is a common theme in functional
@@ -63,7 +86,7 @@ simpler ones, rather than relying on a rigid class hierarchy.
 
 <img src='images/20250408031523.png' width='400'/>
 
-**Data and behavior**
+#### Data and behavior
 
 A key pattern in F# is the separation of data and behavior. In F#, you typically
 define your data types separately from the functions that operate on them.
@@ -81,7 +104,7 @@ of the basket and a module with *stateless* functions such as `AddItem`,
 updated version of the basket, rather than modifying the original one. This
 generally leads to more predictable and testable code.
 
-**A smarter compiler** 
+### A smarter compiler
 
 F# inevitably changes how you write code. F# helps a great deal in reducing
 boilerplate activities.
@@ -93,7 +116,7 @@ updated. This eliminates a whole class of bugs (like null reference exceptions)
 surprises and less debugging, all thanks to the compiler doing more of the work
 for you.
 
-**F# and .NET**
+### F# and .NET
 
 - You can reference any .NET assembly from F#
 - You can consume and create classes with inheritance, interfaces, properties, and methods
@@ -101,12 +124,9 @@ for you.
 
 <img src='images/20250418034314.png' width='300'/>
 
-</details>
 
 ## 2. Hands on with F#
 
-<details>
-<summary>Hands on with F# and the REPL</summary>
 
 ```fsharp
 let name = "Greg"
@@ -152,7 +172,7 @@ Things to note from the above image:
 
 #### 2.5.5 Creating your first function
 
-The following function takes in someone's name and agae and returns a string that's a greeting of the person.
+The following function takes in someone's name and age and returns a string that's a greeting of the person.
 
 ```fsharp
 let greetPerson name age =
@@ -162,8 +182,9 @@ greetPerson "Fred" 21
 ```
 <img src='images/20250429034812.png' width='550'/>
 
-Things to note:
+**Note:**  
 - `a` and `b` represent *generic* types, indicating `name` and `age` can be of any type&mdash;string, integer, or customer.
+- Use the command `FSI: Send Selection` to send the selected code to the REPL.
 
 ### 2.6 Where scripts and the REPL fit in
 
@@ -171,10 +192,38 @@ A lot of development can be done using scripts, particularly in the exploratory 
 
 <img src='images/20250429035333.png' width='500'/>
 
-Typically, you start with a script and then port it into a full application, whether that application be console, background service, web application, etc.
+Typically, you start with a script and then port it into a full application, whether that application be console, background service, web application, etc. From there, you establish end-to-end tests and regression test. Furthermore, the author notes that no test-driven development is needed.
 
-From there, you establish end-to-end tests and regression test.
+## 3. F# Syntax Basics
 
-Furthermore, the author notes that no test-driven development is needed.
+### 3.1 F# syntax basics
 
-</details>
+#### 3.1.1 Characteristics of F# syntax
+
+F#'s syntax goal is to be highly succint and highly safe. Most fans of dynamic languages complain that the syntax of statically typed languages is too verbose. Fans of statically typed languages point out that refactoring is difficult without a type checker and compiler and potentially affects scaling a team without writing a large number of unit tests.
+
+F# hits a sweet spot between the two: it's lightweight, readable, and type-safe all at the same time.
+
+In terms of syntax, F# is succinct in that it strips away unnecessary symbols and keywords that other languages rely on, resulting in code having a far greater percentage of text relating to business logic than syntax.
+
+##### Readability
+
+F# has a relatively small number of symbols and characters needed for different features. For example, instead of negation being `!`, F# uses `not`. This lightweight syntax makes it easy to create a *domain specific language* and write code for nontechnical people.
+
+##### Sensible defaults
+
+F# has defaults optimized for most common cases, which means you'll spend less time writing code to satisfy the compiler.
+
+An example of this is public vs private status. Public is the default, so you don't have to specify it. In C#, you have to specify `public`.
+
+##### Consistency 
+
+Functions and values are declared using the same pattern and syntax:
+
+```fsharp
+let myFunction arg1 arg2 =  // A function definition, taking in two arguments, arg1 and arg2 (implementation omitted)
+let mySimpleValue = 99      // The definition of mySimpleValue, an integer
+```
+**Note:** both use `let` to declare a value or function. 
+
+
