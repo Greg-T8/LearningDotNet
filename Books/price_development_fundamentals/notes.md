@@ -63,34 +63,34 @@ dotnet clean
 <!-- omit in toc -->
 ## Contents
 
-* [Chapter 2: Speaking C#](#chapter-2-speaking-c)
-  * [Determine the In-Use Language Version](#determine-the-in-use-language-version)
-  * [Implicitly and Globally Importing Namespaces](#implicitly-and-globally-importing-namespaces)
-  * [Types vs Classes](#types-vs-classes)
-  * [Storing Text](#storing-text)
-    * [`char` and `string` Types](#char-and-string-types)
-    * [Outputting Emojis](#outputting-emojis)
-    * [Verbatim Strings](#verbatim-strings)
-    * [Raw String Literals](#raw-string-literals)
-    * [Raw Interpolated String Literals](#raw-interpolated-string-literals)
-  * [Storing Numbers](#storing-numbers)
-    * [Storing Whole Numbers](#storing-whole-numbers)
-    * [Using Binary or Hexadecimal Notation](#using-binary-or-hexadecimal-notation)
-    * [Storing Real Numbers](#storing-real-numbers)
-    * [Exploring Number Sizes](#exploring-number-sizes)
-    * [Comparing Double and Decimal Types](#comparing-double-and-decimal-types)
-      * [Comparing `double` Values](#comparing-double-values)
-      * [Comparing Decimal Values](#comparing-decimal-values)
-    * [Special Real Numbers](#special-real-numbers)
-    * [New Number Types and Unsafe Code](#new-number-types-and-unsafe-code)
-  * [Storing Booleans](#storing-booleans)
-  * [Storing any type of object](#storing-any-type-of-object)
-    * [Storing dynamic types](#storing-dynamic-types)
-  * [Declaring local variables](#declaring-local-variables)
-      * [Specifying the type of a local variable](#specifying-the-type-of-a-local-variable)
-      * [Inferring the type of a local variable](#inferring-the-type-of-a-local-variable)
-      * [What does `new` do?](#what-does-new-do)
-      * [Using target-typed `new` to instantiate objects](#using-target-typed-new-to-instantiate-objects)
+- [Chapter 2: Speaking C#](#chapter-2-speaking-c)
+  - [Determine the In-Use Language Version](#determine-the-in-use-language-version)
+  - [Implicitly and Globally Importing Namespaces](#implicitly-and-globally-importing-namespaces)
+  - [Types vs Classes](#types-vs-classes)
+  - [Storing Text](#storing-text)
+    - [`char` and `string` Types](#char-and-string-types)
+    - [Outputting Emojis](#outputting-emojis)
+    - [Verbatim Strings](#verbatim-strings)
+    - [Raw String Literals](#raw-string-literals)
+    - [Raw Interpolated String Literals](#raw-interpolated-string-literals)
+  - [Storing Numbers](#storing-numbers)
+    - [Storing Whole Numbers](#storing-whole-numbers)
+    - [Using Binary or Hexadecimal Notation](#using-binary-or-hexadecimal-notation)
+    - [Storing Real Numbers](#storing-real-numbers)
+    - [Exploring Number Sizes](#exploring-number-sizes)
+    - [Comparing Double and Decimal Types](#comparing-double-and-decimal-types)
+      - [Comparing `double` Values](#comparing-double-values)
+      - [Comparing Decimal Values](#comparing-decimal-values)
+    - [Special Real Numbers](#special-real-numbers)
+    - [New Number Types and Unsafe Code](#new-number-types-and-unsafe-code)
+  - [Storing Booleans](#storing-booleans)
+  - [Storing any type of object](#storing-any-type-of-object)
+    - [Storing dynamic types](#storing-dynamic-types)
+  - [Declaring local variables](#declaring-local-variables)
+      - [Specifying the type of a local variable](#specifying-the-type-of-a-local-variable)
+      - [Inferring the type of a local variable](#inferring-the-type-of-a-local-variable)
+      - [What does `new` do?](#what-does-new-do)
+      - [Using target-typed `new` to instantiate objects](#using-target-typed-new-to-instantiate-objects)
 
 
 ## Chapter 2: Speaking C#
@@ -739,3 +739,23 @@ bob = new Person("Bob", "Smith", 45);
 - `bob` must use `new` to allocate heap memory for the object. The `=` assignment stores the memory address of that allocated memory on the stack. 
 
 ##### Using target-typed `new` to instantiate objects
+
+Starting with C# 9, you can specify the tyep of the object first and then use `new` without repeating the type:
+
+```csharp
+XmlDocument xml3 = new();                   // Works with C# 9 and later
+XmlDocument xml4 = new XmlDocument();       // Works with all versions of C#
+```
+
+If you have a type with a field or property that needs to be set, then the type can be inferred:
+
+```csharp
+Person kim = new();
+kim.BirthDate = new(1967, 12, 26);          // Inferring the BirthDate property
+class Person
+{
+    public DateTime BirthDate;
+}
+```
+
+
