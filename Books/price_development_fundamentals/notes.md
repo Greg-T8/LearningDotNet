@@ -91,6 +91,7 @@ dotnet clean
       - [Inferring the type of a local variable](#inferring-the-type-of-a-local-variable)
       - [What does `new` do?](#what-does-new-do)
       - [Using target-typed `new` to instantiate objects](#using-target-typed-new-to-instantiate-objects)
+  - [Getting and setting the default value for types](#getting-and-setting-the-default-value-for-types)
 
 
 ## Chapter 2: Speaking C#
@@ -757,5 +758,30 @@ class Person
     public DateTime BirthDate;
 }
 ```
+This way of instantiating objects is useful with arrays and collections because they have multiple objects, often of the same type:
+
+```csharp
+List<Person> people = new();                // instead of: new List<Person>()
+{
+    new() { FirstName = "Alice" },          // instead of: new Person() {...}
+    new() { FirstName = "Bob" },            
+    new() { FirstName = "Charlie" }
+};
+```
+
+### Getting and setting the default value for types
+
+Most of the primitive types except `string` are value types, which means they must have a value.
+
+Use the `default()` operator to determine the default value for a type. You can then assign the default value of that type by using the `default` keyword:
+
+```csharp
+// Exploring default values
+Console.WriteLine($"default(int) = {default(int)}");
+Console.WriteLine($"default(bool) = {default(bool)}");
+Console.WriteLine($"default(DateTime) = {default(DateTime)}");
+Console.WriteLine($"default(string) = {default(string) ?? "<NULL>"}");      // ?? means "if null, use this value instead"
+```
+<img src='images/1747390069090.png' width='400'/></br>
 
 
