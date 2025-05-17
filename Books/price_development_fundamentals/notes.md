@@ -92,6 +92,9 @@ dotnet clean
       - [What does `new` do?](#what-does-new-do)
       - [Using target-typed `new` to instantiate objects](#using-target-typed-new-to-instantiate-objects)
   - [Getting and setting the default value for types](#getting-and-setting-the-default-value-for-types)
+  - [Exploring more about console apps](#exploring-more-about-console-apps)
+    - [Displaying output to the user](#displaying-output-to-the-user)
+    - [Formatting using numbered positional arguments](#formatting-using-numbered-positional-arguments)
 
 
 ## Chapter 2: Speaking C#
@@ -784,4 +787,59 @@ Console.WriteLine($"default(string) = {default(string) ?? "<NULL>"}");      // ?
 ```
 <img src='images/1747390069090.png' width='400'/></br>
 
+The `string` type is a reference type, which means that `string` variables contain the memory address of a value, not the value itself. A reference type can have a `null` value, which is a literal that indictes the variable does not reference anything yet. `null` is the default for all reference types.
+
+You can assign a type's default value to a variable using the `default` keyword:
+
+```csharp
+int number = 13;
+Console.WriteLine($"number set to {number}");   // Number set to 13
+number = default;
+Console.WriteLine($"number set to {number}");   // Number set to 0
+```
+
+### Exploring more about console apps
+
+#### Displaying output to the user
+
+Use the `Write` method when you want to print something without a carriage return:
+
+```csharp
+Console.Write("A");
+Console.Write("B");
+Console.Write("C");
+```
+<img src='images/1747467016276.png' width='150'/></br>
+
+Use `WriteLine` when you want to print something with a carriage return:
+
+```csharp
+Console.WriteLine("A");
+Console.WriteLine("B");
+Console.WriteLine("C")
+```
+<img src='images/1747467080175.png' width='100'/></br>
+
+#### Formatting using numbered positional arguments
+
+```csharp
+using System.Globalization;     // For CultureInfo
+CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+int numberOfApples = 12;
+decimal pricePerApple = 0.35M; // M indicates a decimal literal
+
+Console.WriteLine(
+    format: "{0} apples cost {1:C}",
+    arg0: numberOfApples,
+    arg1: pricePerApple * numberOfApples
+);
+
+string formatted = string.Format(
+    format: "{0} apples cost {1:C}",
+    arg0: numberOfApples,
+    arg1: pricePerApple * numberOfApples
+);
+// WriteToFile(formatted); // Writes the string to a file
+```
+<img src='images/1747467645835.png' width='250'/></br>
 
