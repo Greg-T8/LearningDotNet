@@ -95,6 +95,9 @@ dotnet clean
   - [Exploring more about console apps](#exploring-more-about-console-apps)
     - [Displaying output to the user](#displaying-output-to-the-user)
     - [Formatting using numbered positional arguments](#formatting-using-numbered-positional-arguments)
+    - [Formatting using interpolated strings](#formatting-using-interpolated-strings)
+    - [Understanding format strings](#understanding-format-strings)
+    - [Custom Number Formatting](#custom-number-formatting)
 
 
 ## Chapter 2: Speaking C#
@@ -857,3 +860,142 @@ Console.WriteLine(
     "Roger", "Cevung", "Stockholm", "Education", "Optimizely");
 ```
 <img src='images/1747468623099.png' width='550'/></br>
+
+#### Formatting using interpolated strings
+
+```csharp
+// The following statement must be all on one line when using C# 10 or earlier. If using C# 11 or later, it can be split
+//across multiple lines, but  the break must in the middle of an expression.
+Console.WriteLine($"{numberOfApples} apples cost {pricePerApple
+    * numberOfApples:C}");
+```
+
+Before C# 10, `string` constants could only be combined using the `+` operator:
+
+```csharp
+private const string firstname = "Omar";
+private const string lastname = "Rudberg";
+private const string fullname = firstname + " " + lastname;
+```
+
+With C# 10 and later, you can use interpolated strings to combine string constants:
+
+```csharp
+private const string fullname = $"{firstname} {lastname}";
+```
+**Note:** This only works for string constants. It cannot work with other types like numbers, which require data type conversions.
+
+#### Understanding format strings
+
+A variable or expression can be formatted using a format string after a comma or colon.
+
+Format string options:
+- `N0`: Number with thousands separator and no decimal places
+- `N2`: Number with thousands separator and two decimal places
+- `C`: Currency (determined by the current culture)
+
+The full syntax is:
+
+```csharp
+{index[,alignment][:formatString]}
+```
+
+**Alignment:** 
+- The alignment is the number of spaces within a width of characters.
+- Useful when outputting tables of values, some of which might be left- or right-aligned.
+- Positive integers mean right-aligned; negative integers mean left-aligned.
+
+```csharp
+string applesText = "Apples";
+int applesCount = 1234;
+string bananasText = "Bananas";
+int bananasCount = 56789;
+
+Console.WriteLine();
+Console.WriteLine(
+    format: "{0,-10} {1,6}",
+    arg0: "Name", arg1: "Count");
+Console.WriteLine(
+    format: "{0,-10} {1,6:N0}",
+    arg0: applesText, arg1: applesCount
+);
+Console.WriteLine(
+    format: "{0,-10} {1,6:N0}",
+    arg0: bananasText, arg1: bananasCount
+);
+```
+<img src='images/1747470757131.png' width='150'/></br>
+
+#### Custom Number Formatting
+
+```csharp
+decimal value = 0.325M;
+Console.WriteLine("Currency: {0:C}, Percentage: {0:0.0%}", value);
+```
+<img src='images/1747472276101.png' width='300'/></br>
+
+**Standard Numeric Format Codes:**  
+
+| **Format Code** | **Description**                                                                                                     |
+| --------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `C` or `c`      | **Currency.** In US culture, `C` formatting the value `123.4` gives `$123.40`, and `C0` formatting gives `$123`.    |
+| `N` or `n`      | **Number.** Integer digits with an optional negative sign and grouping characters.                                  |
+| `D` or `d`      | **Decimal.** Integer digits with an optional negative sign but **no** grouping characters.                          |
+| `B` or `b`      | **Binary.** `B` formatting the value `13` gives `1101`, and `B8` formatting the value `13` gives `00001101`.        |
+| `X` or `x`      | **Hexadecimal.** `X` formatting the value `255` gives `FF`, and `X4` formatting the value `255` gives `00FF`.       |
+| `E` or `e`      | **Exponential notation.** `E` formatting the value `1234.567` gives `1.234567000E+003`, and `E2` gives `1.23E+003`. |
+
+
+**Custom Numeric Format Codes:**  
+
+| **Format Code** | **Description**                                                                                                                                                                                                                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0`             | Zero placeholder. Replaces the zero with the corresponding digit if present; otherwise, it uses zero. Example: `0000.00` formatting the value `123.4` would give `0123.40`.                                                                                                                                |
+| `#`             | Digit placeholder. Replaces the hash with the corresponding digit if present; otherwise, it uses nothing. Example: `####.##` formatting the value `123.4` would give `123.4`.                                                                                                                              |
+| `.`             | Decimal point. Sets the location of the decimal point in the number. Respects culture formatting, so it is a `.` (dot) in US English but a `,` (comma) in French.                                                                                                                                          |
+| `,`             | Group separator. Inserts a localized group separator between each group. Also used to scale a number by multiples of 1,000 for each comma. Example: `0,000` formatting `1234567` gives `1,234,567`. Example: `0.00,,` formatting `1234567` gives `1.23` because the two commas mean divide by 1,000 twice. |
+| `%`             | Percentage placeholder. Multiplies the value by 100 and adds a percentage character.                                                                                                                                                                                                                       |
+| `\`             | Escape character. Makes the next character a literal instead of a format code. Example: `\#\,###\#` formatting the value `1234` gives `#1,234#`.                                                                                                                                                           |
+| `;`             | Section separator. Defines different format strings for positive, negative, and zero numbers. Example: `[0];(0);Zero` formatting `13` gives `[13]`, `-13` gives `(13)`, and `0` gives `Zero`.                                                                                                              |
+| **Others**      | All other characters are shown in the output as-is.                                                                                                                                                                                                                                                        |
+
+**Standard Format Codes for Date and Time Values:**
+
+| **Format Code** | **Description**                                                                                                                   |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `d`             | **Short date pattern.** Varies by culture. Example: `en-US` uses `M/d/yyyy`, `fr-FR` uses `dd/MM/yyyy`.                           |
+| `D`             | **Long date pattern.** Varies by culture. Example: `en-US` uses `MMMM, MMMM d, yyyy`, `fr-FR` uses `mmmm, dd MMMM yyyy`.          |
+| `f`             | **Full date/time pattern (short time).** Includes hours and minutes. Varies by culture.                                           |
+| `F`             | **Full date/time pattern (long time).** Includes hours, minutes, seconds, and AM/PM. Varies by culture.                           |
+| `m`, `M`        | **Month/day pattern.** Varies by culture.                                                                                         |
+| `o`, `O`        | **Round-trip date/time pattern.** A standardized format suitable for serialization. Example: `2023-05-30T13:45:30.0000000-08:00`. |
+| `r`, `R`        | **RFC1123 pattern.**                                                                                                              |
+| `t`             | **Short time pattern.** Varies by culture. Example: `en-US` uses `h:mm tt`, `fr-FR` uses `HH:mm`.                                 |
+| `T`             | **Long time pattern.** Varies by culture. Example: `en-US` uses `h:mm:ss tt`, `fr-FR` uses `HH:mm:ss`.                            |
+| `u`             | **Universal sortable date/time pattern.** Example: `2009-06-15 13:45:30Z`.                                                        |
+| `U`             | **Universal full date/time pattern.** Varies by culture. Example: `en-US` might be `Monday, June 15, 2009 8:45:30 PM`.            |
+
+**Custom Format Codes for Date and Time Values:**
+
+| **Format Code**  | **Description**                                                                                                           |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `/`              | **Date part separator.** Varies by culture. Example: `en-US` uses `/`, `fr-FR` uses `-`.                                  |
+| `\`              | **Escape character.** Allows formatting special characters literally. Example: `h\h m\m` formats `9:30 AM` as `9 h 30 m`. |
+| `:`              | **Time part separator.** Varies by culture. Example: `en-US` uses `:`, `fr-FR` uses `.`.                                  |
+| `d`, `dd`        | **Day of the month.** From `1` to `31`, or `01` to `31` with leading zero.                                                |
+| `ddd`, `dddd`    | **Day of the week.** Abbreviated (`Mon`) or full (`Monday`) name, localized to current culture.                           |
+| `f`, `ff`, `fff` | **Fractions of a second.** Tenths, hundredths, or milliseconds.                                                           |
+| `g`              | **Era.** Example: `A.D.`                                                                                                  |
+| `h`, `hh`        | **Hour (12-hour clock).** From `1` to `12`, or `01` to `12` with leading zero.                                            |
+| `H`, `HH`        | **Hour (24-hour clock).** From `0` to `23`, or `01` to `23` with leading zero.                                            |
+| `K`              | **Time zone info.** `null` for unspecified, `Z` for UTC, or value like `-8:00` for offset.                                |
+| `m`, `mm`        | **Minute.** From `0` to `59`, or `00` to `59` with leading zero.                                                          |
+| `M`, `MM`        | **Month (number).** From `1` to `12`, or `01` to `12` with leading zero.                                                  |
+| `MMM`, `MMMM`    | **Month (name).** Abbreviated (`Jan`) or full (`January`) name, localized to culture.                                     |
+| `s`, `ss`        | **Second.** From `0` to `59`, or `00` to `59` with leading zero.                                                          |
+| `t`, `tt`        | **AM/PM designator.** First (`A`) or both characters (`AM`).                                                              |
+| `y`, `yy`        | **Year (2-digit).** Year of current century, from `0` to `99` or `00` to `99`.                                            |
+| `yyy`            | **Year (3+ digits).** Minimum of 3 digits. Examples: `001` for 1 A.D., `410`, `2016`.                                     |
+| `yyyy`, `yyyyy`  | **Full year.** Four- or five-digit year.                                                                                  |
+| `z`, `zz`        | **UTC offset (hours).** Hours offset from UTC, with or without leading zeros.                                             |
+| `zzz`            | **UTC offset (hours and minutes).** With leading zero. Example: `+04:30`.                                                 |
