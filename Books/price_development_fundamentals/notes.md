@@ -822,6 +822,8 @@ Console.WriteLine("C")
 
 #### Formatting using numbered positional arguments
 
+The `Write`, `WriteLine`, and `Format` methods can have up to three numbered arguments, named `arg0`, `arg1`, and `arg2`. If you need to pass more than three arguments, then you can not name name.
+
 ```csharp
 using System.Globalization;     // For CultureInfo
 CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
@@ -843,3 +845,15 @@ string formatted = string.Format(
 ```
 <img src='images/1747467645835.png' width='250'/></br>
 
+```csharp
+// Three parameter values can use named arguments
+Console.WriteLine(
+    format: "{0} {1} lived in {2}",
+    arg0: "Roger", arg1: "Cevung", arg2: "Stockholm");
+
+// Four or more parameter values cannot use named arguments
+Console.WriteLine(
+    "{0} {1} lived in {2} and worked in {3} team at {4}",
+    "Roger", "Cevung", "Stockholm", "Education", "Optimizely");
+```
+<img src='images/1747468623099.png' width='550'/></br>
