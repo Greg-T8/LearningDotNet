@@ -53,6 +53,11 @@ dotnet fsi
       - [A worked example](#a-worked-example)
     - [3.1.2 The `let` keyword](#312-the-let-keyword)
   - [3.1.3 Scoping](#313-scoping)
+    - [Curly brace vs whitespace indention](#curly-brace-vs-whitespace-indention)
+    - [Nested scopes](#nested-scopes)
+    - [Nested functions](#nested-functions)
+    - [Accessing outer scoped values](#accessing-outer-scoped-values)
+    - [Cyclical dependencies](#cyclical-dependencies)
 
 
 ## 1. Introducing F#
@@ -279,4 +284,92 @@ let youngerIsaac = 42 - 1
 **Note:** Some languages use the `var` keyword to perform what appears to be the same thing as `let`, but this is not the case. `var` declares variables, which can vary by being assigned different values or by being mutated. `let` creates an immutable reference to a value. Once you've bound a value to a symbol, you can't change it to reference another value later.
 
 ### 3.1.3 Scoping
+
+In F# terms, scoping means the lifetime in which other parts of code can reference a symbol.
+
+#### Curly brace vs whitespace indention
+
+Take the following fictional F# function `foo` styles:
+
+```fsharp
+let foo arg1 arg2 arg3 =
+  body
+  body
+  body
+```
+**Note:**
+- F# uses whitespace indentation to signify the start and end of a scope, rather than curly braces.
+- F# doesn't allow the use of tabs as a valid token
+
+**Exercise 3.1:** Create a function that takes in three numbers as input arguments. Add the first two together and bind it to a symbol inProgress. Then, multiply that by the third argument and bind it to a symbol answer. Finally, return a string that says The answer is {answer} using string interpolation.
+
+```fsharp
+let foo num1 num2 num3 =
+    let inProgress = num1 + num2
+    let answer = inProgress * num3
+    $"The answer is {answer}"
+```
+**Output:**
+```cmd
+> #load "Ex_3.1.fsx";;
+[Loading c:\Users\gregt\LocalCode\LearningDotNet\Books\fsharp_in_action\ch03\Ex_3.1.fsx]
+module FSI_0007.Ex_3.1
+val foo: num1: int -> num2: int -> num3: int -> string
+
+> foo 2 3 4;;
+val it: string = "The answer is 20"
+```
+
+#### Nested scopes
+
+Nested scopes are rarely used in curly brace languages, but they are common in F# to create arbitrary scopes inside of scopes. They are useful because they allow you to clearly indicate to the reader the scope of a piece of data.
+
+The more tightly scoped a value is, the less of a chance of it being misused, leading to bugs.
+
+```fsharp
+let fname = "Frank"
+let sname = "Schmidt"
+let fullName = $"{fname} {sname}"               // Uses two previously defined symbols to create a third
+let greetingText = $"Greetings, {fullname}"     // Uses the previously defined symbol to create a fourth
+```
+**Note:**
+- `fname` and `sname` are only used to create `fullName`, so they are tightly scoped.
+- Similarly, `fullName` is only used to create `greetingText`, so it is tightly scoped.
+
+Rewriting the above code to use nested scopes:
+
+```fsharp
+let greetingText =              // Outermost scope
+  let fullName =                // Nested scope
+    let fname = "Frank"         // Intermediary symbols only accessible within scope of `fullName` block
+    let sname = "Schmidt"
+    $"{fname} {sname}"
+  $"Greetings, {fullName}"
+```
+
+#### Nested functions
+
+```fsharp
+let greetingTextWithFunction person =
+  let makeFullName fname sname =
+    $"{fname} {sname}"
+  let fullName = makeFullName "Frank" "Schmidt"
+  $"Greetings {fullName} from {person}"
+```
+
+#### Accessing outer scoped values
+
+If you declare a symbol before a nested scope, you can access it from within the nested scope:
+
+```fsharp
+let greetingTextWithFunction =
+  let city = "London"                               // declares symbol in outer scope
+  let makeFullName fname sname =
+    $"{fname} {sname} from {city}"                  // accesses city within inner scope (closure)
+  let fullName = makeFullName "Frank" "Schmidt"
+  let surnameCity = $"{sname} from {city}"
+  $"Greetings {fullName}"
+```
+
+#### Cyclical dependencies
 
