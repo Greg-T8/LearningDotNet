@@ -373,3 +373,10 @@ let greetingTextWithFunction =
 
 #### Cyclical dependencies
 
+Except in advanced scenarios, F# does not allow you to reference a symbol unless you've already declared it:
+
+```fsharp
+let description = $"{employee} lives in New York"       // Error: employee not yet defined
+let employee = "Joe Bloggs"        
+```
+
