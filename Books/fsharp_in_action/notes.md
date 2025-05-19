@@ -59,6 +59,8 @@ dotnet fsi
       - [Accessing outer scoped values](#accessing-outer-scoped-values)
       - [Cyclical dependencies](#cyclical-dependencies)
   - [3.2 Type Inference](#32-type-inference)
+    - [3.2.1 Benefits of type inference](#321-benefits-of-type-inference)
+    - [3.2.2 Type inference basics](#322-type-inference-basics)
 
 
 ## 1. Introducing F#
@@ -384,3 +386,31 @@ let employee = "Joe Bloggs"
 In short, F# requires all symbols to be defined before use. This ensures non-circular dependencies.
 
 ### 3.2 Type Inference
+
+The general idea behind type inference: instead of you having to tell the compiler the type of every symbol (remember that F# is statically typed), the compiler should be able to figure it out for you.
+
+#### 3.2.1 Benefits of type inference
+
+Benefits:
+- Easier to read&mdash;there's less extraneous code.
+- Quicker to write&mdash;you type less while you're writing, allowing the compiler to deduce what you're doing.
+- Quicker to refactor&mdash;you can make changes without having to make boilerplate changes throughout.
+
+C# uses the `var` keyword for type inference.
+
+#### 3.2.2 Type inference basics
+
+```fsharp
+let i = 10          // No type annotation
+let i:int = 10      // Type annotation
+```
+In F#, a type annotation goes after the symbol name. Most newer programming languages (e.g. Go, Rust, TypeScript, Kotlin) follow this pattern. Older programming languages (e.g. Java, JavaScript, C#, C++) use the type before the symbol name.
+
+In VS Code, the following setting enables type annotations: `"FSharp.inlayHints.typeAnnotations": true,`
+
+<img src='images/1747642480805.png' width='400'/>
+
+You can also also use the following setting to have type annotations appear after the statement: `"FSharp.lineLens.enabled": "replaceCodeLens"`
+
+<img src='images/1747642665231.png' width='400'/>
+
