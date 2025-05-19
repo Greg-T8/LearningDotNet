@@ -52,12 +52,13 @@ dotnet fsi
       - [Consistency](#consistency)
       - [A worked example](#a-worked-example)
     - [3.1.2 The `let` keyword](#312-the-let-keyword)
-  - [3.1.3 Scoping](#313-scoping)
-    - [Curly brace vs whitespace indention](#curly-brace-vs-whitespace-indention)
-    - [Nested scopes](#nested-scopes)
-    - [Nested functions](#nested-functions)
-    - [Accessing outer scoped values](#accessing-outer-scoped-values)
-    - [Cyclical dependencies](#cyclical-dependencies)
+    - [3.1.3 Scoping](#313-scoping)
+      - [Curly brace vs whitespace indention](#curly-brace-vs-whitespace-indention)
+      - [Nested scopes](#nested-scopes)
+      - [Nested functions](#nested-functions)
+      - [Accessing outer scoped values](#accessing-outer-scoped-values)
+      - [Cyclical dependencies](#cyclical-dependencies)
+  - [3.2 Type Inference](#32-type-inference)
 
 
 ## 1. Introducing F#
@@ -283,11 +284,11 @@ let youngerIsaac = 42 - 1
 
 **Note:** Some languages use the `var` keyword to perform what appears to be the same thing as `let`, but this is not the case. `var` declares variables, which can vary by being assigned different values or by being mutated. `let` creates an immutable reference to a value. Once you've bound a value to a symbol, you can't change it to reference another value later.
 
-### 3.1.3 Scoping
+#### 3.1.3 Scoping
 
 In F# terms, scoping means the lifetime in which other parts of code can reference a symbol.
 
-#### Curly brace vs whitespace indention
+##### Curly brace vs whitespace indention
 
 Take the following fictional F# function `foo` styles:
 
@@ -320,7 +321,7 @@ val foo: num1: int -> num2: int -> num3: int -> string
 val it: string = "The answer is 20"
 ```
 
-#### Nested scopes
+##### Nested scopes
 
 Nested scopes are rarely used in curly brace languages, but they are common in F# to create arbitrary scopes inside of scopes. They are useful because they allow you to clearly indicate to the reader the scope of a piece of data.
 
@@ -347,7 +348,7 @@ let greetingText =              // Outermost scope
   $"Greetings, {fullName}"
 ```
 
-#### Nested functions
+##### Nested functions
 
 ```fsharp
 let greetingTextWithFunction person =
@@ -357,7 +358,7 @@ let greetingTextWithFunction person =
   $"Greetings {fullName} from {person}"
 ```
 
-#### Accessing outer scoped values
+##### Accessing outer scoped values
 
 If you declare a symbol before a nested scope, you can access it from within the nested scope:
 
@@ -371,7 +372,7 @@ let greetingTextWithFunction =
   $"Greetings {fullName}"
 ```
 
-#### Cyclical dependencies
+##### Cyclical dependencies
 
 Except in advanced scenarios, F# does not allow you to reference a symbol unless you've already declared it:
 
@@ -380,3 +381,6 @@ let description = $"{employee} lives in New York"       // Error: employee not y
 let employee = "Joe Bloggs"        
 ```
 
+In short, F# requires all symbols to be defined before use. This ensures non-circular dependencies.
+
+### 3.2 Type Inference
