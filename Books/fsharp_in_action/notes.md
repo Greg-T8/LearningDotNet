@@ -414,3 +414,13 @@ You can also also use the following setting to have type annotations appear afte
 
 <img src='images/1747642665231.png' width='400'/>
 
+```fsharp
+let add (a:int) (b:int) : int =     // three explicit type annotations: the two function arguments and the return value
+    let answer : int = a + b        // a fourth type annotation
+    answer
+```
+**Note:**  
+- Parenthesis are required when making explicit type annotations for parameters.
+
+**Exercise 3.2:**
+

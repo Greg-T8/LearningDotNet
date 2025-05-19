@@ -6,7 +6,9 @@ let doACalculation theNumber =
 
 
 let i = 10
-let myString = "Hello"
-let myFloat = 123.14
-let myDate = System.DateTime.Now
 
+let myString = "Hello"
+
+let myFloat = 123.14
+
+let myDate = System.DateTime.Now
