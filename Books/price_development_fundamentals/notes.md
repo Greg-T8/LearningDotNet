@@ -30,7 +30,10 @@ dotnet new --list        # List all templates
 dotnet new sln --name Chapter01 
 
 # Show help for console project template
-dotnet new console --help                                        
+dotnet new console --help   
+
+# Create a new console app in the current folder
+dotnet new console -n HelloCS -o .
 
 # Create a new console app in the HelloCS folder
 dotnet new console --output HelloCS                              
@@ -98,6 +101,7 @@ dotnet clean
     - [Formatting using interpolated strings](#formatting-using-interpolated-strings)
     - [Understanding format strings](#understanding-format-strings)
     - [Custom Number Formatting](#custom-number-formatting)
+    - [Getting text input from the user](#getting-text-input-from-the-user)
 
 
 ## Chapter 2: Speaking C#
@@ -953,7 +957,7 @@ Console.WriteLine("Currency: {0:C}, Percentage: {0:0.0%}", value);
 | `0`             | Zero placeholder. Replaces the zero with the corresponding digit if present; otherwise, it uses zero. Example: `0000.00` formatting the value `123.4` would give `0123.40`.                                                                                                                                |
 | `#`             | Digit placeholder. Replaces the hash with the corresponding digit if present; otherwise, it uses nothing. Example: `####.##` formatting the value `123.4` would give `123.4`.                                                                                                                              |
 | `.`             | Decimal point. Sets the location of the decimal point in the number. Respects culture formatting, so it is a `.` (dot) in US English but a `,` (comma) in French.                                                                                                                                          |
-| `,`             | Group separator. Inserts a localized group separator between each group. Also used to scale a number by multiples of 1,000 for each comma. Example: `0,000` formatting `1234567` gives `1,234,567`. Example: `0.00,,` formatting `1234567` gives `1.23` because the two commas mean divide by 1,000 twice. |
+| `,`             | Group separator. Inserts a localized group separator between each group. Also used to scale a number by multiples of 1,000 for each comma. Example: `0,000`formatting `1234567` gives `1,234,567`. Example: `0.00,,` formatting `1234567` gives `1.23` because the two commas mean divide by 1,000 twice. |
 | `%`             | Percentage placeholder. Multiplies the value by 100 and adds a percentage character.                                                                                                                                                                                                                       |
 | `\`             | Escape character. Makes the next character a literal instead of a format code. Example: `\#\,###\#` formatting the value `1234` gives `#1,234#`.                                                                                                                                                           |
 | `;`             | Section separator. Defines different format strings for positive, negative, and zero numbers. Example: `[0];(0);Zero` formatting `13` gives `[13]`, `-13` gives `(13)`, and `0` gives `Zero`.                                                                                                              |
@@ -999,3 +1003,33 @@ Console.WriteLine("Currency: {0:C}, Percentage: {0:0.0%}", value);
 | `yyyy`, `yyyyy`  | **Full year.** Four- or five-digit year.                                                                                  |
 | `z`, `zz`        | **UTC offset (hours).** Hours offset from UTC, with or without leading zeros.                                             |
 | `zzz`            | **UTC offset (hours and minutes).** With leading zero. Example: `+04:30`.                                                 |
+
+
+#### Getting text input from the user
+
+Use the `ReadLine` method to get text input from the user. This method waits for the user to type something and press Enter, then returns the text as a string.
+
+```csharp
+Console.Write("Type your first name and press ENTER: ");
+string firstName = Console.ReadLine();
+Console.Write("Type your age and press ENTER: ");
+string age = Console.ReadLine();
+Console.WriteLine($"Hello {firstName}, you look good for {age}.");
+```
+By default, nullability checks are enabled, so the C# compiler gives two warnings that `ReadLine` could return a `null` value instead of a `string` value:
+
+<img src='images/20250613034842.png' width='750'/>
+
+To address this, you can use either of two methods to switch off these specific warnings:
+
+```csharp
+Console.Write("Type your first name and press ENTER: ");
+string? firstName = Console.ReadLine();                             // Use of the nullable refernce type annotation
+Console.Write("Type your age and press ENTER: ");
+string age = Console.ReadLine()!;                                   // Use of the null-forgiving operator
+Console.WriteLine($"Hello {firstName}, you look good for {age}.");
+```
+
+The nullable reference type annotation `string?` tells the compiler we are expecting a possible `null` value, so it does not need to warn us. If the variable is `null`, then when it is later output with `WriteLine`, it will just be blank. If you were going to access any members of the `firstName` variable, then you would need to check for `null` first.
+
+The null-forgiving operator, `!`, tells the compiler that, in this case, `ReadLine` will not return `null`, so it can stop showing the warning. It is our responsibility to ensure that this is the case. In this case, the `Console` type's implementation of `ReadLine` always returns a `string`, even if it is just an empty `string` value.
