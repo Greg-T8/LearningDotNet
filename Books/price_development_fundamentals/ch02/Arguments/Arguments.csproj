@@ -8,5 +8,6 @@
   <ItemGroup Label="Simplify console app">
     <Using Include="System.Console"
            Static="true" />
+    <!-- Importing System.Console as a static type for all code files in the project -->
   </ItemGroup>
 </Project>
