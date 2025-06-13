@@ -108,6 +108,7 @@ dotnet clean
     - [Importing a static type for all code files in a project](#importing-a-static-type-for-all-code-files-in-a-project)
   - [Getting key input from the user](#getting-key-input-from-the-user)
   - [Passing arguments to a console app](#passing-arguments-to-a-console-app)
+  - [Setting options with arguments](#setting-options-with-arguments)
 
 
 ## Chapter 2: Speaking C#
@@ -1143,3 +1144,16 @@ To include spaces in an argument value, enclose the argument value in double quo
 WriteLine($"There are {args.Length} arguments.");
 ```
 <img src='images/20250613044417' width='600.png'/>
+
+To enumerate through the arguments, you can use a `foreach` loop:
+
+```csharp
+foreach (string arg in args)
+{
+    WriteLine(arg);
+}
+```
+<img src='images/20250613044718' width='600.png'/>
+
+### Setting options with arguments
+
