@@ -101,7 +101,9 @@ dotnet clean
     - [Formatting using interpolated strings](#formatting-using-interpolated-strings)
     - [Understanding format strings](#understanding-format-strings)
     - [Custom Number Formatting](#custom-number-formatting)
-    - [Getting text input from the user](#getting-text-input-from-the-user)
+  - [Getting text input from the user](#getting-text-input-from-the-user)
+    - [When does `ReadLine` return `null`?](#when-does-readline-return-null)
+  - [Simplifying the usage of the console](#simplifying-the-usage-of-the-console)
 
 
 ## Chapter 2: Speaking C#
@@ -1005,7 +1007,7 @@ Console.WriteLine("Currency: {0:C}, Percentage: {0:0.0%}", value);
 | `zzz`            | **UTC offset (hours and minutes).** With leading zero. Example: `+04:30`.                                                 |
 
 
-#### Getting text input from the user
+### Getting text input from the user
 
 Use the `ReadLine` method to get text input from the user. This method waits for the user to type something and press Enter, then returns the text as a string.
 
@@ -1033,3 +1035,28 @@ Console.WriteLine($"Hello {firstName}, you look good for {age}.");
 The nullable reference type annotation `string?` tells the compiler we are expecting a possible `null` value, so it does not need to warn us. If the variable is `null`, then when it is later output with `WriteLine`, it will just be blank. If you were going to access any members of the `firstName` variable, then you would need to check for `null` first.
 
 The null-forgiving operator, `!`, tells the compiler that, in this case, `ReadLine` will not return `null`, so it can stop showing the warning. It is our responsibility to ensure that this is the case. In this case, the `Console` type's implementation of `ReadLine` always returns a `string`, even if it is just an empty `string` value.
+
+
+| Feature                       | Symbol | Meaning                            | Compiler Behavior                               |
+| ----------------------------- | ------ | ---------------------------------- | ----------------------------------------------- |
+| Nullable reference annotation | `?`    | This variable **can be null**      | Gives warnings when dereferenced without checks |
+| Null-forgiving operator       | `!`    | “This value isn’t null, I promise” | Silences nullability warnings                   |
+
+
+#### When does `ReadLine` return `null`?
+
+In typical console apps, `ReadLine` returns `null` only if the **end of stream (EOF)** is reached. This is not something that can be achieved by user input in a standard console environment since EOF is typically signaled by the console being closed or redirected input being fully consumed.
+
+In the context of the following code:
+
+```csharp
+string? name = ReadLine();  // Prompt user to enter their name
+```
+
+Here are the conditions  under which `name` could be `null`:
+- If the standard input stream is redirected and reaches EOF
+- If you are testing in an environment where you can simulate EOF, like some development environments or automated testing setups
+
+Under normal user input conditions, `null` will never be returned by the `ReadLine` method.
+
+### Simplifying the usage of the console
