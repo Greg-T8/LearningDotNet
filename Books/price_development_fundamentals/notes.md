@@ -83,7 +83,7 @@ dotnet clean
     - [Exploring Number Sizes](#exploring-number-sizes)
     - [Comparing Double and Decimal Types](#comparing-double-and-decimal-types)
       - [Comparing `double` Values](#comparing-double-values)
-      - [Comparing Decimal Values](#comparing-decimal-values)
+      - [Comparing `decimal` Values](#comparing-decimal-values)
     - [Special Real Numbers](#special-real-numbers)
     - [New Number Types and Unsafe Code](#new-number-types-and-unsafe-code)
   - [Storing Booleans](#storing-booleans)
@@ -104,6 +104,10 @@ dotnet clean
   - [Getting text input from the user](#getting-text-input-from-the-user)
     - [When does `ReadLine` return `null`?](#when-does-readline-return-null)
   - [Simplifying the usage of the console](#simplifying-the-usage-of-the-console)
+    - [Importing a static type for a single file](#importing-a-static-type-for-a-single-file)
+    - [Importing a static type for all code files in a project](#importing-a-static-type-for-all-code-files-in-a-project)
+  - [Getting key input from the user](#getting-key-input-from-the-user)
+  - [Passing arguments to a console app](#passing-arguments-to-a-console-app)
 
 
 ## Chapter 2: Speaking C#
@@ -472,7 +476,7 @@ Note how the `1`'s after the decimal point repeat.
 
 **Good Practice:** Never compare `double` values using `==`.
 
-##### Comparing Decimal Values
+##### Comparing `decimal` Values
 
 ```csharp
 Console.WriteLine("Using decimals:");
@@ -1060,3 +1064,82 @@ Here are the conditions  under which `name` could be `null`:
 Under normal user input conditions, `null` will never be returned by the `ReadLine` method.
 
 ### Simplifying the usage of the console
+
+#### Importing a static type for a single file
+
+The `using` statement can be used to import a namespace and it can also be used to simplify code by importing a static class. For example, you can import the `System.Console` class to avoid having to type `Console.` every time you want to use a method from that class.
+
+```csharp
+using static System.Console;                            // Using static to simplify Console calls
+
+Write("Type your first name and press ENTER: ");        // No longer need to specify Console.Write
+string? firstName = Console.ReadLine();
+Write("Type your age and press ENTER: ");
+string age = Console.ReadLine()!;
+WriteLine($"Hello {firstName}, you look good for {age}.");
+```
+
+#### Importing a static type for all code files in a project
+
+Instead of specifying `using static System.Console;` in every code file, you can add it to the `.csproj` file to apply it to all code files in the project:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup Label="Simplify console app">
+    <Using Include="System.Console" Static="true" />    <!-- Importing System.Console as a static type for all code files in the project -->
+  </ItemGroup>
+
+</Project>
+```
+
+> The `Label` attribute within an `<ItemGroup>` is optional but useful for several reasons. Labels provide a clear indication  of what each group contains. Using labels, you can conditionally include or exclude certain items based on build configurations or other conditions.
+
+
+### Getting key input from the user
+
+Use the `ReadKey` method to get a single key press from the user. This method waits for the user to press a key or key combination, which is then returned as a `ConsoleKeyInfo` object. This object contains information about the key pressed, including the key itself, any modifier keys (like Shift or Ctrl), and whether the key was pressed or released.
+
+```csharp
+Write("Press any key combination: ");
+ConsoleKeyInfo key = ReadKey();
+WriteLine();
+WriteLine("Key: {0}, Char: {1}, Modifiers: {2}",
+    arg0: key.Key, arg1: key.KeyChar, arg2: key.Modifiers);
+```
+<img src='images/20250613042702.png' width='500'/>
+
+### Passing arguments to a console app
+
+Prior to .NET 6, the console app project template made it obvious how to pass arguments to a console app by including a `Main` method with a `string[] args` parameter. 
+
+```csharp
+using System;
+namespace Arguments
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
+      Console.WriteLine("Hello World!");
+    }
+  }
+}
+```
+
+In .NET 6 and later, with the use of the top-level statementsfeature, the `Program` class and the `Main` method are hidden, along with the declaration of the `args` array. The trick is you must know it still exists.
+
+Command-line arguments are separated by spaces. Other characters, like hyphens and colons, are treated as part of an argument value.
+
+To include spaces in an argument value, enclose the argument value in double quotes.
+
+```csharp
+WriteLine($"There are {args.Length} arguments.");
+```
+<img src='images/20250613044417' width='600.png'/>
