@@ -1157,3 +1157,24 @@ foreach (string arg in args)
 
 ### Setting options with arguments
 
+You can use arguments to set options for your console app. Given that you have statically imported the `System.Console` class, it has properties like `ForegroundColor` and `BackgroundColor`, and `CursorSize` that you can set without needing to prefix them with `Console`.
+
+```csharp
+if (args.Length < 3)
+{
+    WriteLine("You must specify two colors and a cursor size, e.g.");
+    WriteLine("dotnet run red yellow 50");
+    return;
+}
+
+ForegroundColor = (ConsoleColor)Enum.Parse(     // Convert the string argument to a ConsoleColor enum value
+    enumType: typeof(ConsoleColor),
+    value: args[0], ignoreCase: true);
+
+BackgroundColor = (ConsoleColor)Enum.Parse(
+    enumType: typeof(ConsoleColor),
+    value: args[1], ignoreCase: true);
+
+CursorSize = int.Parse(args[2]);
+```
+<img src='images/20250615044015' width='950.png'/>
