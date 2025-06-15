@@ -109,6 +109,7 @@ dotnet clean
   - [Getting key input from the user](#getting-key-input-from-the-user)
   - [Passing arguments to a console app](#passing-arguments-to-a-console-app)
   - [Setting options with arguments](#setting-options-with-arguments)
+  - [Handling platforms that do not support an API](#handling-platforms-that-do-not-support-an-api)
 
 
 ## Chapter 2: Speaking C#
@@ -959,16 +960,16 @@ Console.WriteLine("Currency: {0:C}, Percentage: {0:0.0%}", value);
 
 **Custom Numeric Format Codes:**  
 
-| **Format Code** | **Description**                                                                                                                                                                                                                                                                                            |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `0`             | Zero placeholder. Replaces the zero with the corresponding digit if present; otherwise, it uses zero. Example: `0000.00` formatting the value `123.4` would give `0123.40`.                                                                                                                                |
-| `#`             | Digit placeholder. Replaces the hash with the corresponding digit if present; otherwise, it uses nothing. Example: `####.##` formatting the value `123.4` would give `123.4`.                                                                                                                              |
-| `.`             | Decimal point. Sets the location of the decimal point in the number. Respects culture formatting, so it is a `.` (dot) in US English but a `,` (comma) in French.                                                                                                                                          |
+| **Format Code** | **Description**                                                                                                                                                                                                                                                                                           |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0`             | Zero placeholder. Replaces the zero with the corresponding digit if present; otherwise, it uses zero. Example: `0000.00` formatting the value `123.4` would give `0123.40`.                                                                                                                               |
+| `#`             | Digit placeholder. Replaces the hash with the corresponding digit if present; otherwise, it uses nothing. Example: `####.##` formatting the value `123.4` would give `123.4`.                                                                                                                             |
+| `.`             | Decimal point. Sets the location of the decimal point in the number. Respects culture formatting, so it is a `.` (dot) in US English but a `,` (comma) in French.                                                                                                                                         |
 | `,`             | Group separator. Inserts a localized group separator between each group. Also used to scale a number by multiples of 1,000 for each comma. Example: `0,000`formatting `1234567` gives `1,234,567`. Example: `0.00,,` formatting `1234567` gives `1.23` because the two commas mean divide by 1,000 twice. |
-| `%`             | Percentage placeholder. Multiplies the value by 100 and adds a percentage character.                                                                                                                                                                                                                       |
-| `\`             | Escape character. Makes the next character a literal instead of a format code. Example: `\#\,###\#` formatting the value `1234` gives `#1,234#`.                                                                                                                                                           |
-| `;`             | Section separator. Defines different format strings for positive, negative, and zero numbers. Example: `[0];(0);Zero` formatting `13` gives `[13]`, `-13` gives `(13)`, and `0` gives `Zero`.                                                                                                              |
-| **Others**      | All other characters are shown in the output as-is.                                                                                                                                                                                                                                                        |
+| `%`             | Percentage placeholder. Multiplies the value by 100 and adds a percentage character.                                                                                                                                                                                                                      |
+| `\`             | Escape character. Makes the next character a literal instead of a format code. Example: `\#\,###\#` formatting the value `1234` gives `#1,234#`.                                                                                                                                                          |
+| `;`             | Section separator. Defines different format strings for positive, negative, and zero numbers. Example: `[0];(0);Zero` formatting `13` gives `[13]`, `-13` gives `(13)`, and `0` gives `Zero`.                                                                                                             |
+| **Others**      | All other characters are shown in the output as-is.                                                                                                                                                                                                                                                       |
 
 **Standard Format Codes for Date and Time Values:**
 
@@ -1177,4 +1178,67 @@ BackgroundColor = (ConsoleColor)Enum.Parse(
 
 CursorSize = int.Parse(args[2]);
 ```
-<img src='images/20250615044015' width='950.png'/>
+<img src='images/20250615044015' width='1050.png'/>
+
+**Note:** Only the Windows platform supports changing the cursor size. Other platforms do not support this feature, so you should handle this case gracefully.
+
+### Handling platforms that do not support an API
+
+Use an exception handler to catch exceptions that occur when an API is not supported on a specific platform. This is useful when you want to use an API that may not be available on all platforms, such as when running on Linux or macOS.
+
+**Option 1:** Use a try-catch block to catch the `PlatformNotSupportedException`:
+```csharp
+try
+
+    CursorSize = int.Parse(args[2]);
+}
+catch (PlatformNotSupportedException)
+{
+    WriteLine("The current platform does not support changing the cursor size.");
+}
+```
+
+**Option 2:** Use the `Environment.OSVersion` property to check the platform before calling the API:
+
+```csharp
+if (OperatingSystem.IsWindowsVersionAtLeast(major: 10))
+{
+  // Execute code that only works on Windows 10 or later.
+}
+else if (OperatingSystem.IsWindows())
+{
+  // Execute code that only works earlier versions of Windows.
+}
+else if (OperatingSystem.IsIOSVersionAtLeast(major: 14, minor: 5))
+{
+  // Execute code that only works on iOS 14.5 or later.
+}
+else if (OperatingSystem.IsBrowser())
+{
+  // Execute code that only works in the browser with Blazor.
+}
+```
+
+**Option 3:** Use conditional compilation statements. There are four preprocessor directives that control this behavior: `#if`, `#elif`, `#else`, and `#endif`. 
+
+Additionally, you can use `#define` to define a symbol that can be used in conditional compilation statements. However, many symbols are already defined for you:
+
+| Target Framework | Symbols                                                               |
+| ---------------- | --------------------------------------------------------------------- |
+| .NET Standard    | `NETSTANDARD2_0`, `NETSTANDARD2_1`, and so on                         |
+| Modern .NET      | `NET7_0`, `NET7_0_ANDROID`, `NET7_0_IOS`, `NET7_0_WINDOWS`, and so on |
+
+
+```csharp
+#if NET7_0_ANDROID
+// Compile statements that only work on Android.
+#elif NET7_0_IOS
+// Compile statements that only work on iOS.
+#else
+// Compile statements that work everywhere else.
+#endif
+```
+
+See the [Spectre](https://spectreconsole.net/) package to enhance console apps with colors, tables, and more.
+
+
