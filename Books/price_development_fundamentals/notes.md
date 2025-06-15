@@ -122,7 +122,7 @@ Directives](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/p
 
 Run `dotnet build` to see the error message.
 
-<img src='images/20250412043618.png' width='500'/>
+<img src='images/20250412043618.png' width='650'/>
 
 ### Implicitly and Globally Importing Namespaces
 

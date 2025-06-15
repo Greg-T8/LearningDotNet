@@ -17,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextInput", "TextInput\Text
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arguments", "Arguments\Arguments.csproj", "{26F7C019-FDE1-44C7-A38D-275092DBC200}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Exercises", "Exercises", "{72EF5EB1-B308-CD20-4E1B-89C2486FD9E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ex1", "Ex1", "{75A236A3-2365-4F8B-4B02-45A48DF66D86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberSizes", "Exercises\Ex1\NumberSizes.csproj", "{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,8 +117,24 @@ Global
 		{26F7C019-FDE1-44C7-A38D-275092DBC200}.Release|x64.Build.0 = Release|Any CPU
 		{26F7C019-FDE1-44C7-A38D-275092DBC200}.Release|x86.ActiveCfg = Release|Any CPU
 		{26F7C019-FDE1-44C7-A38D-275092DBC200}.Release|x86.Build.0 = Release|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Debug|x64.Build.0 = Debug|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Debug|x86.Build.0 = Debug|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Release|x64.ActiveCfg = Release|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Release|x64.Build.0 = Release|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Release|x86.ActiveCfg = Release|Any CPU
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{75A236A3-2365-4F8B-4B02-45A48DF66D86} = {72EF5EB1-B308-CD20-4E1B-89C2486FD9E1}
+		{067A7637-F310-43AA-8BD5-0ECFFB4DADF2} = {75A236A3-2365-4F8B-4B02-45A48DF66D86}
 	EndGlobalSection
 EndGlobal
