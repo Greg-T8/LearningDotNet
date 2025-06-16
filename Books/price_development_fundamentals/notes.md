@@ -1250,6 +1250,8 @@ In the Chapter02 solution, create a console app project named Exercise_Numbers t
 
 <img src='images/20250616042944.png' width='750'/>
 
+**My Solution:**
+
 ```csharp
 // Set column widths for table formatting
 int typeColumnWidth  = 10;
