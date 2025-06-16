@@ -110,6 +110,7 @@ dotnet clean
   - [Passing arguments to a console app](#passing-arguments-to-a-console-app)
   - [Setting options with arguments](#setting-options-with-arguments)
   - [Handling platforms that do not support an API](#handling-platforms-that-do-not-support-an-api)
+  - [Practice Exercise](#practice-exercise)
 
 
 ## Chapter 2: Speaking C#
@@ -1094,8 +1095,9 @@ Instead of specifying `using static System.Console;` in every code file, you can
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- Importing System.Console as a static type for all code files in the project -->
   <ItemGroup Label="Simplify console app">
-    <Using Include="System.Console" Static="true" />    <!-- Importing System.Console as a static type for all code files in the project -->
+    <Using Include="System.Console" Static="true" />    
   </ItemGroup>
 
 </Project>
@@ -1242,3 +1244,81 @@ Additionally, you can use `#define` to define a symbol that can be used in condi
 See the [Spectre](https://spectreconsole.net/) package to enhance console apps with colors, tables, and more.
 
 
+### Practice Exercise
+
+In the Chapter02 solution, create a console app project named Exercise_Numbers that outputs the number of bytes in memory that each of the following number types uses and the minimum and maximum values they can have: sbyte, byte, short, ushort, int, uint, long, ulong, Int128, UInt128, Half, float, double, and decimal.
+
+<img src='images/20250616042944.png' width='750'/>
+
+```csharp
+// Set column widths for table formatting
+int typeColumnWidth  = 10;
+int bytesColumnWidth = 18;
+int minColumnWidth   = 50;
+int maxColumnWidth   = 50;
+int tableWidth       = typeColumnWidth + bytesColumnWidth + minColumnWidth + maxColumnWidth;
+
+// Define header format string for table columns
+string headerFormat = $"{{0,-{typeColumnWidth}}}{{1,-{bytesColumnWidth}}}{{2,{minColumnWidth}}}{{3,{maxColumnWidth}}}";
+
+WriteLine(new string('-', tableWidth));
+WriteLine(string.Format(headerFormat, "Type", "Bytes(s) of memory", "Min", "Max"));
+WriteLine(new string('-', tableWidth));
+
+// Output rows for each numeric type and their properties
+WriteLine(string.Format(headerFormat, "sbyte", sizeof(sbyte), sbyte.MinValue, sbyte.MaxValue));
+WriteLine(string.Format(headerFormat, "byte", sizeof(byte), byte.MinValue, byte.MaxValue));
+WriteLine(string.Format(headerFormat, "short", sizeof(short), short.MinValue, short.MaxValue));
+WriteLine(string.Format(headerFormat, "ushort", sizeof(ushort), ushort.MinValue, ushort.MaxValue));
+WriteLine(string.Format(headerFormat, "int", sizeof(int), int.MinValue, int.MaxValue));
+WriteLine(string.Format(headerFormat, "uint", sizeof(uint), uint.MinValue, uint.MaxValue));
+WriteLine(string.Format(headerFormat, "long", sizeof(long), long.MinValue, long.MaxValue));
+WriteLine(string.Format(headerFormat, "ulong", sizeof(ulong), ulong.MinValue, ulong.MaxValue));
+unsafe { WriteLine(string.Format(headerFormat, "Int128", sizeof(Int128), Int128.MinValue, Int128.MaxValue)); }
+unsafe { WriteLine(string.Format(headerFormat, "UInt128", sizeof(UInt128), UInt128.MinValue, UInt128.MaxValue)); }
+unsafe { WriteLine(string.Format(headerFormat, "Half", sizeof(Half), Half.MinValue, Half.MaxValue)); }
+WriteLine(string.Format(headerFormat, "float", sizeof(float), float.MinValue, float.MaxValue));
+WriteLine(string.Format(headerFormat, "double", sizeof(double), double.MinValue, double.MaxValue));
+WriteLine(string.Format(headerFormat, "decimal", sizeof(decimal), decimal.MinValue, decimal.MaxValue));
+```
+[File `Program.cs`](./ch02/Exercises/Ex1/Program.cs)
+
+**Note:** In the `.csproj` file, I added two items, one for unsafe code and the other for a static import of the `System.Console` class:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup Label="Simplify console app">
+    <Using Include="System.Console" Static="true" />
+  </ItemGroup>
+</Project>
+```
+**Output:**
+
+```cmd
+╭─( ~\LocalCode\LearningDotNet\...\Exercises\Ex1 [main ≡ +0 ~3 -0 !]
+╰╴> dotnet run
+--------------------------------------------------------------------------------------------------------------------------------
+Type      Bytes(s) of memory                                               Min                                               Max
+--------------------------------------------------------------------------------------------------------------------------------
+sbyte     1                                                               -128                                               127
+byte      1                                                                  0                                               255
+short     2                                                             -32768                                             32767
+ushort    2                                                                  0                                             65535
+int       4                                                        -2147483648                                        2147483647
+uint      4                                                                  0                                        4294967295
+long      8                                               -9223372036854775808                               9223372036854775807
+ulong     8                                                                  0                              18446744073709551615
+Int128    16                          -170141183460469231731687303715884105728           170141183460469231731687303715884105727
+UInt128   16                                                                 0           340282366920938463463374607431768211455
+Half      2                                                             -65500                                             65500
+float     4                                                     -3.4028235E+38                                     3.4028235E+38
+double    8                                           -1.7976931348623157E+308                           1.7976931348623157E+308
+decimal   16                                    -79228162514264337593543950335                     79228162514264337593543950335
+```
