@@ -61,6 +61,7 @@ dotnet fsi
   - [3.2 Type Inference](#32-type-inference)
     - [3.2.1 Benefits of type inference](#321-benefits-of-type-inference)
     - [3.2.2 Type inference basics](#322-type-inference-basics)
+  - [3.2.3 Inferring generics](#323-inferring-generics)
 
 
 ## 1. Introducing F#
@@ -419,8 +420,127 @@ let add (a:int) (b:int) : int =     // three explicit type annotations: the two 
     let answer : int = a + b        // a fourth type annotation
     answer
 ```
-**Note:**  
-- Parenthesis are required when making explicit type annotations for parameters.
+**Note:** Parenthesis are required when making explicit type annotations for parameters.
 
-**Exercise 3.2:**
+<br>
 
+**Exercise 3.2:** Complete the following steps to see some basic type inference in action:
+
+1. Enter the code from listing 3.4 into an empty F# script file. 
+
+```fsharp
+let add (a: int) (b: int) : int =
+    let answer: int = a + b
+    answer
+```
+
+2. Observe that the CodeLens correctly identifies the type signature of the add function. 
+
+<img src='images/20250617035424.png' width='450'/>
+
+3. Remove the return type annotation (: int) so that the function declaration is let add (a:int) (b:int)
+
+```fsharp
+let add (a: int) (b: int) =
+    let answer: int = a + b
+    answer
+```
+
+4. Observe that the CodeLens still correctly indicates that the function returns an integer. 
+
+<img src='images/20250617035550.png' width='250'/>
+
+5. Remove the type annotation from answer. 
+
+```fsharp
+let add (a: int) (b: int) =
+    let answer = a + b
+    answer
+```
+
+6. Observe that the CodeLens still correctly understands that the function returns an integer. 
+
+<img src='images/20250617035721.png' width='250'/>
+
+7. Remove the type annotation from b (you can also remove the parenthesis around it). 
+
+```fsharp
+let add (a: int) b =
+    let answer = a + b
+    answer
+```
+8. Observe that the CodeLens still correctly understands that b is an integer. 
+
+<img src='images/20250617035807.png' width='250'/>
+
+9.  Remove the type annotation from a (you can also remove the parenthesis around it). 
+
+```fsharp
+let add a b =
+    let answer = a + b
+    answer
+```
+10. Observe that the CodeLens still correctly understands that a is an integer.
+
+<img src='images/20250617035919.png' width='250'/>
+
+The compiler assumes `a` and `b` are integers because `int` is the default for numeric operations in F#. If you had annotated one of the elements as a string, which still supports the `+` operator, the compiler would have inferred that both `a` and `b` are strings.
+
+<img src='images/20250617040552.png' width='300'/>
+
+In function declarations, why do you need parentheses around a parameter that uses type annotations?
+
+```fsharp
+let add a (b: int) : int =
+```
+
+To avoid ambiguity during parsing. If you wrote it like this:
+
+```fsharp
+let add a b: int = 
+```
+
+F# would interpret it incorrectly&mdash;as if you're assigning a return type to the function, not specifying the parameter type for `b`. It would be parsed as:
+
+```fsharp
+let add (a) (b) : int =
+```
+
+<br>
+
+**Exercise 3.3:** 
+
+1. Add the string hello to a + b on line 3. What happens? 
+
+```fsharp
+let add a b =
+    let answer = a + b + "Hello"
+    answer
+```
+The compiler now infers that `a` and `b` are both strings, because the `+` operator is being used with a string.
+
+<img src='images/20250617041848.png' width='350'/>
+
+2. Add a type annotation of string to the return type of the function. What happens? 
+
+```fsharp
+let add a b : string =
+    let answer = a + b
+    answer
+```
+<img src='images/20250617042452.png' width='250'/>
+
+3. Explicitly annotate b as an integer again and add 13.34 (which is a float, not an int) to a + b on line 3. What happens?
+
+```fsharp
+let add a (b:int) : string =
+    let answer = a + b + 13.34
+    answer
+```
+
+Compiler error:  
+<img src='images/20250617042319.png' width='700'/>
+
+<br>
+
+### 3.2.3 Inferring generics
