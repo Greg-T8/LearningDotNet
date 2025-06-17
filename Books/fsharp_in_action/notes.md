@@ -544,3 +544,14 @@ Compiler error:
 <br>
 
 ### 3.2.3 Inferring generics
+
+Generics allow you to create types and functions that can operate on any type rather than being bound to a specific concrete type.
+
+```fsharp
+let explicit = ResizeArray<int>()       // Creates a resizable array of ints with an explicit generic type argument
+let typeHole = ResizeArray<_>()         // Creates a resizable array of ints using the underscore as a typeHole
+let omitted = ResizeArray()             // Creates a resizable array of ints omitting the generic argument completely
+
+typeHole.Add 99                         // typeHole now becomes ResizeArray<int>
+omitted.Add 10
+```
