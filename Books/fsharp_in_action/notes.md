@@ -61,9 +61,10 @@ dotnet fsi
   - [3.2 Type Inference](#32-type-inference)
     - [3.2.1 Benefits of type inference](#321-benefits-of-type-inference)
     - [3.2.2 Type inference basics](#322-type-inference-basics)
-  - [3.2.3 Inferring generics](#323-inferring-generics)
+    - [3.2.3 Inferring generics](#323-inferring-generics)
       - [Automatic Generalization](#automatic-generalization)
-  - [3.2.4 Diagnosing unexpected type inference](#324-diagnosing-unexpected-type-inference)
+    - [3.2.4 Diagnosing unexpected type inference](#324-diagnosing-unexpected-type-inference)
+    - [3.2.5 Limitations of type inference](#325-limitations-of-type-inference)
 
 
 ## 1. Introducing F#
@@ -545,7 +546,7 @@ Compiler error:
 
 <br>
 
-### 3.2.3 Inferring generics
+#### 3.2.3 Inferring generics
 
 Generics allow you to create types and functions that can operate on any type rather than being bound to a specific concrete type.
 
@@ -605,7 +606,7 @@ combineElements 1 2 3                               // Calls the automatically g
 ```
 The author recommends letting the compiler automatically generalize your functions, as it will infer the types based on usage. On the rare occasion, you can add explicit type annotations as needed.
 
-### 3.2.4 Diagnosing unexpected type inference
+#### 3.2.4 Diagnosing unexpected type inference
 
 Consider the following two functions:
 
@@ -645,3 +646,27 @@ val calculateGroup: age: int -> string
 val sayHello: someValue: float -> string
 val result: string = "Hello Adult"
 ```
+
+Note how the type inference engine correctly figures out all the types for the functions.
+
+If you change `18` to `"test"` in the `calculateGroup` function, the compiler will generate a number of errors:
+
+<img src='images/20250618044110.png' width='950'/>
+
+Note how the function signature for `calculateGroup` has changed to `string -> string`, which is not what we want. The compiler has inferred that the type of `age` is a string, which is incorrect.
+
+The F# compiler uses the first opportunity it gets to infer the type of a value. 
+
+You can guide the compiler by temporarily putting an explicit integer type annotation against `age`:
+
+```fsharp
+let calculateGroup (age:int) =
+    if age < "test" then "Child"
+    elif age < 65 then "Adult"
+    else "Pensioner"
+```
+In this case, the compiler correctly shows a compiler error on the comparison test:
+
+<img src='images/20250618044558.png' width='950'/>
+
+#### 3.2.5 Limitations of type inference
