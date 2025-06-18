@@ -63,6 +63,7 @@ dotnet fsi
     - [3.2.2 Type inference basics](#322-type-inference-basics)
   - [3.2.3 Inferring generics](#323-inferring-generics)
       - [Automatic Generalization](#automatic-generalization)
+  - [3.2.4 Diagnosing unexpected type inference](#324-diagnosing-unexpected-type-inference)
 
 
 ## 1. Introducing F#
@@ -601,4 +602,46 @@ let combineElements a b c =                         // Lets the compiler general
     output
 
 combineElements 1 2 3                               // Calls the automatically generalized function
+```
+The author recommends letting the compiler automatically generalize your functions, as it will infer the types based on usage. On the rare occasion, you can add explicit type annotations as needed.
+
+### 3.2.4 Diagnosing unexpected type inference
+
+Consider the following two functions:
+
+```fsharp
+let calculateGroup age =                                // Has the signature int -> string
+    if age < 18 then "Child"
+    elif age < 65 then "Adult"
+    else "Pensioner"
+
+let sayHello someValue =                                // Has the signature float -> string
+    let group =                                         // The string result of calling calculateGroup
+        if someValue < 10.0 then calculateGroup 15
+        else calculateGroup 35
+    "Hello " +  group
+
+let result = sayHello 10.5
+```
+<img src='images/20250618042000.png' width='500'/>
+
+**Output:**
+
+```cmd
+> # 1 @"LocalCode\LearningDotNet\Books\fsharp_in_action\ch03\DiagnosingInferenceBehavior.fsx"
+- let calculateGroup age =
+-     if age < 18 then "Child"
+-     elif age < 65 then "Adult"
+-     else "Pensioner"
+-
+- let sayHello someValue =
+-     let group =
+-         if someValue < 10.0 then calculateGroup 15
+-         else calculateGroup 35
+-     "Hello " +  group
+-
+- let result = sayHello 10.5;;
+val calculateGroup: age: int -> string
+val sayHello: someValue: float -> string
+val result: string = "Hello Adult"
 ```
