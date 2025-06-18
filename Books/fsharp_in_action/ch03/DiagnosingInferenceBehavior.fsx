@@ -1,5 +1,5 @@
-let calculateGroup age =
-    if age < 18 then "Child"
+let calculateGroup (age:int) =
+    if age < "test" then "Child"
     elif age < 65 then "Adult"
     else "Pensioner"
 
