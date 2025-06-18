@@ -62,6 +62,7 @@ dotnet fsi
     - [3.2.1 Benefits of type inference](#321-benefits-of-type-inference)
     - [3.2.2 Type inference basics](#322-type-inference-basics)
   - [3.2.3 Inferring generics](#323-inferring-generics)
+      - [Automatic Generalization](#automatic-generalization)
 
 
 ## 1. Introducing F#
@@ -554,4 +555,50 @@ let omitted = ResizeArray()             // Creates a resizable array of ints omi
 
 typeHole.Add 99                         // typeHole now becomes ResizeArray<int>
 omitted.Add 10
+```
+
+The typehole is represented by an underscore (_) and acts as a placeholder that tells the compiler "figure this out for me based on usage". It provides safe inference. Contrast this with the omitted generic argument, which is not type-safe and can lead to runtime errors.
+
+**Exercise 3.4:** Change the value 10 to a string. What happens to the type of omitted? Note that if the compiler can’t infer the generic type argument because there’s no usage of the list, it will infer the type argument as Object, although the compiler will actually throw an error forcing you to add type annotations.
+
+```fsharp
+let explicit = ResizeArray<int>()
+let typeHole = ResizeArray<_>()
+let omitted = ResizeArray()
+
+typeHole.Add 99
+omitted.Add "this is a string"
+```
+
+The type of `ommitted` becomes `ResizeArray<string>`:
+
+<img src='images/20250618034843.png' width='350'/>
+
+##### Automatic Generalization
+
+If F# determines an argument to a function is generic, it will automatically generalize your functions.
+
+```fsharp
+let combineElements<'T> (a:'T) (b:'T) (c:'T) =      // Specifies a generic type parameter 'T on the function
+    let output = ResizeArray<'T>()                  // Creates a resize array of type 'T
+    output.Add a
+    output.Add b
+    output.Add c
+    output
+
+combineElements<int> 1 2 3                          // Calls the function to combine three numbers
+```
+**Note:** The single quote before the type parameter `'T` is F# syntax to denote a type variable&mdash;a placeholder for a type that will be inferred later.
+
+Automatic generalization means that you can do away with all type annotations and let the compiler infer the types for you:
+
+```fsharp
+let combineElements a b c =                         // Lets the compiler generalize the function for us
+    let output = ResizeArray()
+    output.Add a
+    output.Add b
+    output.Add c
+    output
+
+combineElements 1 2 3                               // Calls the automatically generalized function
 ```
