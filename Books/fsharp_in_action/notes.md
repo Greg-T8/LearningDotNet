@@ -65,6 +65,7 @@ dotnet fsi
       - [Automatic Generalization](#automatic-generalization)
     - [3.2.4 Diagnosing unexpected type inference](#324-diagnosing-unexpected-type-inference)
     - [3.2.5 Limitations of type inference](#325-limitations-of-type-inference)
+    - [3.2.6 Criticisms of type inference](#326-criticisms-of-type-inference)
 
 
 ## 1. Introducing F#
@@ -670,3 +671,39 @@ In this case, the compiler correctly shows a compiler error on the comparison te
 <img src='images/20250618044558.png' width='950'/>
 
 #### 3.2.5 Limitations of type inference
+
+There are a few areas where type inference doesn't work, and you'll have to use explicit type annotations. These cases are around the object-oriented features of F#. So, any classes you create or refrence from C# won't be inferred based on member access. This includes essentially all of the framework class library.
+
+Once the compiler has identified a type, it can use that information for inference further downstream:
+
+```fsharp
+let addThreeDays (theDate:System.DateTime) =            // Type annotation required for the DateTime type
+    theDate.AddDays 3
+
+let addAYearAndThreeDays theDate =                      // Type annotation note required
+    let threeDaysForward = addThreeDays theDate         // Usage point for type inference
+    theDate.AddYears 
+```
+
+#### 3.2.6 Criticisms of type inference
+
+The most commmon criticisms of type inference are:
+1. It's "magic"
+2. One can't determine the type of a variable without an annotation
+3. You lose semantic meaning without an annotation (i.e. you can't easily see the intent or meaning of code without types)
+
+The compiler doesn't guess types but instead uses a clearly defined set of precedence rules. All the issues with type inference can be followed through until one point in your codebase where a type clashes and leads to a compiler error.
+
+Modern IDEs give both tooltips or a code lens that shows the type of a symbol, so you can easily see what the type is without having to add an annotation.
+
+The following code conveys the intent of the code without needing to add type annotations:
+
+```fsharp
+let x = getData()                                       // No type annotations, poor naming
+let x:Customer list = getData()                         // Type annotation, poor naming
+let customersToRemind = loadOverDueCustomers()          // No type annotations, good naming
+```
+
+The author advises not to bother with type annotations. 
+
+Type inference fits with the "more with less" philosophy of F# and the idea of trusting the compiler to do its job. Type inference is incredibly useful in writing succinct, easily rfactorable code without needing a third-party tool to rewrite your code for you.
