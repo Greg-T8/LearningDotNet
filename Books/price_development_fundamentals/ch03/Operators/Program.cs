@@ -41,19 +41,43 @@
 // #endregion
 
 
-#region Logical Operators
+// #region Logical Operators
+// bool p = true;
+// bool q = false;
+// WriteLine($"AND  | p     | q    ");
+// WriteLine($"p    | {p & p,-5} | {p & q,-5} ");
+// WriteLine($"q    | {q & p,-5} | {q & q,-5} ");
+// WriteLine();
+// WriteLine($"OR   | p     | q    ");
+// WriteLine($"p    | {p | p,-5} | {p | q,-5} ");
+// WriteLine($"q    | {q | p,-5} | {q | q,-5} ");
+// WriteLine();
+// WriteLine($"XOR  | p     | q    ");
+// WriteLine($"p    | {p ^ p,-5} | {p ^ q,-5} ");
+// WriteLine($"q    | {q ^ p,-5} | {q ^ q,-5} ");
+
+// #endregion
+
+#region Conditional Logical Operators
+
+static bool DoStuff()
+{
+    WriteLine("I am doing some stuff.");
+    return true;
+}gvgv
+
 bool p = true;
 bool q = false;
-WriteLine($"AND  | p     | q    ");
-WriteLine($"p    | {p & p,-5} | {p & q,-5} ");
-WriteLine($"q    | {q & p,-5} | {q & q,-5} ");
 WriteLine();
-WriteLine($"OR   | p     | q    ");
-WriteLine($"p    | {p | p,-5} | {p | q,-5} ");
-WriteLine($"q    | {q | p,-5} | {q | q,-5} ");
-WriteLine();
-WriteLine($"XOR  | p     | q    ");
-WriteLine($"p    | {p ^ p,-5} | {p ^ q,-5} ");
-WriteLine($"q    | {q ^ p,-5} | {q ^ q,-5} ");
+WriteLine($"p & DoStuff() = {p & DoStuff()}");          // p & DoStuff() = True
+WriteLine($"q & DoStuff() = {q & DoStuff()}");          // q & DoStuff() = False
+
+WriteLine($"p && DoStuff() = {p && DoStuff()}");        // p && DoStuff() = True
+WriteLine($"q && DoStuff() = {q && DoStuff()}");        // q && DoStuff() = False, DoStuff() was not called
+
+#endregion
+
+#region Bitwise Operators
+
 
 #endregion

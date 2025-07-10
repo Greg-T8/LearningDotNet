@@ -118,6 +118,8 @@ dotnet clean
     - [Assignment Operators](#assignment-operators)
     - [Null-coalescing Operators](#null-coalescing-operators)
     - [Logical operators](#logical-operators)
+    - [Conditional logical operators](#conditional-logical-operators)
+    - [Bitwise and binary shift operators](#bitwise-and-binary-shift-operators)
 
 
 ## Chapter 2: Speaking C#
@@ -1445,3 +1447,24 @@ p    | False | True
 q    | True  | False
 ```
 **Note:** the `-5` in the format string specifies that the output should be left-aligned within a width of 5 characters.
+
+#### Conditional logical operators
+
+```csharp
+static bool DoStuff() { return true; }
+
+bool p = true;
+bool q = false;
+
+WriteLine($"p & DoStuff() = {p & DoStuff()}");          // p & DoStuff() = True
+WriteLine($"q & DoStuff() = {q & DoStuff()}");          // q & DoStuff() = False, DoStuff() is called
+
+WriteLine($"p && DoStuff() = {p && DoStuff()}");        // p && DoStuff() = True
+WriteLine($"q && DoStuff() = {q && DoStuff()}");        // q && DoStuff() = False, DoStuff() is not called
+```
+
+#### Bitwise and binary shift operators
+
+```csharp
+
+```
