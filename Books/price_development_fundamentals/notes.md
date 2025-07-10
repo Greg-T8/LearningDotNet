@@ -113,6 +113,11 @@ dotnet clean
   - [Practice Exercise](#practice-exercise)
 - [Chapter 3: Controlling Flow, Converting Types, and Handling Exceptions](#chapter-3-controlling-flow-converting-types-and-handling-exceptions)
   - [Operating on Variables](#operating-on-variables)
+    - [Postfix and prefix operators:](#postfix-and-prefix-operators)
+    - [Binary arithmetic operators](#binary-arithmetic-operators)
+    - [Assignment Operators](#assignment-operators)
+    - [Null-coalescing Operators](#null-coalescing-operators)
+    - [Logical operators](#logical-operators)
 
 
 ## Chapter 2: Speaking C#
@@ -1332,7 +1337,7 @@ decimal   16                                    -79228162514264337593543950335  
 
 ### Operating on Variables
 
-Exploring unary operators:
+#### Postfix and prefix operators:
 
 ```csharp
 int a = 3;
@@ -1353,3 +1358,90 @@ WriteLine($"c is {c}, d is {d}");
 dotnet run
 c is 4, d is 4
 ```
+
+#### Binary arithmetic operators
+
+```csharp
+int e = 11;
+int f = 3;
+WriteLine($"e is {e}, f is {f}");
+WriteLine($"e + f = {e + f}");
+WriteLine($"e - f = {e - f}");
+WriteLine($"e * f = {e * f}");
+WriteLine($"e / f = {e / f}");
+WriteLine($"e % f = {e % f}");
+```
+```cmd
+dotnet run
+e is 11, f is 3
+e + f = 14
+e - f = 8
+e * f = 33
+e / f = 3
+e % f = 2
+```
+```csharp
+WriteLine($"g is {g:N1}, f is {f}");
+WriteLine($"g / f = {g / f}");
+```
+```cmd
+dotnet run
+g is 11.0, f is 3
+g / f = 3.6666666666666665
+```
+
+#### Assignment Operators
+
+```csharp
+int p = 6;
+p += 3;     // equivalent to p = p + 3
+p -= 3;     // equivalent to p = p - 3
+p *= 3;     // equivalent to p = p * 3
+p /= 3;     // equivalent to p = p / 3
+```
+
+#### Null-coalescing Operators
+
+```csharp
+string? authorName = GetAuthorName(); // A fictional function.
+
+// The maxLength variable will be the length of authorName if it is
+// not null, or 30 if authorName is null.
+int maxLength = authorName?.Length ?? 30;
+
+// The authorName variable will be "unknown" if authorName was null.
+authorName ??= "unknown";
+```
+
+#### Logical operators
+
+```csharp
+bool p = true;
+bool q = false;
+WriteLine($"AND  | p     | q    ");
+WriteLine($"p    | {p & p,-5} | {p & q,-5} ");
+WriteLine($"q    | {q & p,-5} | {q & q,-5} ");
+WriteLine();
+WriteLine($"OR   | p     | q    ");
+WriteLine($"p    | {p | p,-5} | {p | q,-5} ");
+WriteLine($"q    | {q | p,-5} | {q | q,-5} ");
+WriteLine();
+WriteLine($"XOR  | p     | q    ");
+WriteLine($"p    | {p ^ p,-5} | {p ^ q,-5} ");
+WriteLine($"q    | {q ^ p,-5} | {q ^ q,-5} ");
+```
+```cmd
+dotnet run
+AND  | p     | q    
+p    | True  | False 
+q    | False | False
+
+OR   | p     | q
+p    | True  | True
+q    | True  | False
+
+XOR  | p     | q
+p    | False | True
+q    | True  | False
+```
+**Note:** the `-5` in the format string specifies that the output should be left-aligned within a width of 5 characters.
