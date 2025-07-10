@@ -49,6 +49,5 @@ Console.WriteLine(
     arg0: bananasText, arg1: bananasCount
 );
 
-
 decimal value = 0.325M;
 Console.WriteLine("Currency: {0:C}, Percentage: {0:0.0%}", value);
