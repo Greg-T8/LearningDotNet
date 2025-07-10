@@ -111,6 +111,8 @@ dotnet clean
   - [Setting options with arguments](#setting-options-with-arguments)
   - [Handling platforms that do not support an API](#handling-platforms-that-do-not-support-an-api)
   - [Practice Exercise](#practice-exercise)
+- [Chapter 3: Controlling Flow, Converting Types, and Handling Exceptions](#chapter-3-controlling-flow-converting-types-and-handling-exceptions)
+  - [Operating on Variables](#operating-on-variables)
 
 
 ## Chapter 2: Speaking C#
@@ -1323,4 +1325,31 @@ Half      2                                                             -65500  
 float     4                                                     -3.4028235E+38                                     3.4028235E+38
 double    8                                           -1.7976931348623157E+308                           1.7976931348623157E+308
 decimal   16                                    -79228162514264337593543950335                     79228162514264337593543950335
+```
+
+
+## Chapter 3: Controlling Flow, Converting Types, and Handling Exceptions
+
+### Operating on Variables
+
+Exploring unary operators:
+
+```csharp
+int a = 3;
+int b = a++;            // postfix increment operates after the value is assigned
+WriteLine($"a is {a}, b is {b}");
+```
+```cmd
+dotnet run
+a is 4, b is 3
+```
+
+```csharp
+int c = 3;
+int d = ++c;            // prefix increment operates before the value is assigned
+WriteLine($"c is {c}, d is {d}");
+```
+```cmd
+dotnet run
+c is 4, d is 4
 ```
