@@ -120,6 +120,8 @@ dotnet clean
     - [Logical operators](#logical-operators)
     - [Conditional logical operators](#conditional-logical-operators)
     - [Bitwise and binary shift operators](#bitwise-and-binary-shift-operators)
+    - [Miscellaneous operators](#miscellaneous-operators)
+  - [Understanding selection statements](#understanding-selection-statements)
 
 
 ## Chapter 2: Speaking C#
@@ -1492,3 +1494,41 @@ x * 8      |      80 | 01010000
 y >> 1     |       3 | 00000011
 ```
 **Note:** The `B8` format specifier formats the number as a binary string with 8 digits, padding with leading zeros if necessary.
+
+When operating on integers, `&` and `|` are bitwise operators. When operating on booleans, they are logical operators. 
+
+#### Miscellaneous operators
+
+`nameof` and `sizeof` are convention when working with types:
+- `nameof` returns the short name of a variable, type, or member as a `string` value, which is useful when outputting debugging messages.
+- `sizeof` returns the size in bytes of simple types, which is useful for determining the efficiency of data storage.
+
+Technically, the `sizeof` operator requires an `unsafe` code block, but the sizes of value types with a C# alias, like `int` and `double`, are hardcoded as constants by the compiler, so they do not need an unsafe block.
+
+```csharp
+int age = 50;
+WriteLine($"The {nameof(age)} variable uses {sizeof(int)} bytes of memory.");
+```
+```cmd
+dotnet run
+The age variable uses 4 bytes of memory.
+```
+
+There are other operators:
+- The `.` between a variable and its members is the **member access operator**.
+- The round brackets at the end of a function or method name are the **invocation operator**.
+
+```csharp
+int age = 50;
+
+// How many operators in the following statement?
+char firstDigit = age.ToString()[0];
+
+// There are four operators:
+// = is the assignment operator
+// . is the member access operator
+// () is the invocation operator
+// [] is the indexer access operator
+```
+
+### Understanding selection statements
