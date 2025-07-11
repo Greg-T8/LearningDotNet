@@ -122,6 +122,7 @@ dotnet clean
     - [Bitwise and binary shift operators](#bitwise-and-binary-shift-operators)
     - [Miscellaneous operators](#miscellaneous-operators)
   - [Understanding selection statements](#understanding-selection-statements)
+    - [Pattern matching with the `if` statement](#pattern-matching-with-the-if-statement)
 
 
 ## Chapter 2: Speaking C#
@@ -1532,3 +1533,45 @@ char firstDigit = age.ToString()[0];
 ```
 
 ### Understanding selection statements
+
+#### Pattern matching with the `if` statement
+
+C# 7 introduced pattern matching with the `if` statement. The expression, `o is int i`, does two things:
+1. Checks the type of data in a variable `o` to see if it is an `int`.
+2. If it is an `int`, it assigns the value to a new variable `i` that is scoped to the `if` block.
+
+```csharp
+object o = "3";
+int j = 4;
+if (o is int i)         // Pattern matching to check if o is an int
+{
+    WriteLine($"{i} x {j} = {i * j}");
+}
+else
+{
+    WriteLine("o is not an int so it cannot multiply!");
+}
+```
+```cmd
+dotnet run
+o is not an int so it cannot multiply!
+```
+
+But changing the type of `o` to an `int` will change the output:
+
+```chsarp
+object o = 3;
+int j = 4;
+if (o is int i)
+{
+    WriteLine($"{i} x {j} = {i * j}");
+}
+else
+{
+    WriteLine("o is not an int so it cannot multiply!");
+}
+```
+```cmd
+dotnet run
+3 x 4 = 12
+```
