@@ -123,6 +123,8 @@ dotnet clean
     - [Miscellaneous operators](#miscellaneous-operators)
   - [Understanding selection statements](#understanding-selection-statements)
     - [Pattern matching with the `if` statement](#pattern-matching-with-the-if-statement)
+    - [Branching with the `switch` statement](#branching-with-the-switch-statement)
+    - [Pattern matching with the `switch` statement](#pattern-matching-with-the-switch-statement)
 
 
 ## Chapter 2: Speaking C#
@@ -1559,7 +1561,7 @@ o is not an int so it cannot multiply!
 
 But changing the type of `o` to an `int` will change the output:
 
-```chsarp
+```csharp
 object o = 3;
 int j = 4;
 if (o is int i)
@@ -1575,3 +1577,63 @@ else
 dotnet run
 3 x 4 = 12
 ```
+
+#### Branching with the `switch` statement
+
+In the `switch` statement, every `case` section must end with one of the following:
+- The `break` keyword.
+- The `goto case` keyword to jump to another case.
+- No statements
+- The `goto` keyword that references a named label.
+- The `return` keyword to leave the current function.
+
+```csharp
+// Inclusive lower bound but exclusive upper bound.
+int number = Random.Shared.Next(minValue: 1, maxValue: 7);
+WriteLine($"My random number is {number}");
+switch (number)
+{
+  case 1:
+    WriteLine("One");
+    break;                  // Jumps to end of switch statement.
+  case 2:
+    WriteLine("Two");
+    goto case 1;
+  case 3:                   // Multiple case section.
+  case 4:
+    WriteLine("Three or four");
+    goto case 1;
+  case 5:
+    goto A_label;
+  default:
+    WriteLine("Default");
+    break;
+}                           // End of switch statement.
+WriteLine("After end of switch");
+A_label:
+WriteLine($"After A_label");
+```
+```cmd
+dotnet run
+My random number is 3
+Three or four
+One
+After end of switch
+After A_label
+```
+```cmd
+dotnet run
+My random number is 1
+One
+After end of switch
+After A_label
+```
+```cmd
+dotnet run
+My random number is 5
+After A_label
+```
+
+**Good Practice:** Use the `goto` keyword to jump to another case or label. The `goto` keyword is frowned upon by most programmers but can be a good solution to code logic in some scenarios. However, you should use it sparingly, if at all. See [here](https://github.com/search?q=%22goto%20%22+repo%3Adotnet%2Fruntime+language%3AC%23&type=code&ref=advsearch) for how often Microsoft uses `goto` in the .NET base class libraries.
+
+#### Pattern matching with the `switch` statement
