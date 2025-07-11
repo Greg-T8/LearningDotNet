@@ -1466,5 +1466,29 @@ WriteLine($"q && DoStuff() = {q && DoStuff()}");        // q && DoStuff() = Fals
 #### Bitwise and binary shift operators
 
 ```csharp
-
+WriteLine($"Expression | Decimal | Binary");
+WriteLine($"-------------------------------------");
+WriteLine($"x          | {x,7} | {x:B8}");
+WriteLine($"y          | {y,7} | {y:B8}");
+WriteLine($"x & y      | {x & y,7} | {x & y:B8}");
+WriteLine($"x | y      | {x | y,7} | {x | y:B8}");
+WriteLine($"x ^ y      | {x ^ y,7} | {x ^ y:B8}");
+WriteLine($"x << 3     | {x << 3,7} | {x << 3:B8}");
+WriteLine($"x * 8      | {x * 8,7} | {x * 8:B8}");
+WriteLine($"y >> 1     | {y >> 1,7} | {y >> 1:B8}");
 ```
+```cmd
+dotnet run
+
+Expression | Decimal | Binary
+-------------------------------------
+x          |      10 | 00001010
+y          |       6 | 00000110
+x & y      |       2 | 00000010
+x | y      |      14 | 00001110
+x ^ y      |      12 | 00001100
+x << 3     |      80 | 01010000
+x * 8      |      80 | 01010000
+y >> 1     |       3 | 00000011
+```
+**Note:** The `B8` format specifier formats the number as a binary string with 8 digits, padding with leading zeros if necessary.

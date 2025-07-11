@@ -58,26 +58,38 @@
 
 // #endregion
 
-#region Conditional Logical Operators
+// #region Conditional Logical Operators
 
-static bool DoStuff()
-{
-    WriteLine("I am doing some stuff.");
-    return true;
-}gvgv
+// static bool DoStuff()
+// {
+//     WriteLine("I am doing some stuff.");
+//     return true;
+// }
 
-bool p = true;
-bool q = false;
-WriteLine();
-WriteLine($"p & DoStuff() = {p & DoStuff()}");          // p & DoStuff() = True
-WriteLine($"q & DoStuff() = {q & DoStuff()}");          // q & DoStuff() = False
+// bool p = true;
+// bool q = false;
+// WriteLine();
+// WriteLine($"p & DoStuff() = {p & DoStuff()}");          // p & DoStuff() = True
+// WriteLine($"q & DoStuff() = {q & DoStuff()}");          // q & DoStuff() = False
 
-WriteLine($"p && DoStuff() = {p && DoStuff()}");        // p && DoStuff() = True
-WriteLine($"q && DoStuff() = {q && DoStuff()}");        // q && DoStuff() = False, DoStuff() was not called
+// WriteLine($"p && DoStuff() = {p && DoStuff()}");        // p && DoStuff() = True
+// WriteLine($"q && DoStuff() = {q && DoStuff()}");        // q && DoStuff() = False, DoStuff() was not called
 
-#endregion
+// #endregion
 
 #region Bitwise Operators
-
+WriteLine();
+int x = 10;
+int y = 6;
+WriteLine($"Expression | Decimal | Binary");
+WriteLine($"-------------------------------------");
+WriteLine($"x          | {x,7} | {x:B8}");
+WriteLine($"y          | {y,7} | {y:B8}");
+WriteLine($"x & y      | {x & y,7} | {x & y:B8}");
+WriteLine($"x | y      | {x | y,7} | {x | y:B8}");
+WriteLine($"x ^ y      | {x ^ y,7} | {x ^ y:B8}");
+WriteLine($"x << 3     | {x << 3,7} | {x << 3:B8}");
+WriteLine($"x * 8      | {x * 8,7} | {x * 8:B8}");
+WriteLine($"y >> 1     | {y >> 1,7} | {y >> 1:B8}");
 
 #endregion
