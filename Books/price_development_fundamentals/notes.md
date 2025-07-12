@@ -17,41 +17,23 @@
 ## Dotnet Commands
 
 ```cmd
-# General info
-dotnet --version         # Show the SDK version used by the current project
-dotnet --info            # Show SDK and runtime versions
-dotnet --list-sdks       # List all installed SDKs
-dotnet --list-runtimes   # List all installed runtimes
-dotnet new --list        # List all templates
-
-# Solution and project setup
-
-# Create a new solution named Chapter01
-dotnet new sln --name Chapter01 
-
-# Show help for console project template
+dotnet --version                                                # Show the SDK version used by the current project
+dotnet --info                                                   # Show SDK and runtime versions
+dotnet --list-sdks                                              # List all installed SDKs
+dotnet --list-runtimes                                          # List all installed runtimes
+dotnet new --list                                               # List all templates
 dotnet new console --help   
 
-# Create a new console app in the current folder
-dotnet new console -n HelloCS -o .
+dotnet new sln --name Chapter01                                 # Create a new solution file in the current folder
+dotnet new console -n HelloCS -o .                              # Create a new console app in the current folder
+dotnet sln add HelloCS                                          # Add the HelloCS project to the solution 
+dotnet new console --output HelloCS                             # Create a new console app in the HelloCS folder
+dotnet new console -o AboutMyEnvironment --use-program-main     # Create a new console app without using top-level statements
+dotnet new class -n <ClassName>                                 # Create a new class file in the current folder
 
-# Create a new console app in the HelloCS folder
-dotnet new console --output HelloCS                              
-
-# Add HelloCS project to solution
-dotnet sln add HelloCS                                           
-
-# Create a new console app without using top-level statements
-dotnet new console -o AboutMyEnvironment --use-program-main      
-
-# Add AboutMyEnvironment project to solution
-dotnet sln add .\AboutMyEnvironment\                             
-
-# Build the solution or project
-dotnet build                                                     
-
-# Clean the solution or project
-dotnet clean                                                     
+dotnet build                                                    # Build the current project 
+dotnet clean                                                    # Clean the current project  
+dotnet run                                                      # Run the current project
 ```
 <!-- omit in toc -->
 ## C# and .NET Resources
@@ -1637,3 +1619,9 @@ After A_label
 **Good Practice:** Use the `goto` keyword to jump to another case or label. The `goto` keyword is frowned upon by most programmers but can be a good solution to code logic in some scenarios. However, you should use it sparingly, if at all. See [here](https://github.com/search?q=%22goto%20%22+repo%3Adotnet%2Fruntime+language%3AC%23&type=code&ref=advsearch) for how often Microsoft uses `goto` in the .NET base class libraries.
 
 #### Pattern matching with the `switch` statement
+
+Similar to the `if` statement, the `switch` statement can also use pattern matching. The case values no longer need to be literal values; they can be patterns.
+
+In C# 7, your code can more concisely branch, based on the subtype of a class, and you can declare and assign a local variable to safely use it.
+
+`case` statements can also use the `when` keyword to add a condition that must be true for the case to match.
