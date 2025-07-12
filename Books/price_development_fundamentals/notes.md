@@ -14,7 +14,7 @@
 </details>
 
 <!-- omit in toc -->
-## Dotnet Commands
+## Dotnet Command Dashboard
 
 ```cmd
 dotnet --version                                                # Show the SDK version used by the current project
