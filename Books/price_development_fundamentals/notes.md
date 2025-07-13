@@ -107,6 +107,7 @@ dotnet run                                                      # Run the curren
     - [Pattern matching with the `if` statement](#pattern-matching-with-the-if-statement)
     - [Branching with the `switch` statement](#branching-with-the-switch-statement)
     - [Pattern matching with the `switch` statement](#pattern-matching-with-the-switch-statement)
+    - [Simplifying switch statements with switch expressions](#simplifying-switch-statements-with-switch-expressions)
 
 
 ## Chapter 2: Speaking C#
@@ -1658,7 +1659,8 @@ foreach (Animal? animal in animals)
     string message;
     switch (animal)
     {
-        case Cat fourLeggedCat when fourLeggedCat.Legs == 4:
+        // Can be written more concisely as "case Cat {Legs:4} fourLeggedCat:"
+        case Cat fourLeggedCat when fourLeggedCat.Legs == 4:        
             message = $"The cat named {fourLeggedCat.Name} has four legs.";
             break;
         case Cat wildCat when wildCat.IsDomestic == false:
@@ -1688,3 +1690,41 @@ switch statement: The non-domestic cat is named Mufasa.
 switch statement: The Sid Vicious spider is venomous. Run!
 switch statement: Captain Furry is a Spider
 ```
+
+#### Simplifying switch statements with switch expressions
+
+Most `switch` statements are simple, yet they require a lot of typing. `switch` expressions allow you to simplify your code by using a lambda, `=>`, to indicate a return value.
+
+```csharp
+var animals = new Animal?[]
+{
+    new Cat {Name = "Karen", Born = new(year:2022, month:6, day:12)},
+    null,
+    new Cat {Name = "Mufasa", Born = new(year:1994, month:6, day:12)},
+    new Spider {Name = "Sid Vicious", Born = DateTime.Today, IsVenomous = true},
+    new Spider {Name = "Captain Furry", Born = DateTime.Today},
+};
+
+foreach (Animal? animal in animals)
+{
+    string message;
+    message = animal switch
+    {
+        Cat fourLeggedCat when fourLeggedCat.Legs == 4
+            => $"The cat named {fourLeggedCat.Name} has four legs.",
+        Cat wildCat when wildCat.IsDomestic == false
+            => $"The non-domestic cat is named {wildCat.Name}.",
+        Cat cat
+            => $"The cat is named {cat.Name}.",
+        Spider spider when spider.IsVenomous
+            => $"The {spider.Name} spider is venomous. Run!",
+        null
+            => $"The animal is null.",
+        _ // Replace the word "default" with an underscore. 
+            => $"{animal.Name} is a {animal.GetType().Name}"
+    };
+    WriteLine($"switch statement: {message}");
+}
+```
+
+**Note:** The underscore is known as a **Discard**. See [here](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/discards) for more on Discards.
