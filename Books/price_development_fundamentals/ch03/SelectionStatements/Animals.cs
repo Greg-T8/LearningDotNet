@@ -1,6 +1,4 @@
-﻿namespace SelectionStatements;
-
-public class Animal
+﻿class Animal
 {
     public string? Name;
     public DateTime Born;

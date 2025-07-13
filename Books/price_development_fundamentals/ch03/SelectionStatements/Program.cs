@@ -1,4 +1,5 @@
-﻿// #region Pattern Matching with If Statement
+﻿
+// #region Pattern Matching with If Statement
 // // Add and remove the "" to change between the string and int.
 // object o = 3;
 // int j = 4;
@@ -42,4 +43,41 @@
 
 // #endregion
 
-var animals = new Animal?[];
+#region Pattern matching with switch
+
+var animals = new Animal?[]
+{
+    new Cat {Name = "Karen", Born = new(year:2022, month:6, day:12)},
+    null,
+    new Cat {Name = "Mufasa", Born = new(year:1994, month:6, day:12)},
+    new Spider {Name = "Sid Vicious", Born = DateTime.Today, IsVenomous = true},
+    new Spider {Name = "Captain Furry", Born = DateTime.Today},
+};
+
+foreach (Animal? animal in animals)
+{
+    string message;
+    switch (animal)
+    {
+        case Cat fourLeggedCat when fourLeggedCat.Legs == 4:
+            message = $"The cat named {fourLeggedCat.Name} has four legs.";
+            break;
+        case Cat wildCat when wildCat.IsDomestic == false:
+            message = $"The non-domestic cat is named {wildCat.Name}.";
+            break;
+        case Cat cat:
+            message = $"The cat is named {cat.Name}.";
+            break;
+        default: // default is always evaluated last
+            message = $"{animal.Name} is a {animal.GetType().Name}";
+            break;
+        case Spider spider when spider.IsVenomous:
+            message = $"The {spider.Name} spider is venomous. Run!";
+            break;
+        case null:
+            message = $"The animal is null.";
+            break;
+    }
+    WriteLine($"switch statement: {message}");
+}
+#endregion
