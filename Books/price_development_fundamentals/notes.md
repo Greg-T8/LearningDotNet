@@ -111,9 +111,10 @@ dotnet run                                                      # Run the curren
   - [Understanding iteration statements](#understanding-iteration-statements)
     - [Looping with the while statement](#looping-with-the-while-statement)
     - [Looping with the do statement](#looping-with-the-do-statement)
-  - [Looping with the for statement](#looping-with-the-for-statement)
-  - [Looping with the foreach statement](#looping-with-the-foreach-statement)
-    - [Understanding how foreach works internally](#understanding-how-foreach-works-internally)
+    - [Looping with the for statement](#looping-with-the-for-statement)
+    - [Looping with the foreach statement](#looping-with-the-foreach-statement)
+      - [Understanding how foreach works internally](#understanding-how-foreach-works-internally)
+  - [Storing muliple values in an array](#storing-muliple-values-in-an-array)
 
 
 ## Chapter 2: Speaking C#
@@ -1783,7 +1784,7 @@ Enter your password: Pa$$w0rd
 Correct!
 ```
 
-### Looping with the for statement
+#### Looping with the for statement
 
 ```csharp
 for (int y = 0; y <= 10; y += 3)
@@ -1799,7 +1800,7 @@ dotnet run
 9
 ```
 
-### Looping with the foreach statement
+#### Looping with the foreach statement
 
 ```csharp
 string[] names = { "Adam", "Barry", "Charlie" };
@@ -1809,14 +1810,12 @@ foreach (string name in names)
 }
 ```
 ```cmd
-string[] names = { "Adam", "Barry", "Charlie" };
-foreach (string name in names)
-{
-    WriteLine($"{name} has {name.Length} characters.");
-}
+Adam has 4 characters.
+Barry has 5 characters.
+Charlie has 7 characters.
 ```
 
-#### Understanding how foreach works internally
+##### Understanding how foreach works internally
 
 The `foreach` statement works on any type that follows these rules:
 - The type must have a method named `GetEnumerator` that returns an object.
@@ -1835,3 +1834,6 @@ while (e.MoveNext())
     WriteLine($"{name} has {name.Length} characters.");
 }
 ```
+Because the `Current` property is read-only, the variable declared in the `foreach` statement cannot be used to modify the value of the current item.
+
+### Storing muliple values in an array
