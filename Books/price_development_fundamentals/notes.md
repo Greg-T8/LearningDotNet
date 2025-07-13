@@ -111,6 +111,9 @@ dotnet run                                                      # Run the curren
   - [Understanding iteration statements](#understanding-iteration-statements)
     - [Looping with the while statement](#looping-with-the-while-statement)
     - [Looping with the do statement](#looping-with-the-do-statement)
+  - [Looping with the for statement](#looping-with-the-for-statement)
+  - [Looping with the foreach statement](#looping-with-the-foreach-statement)
+    - [Understanding how foreach works internally](#understanding-how-foreach-works-internally)
 
 
 ## Chapter 2: Speaking C#
@@ -1778,4 +1781,57 @@ Enter your password: abc
 Enter your password: abc
 Enter your password: Pa$$w0rd
 Correct!
+```
+
+### Looping with the for statement
+
+```csharp
+for (int y = 0; y <= 10; y += 3)
+{
+    WriteLine(y);
+}
+```
+```cmd
+dotnet run
+0
+3
+6
+9
+```
+
+### Looping with the foreach statement
+
+```csharp
+string[] names = { "Adam", "Barry", "Charlie" };
+foreach (string name in names)
+{
+    WriteLine($"{name} has {name.Length} characters.");
+}
+```
+```cmd
+string[] names = { "Adam", "Barry", "Charlie" };
+foreach (string name in names)
+{
+    WriteLine($"{name} has {name.Length} characters.");
+}
+```
+
+#### Understanding how foreach works internally
+
+The `foreach` statement works on any type that follows these rules:
+- The type must have a method named `GetEnumerator` that returns an object.
+- The returned object must have a property named `Current` and a method named `MoveNext`.
+- The `MoveNext` method must change the value of `Current` and return `true` if there are more items to enumerate through or return `false` if there are no more items.
+
+There are interfaces named `IEnumerable` and `IEnumerable<T>` that formally define these rules, but technically, the compiler does not require the type to implement these interfaces.
+
+The compiler turns the `foreach` statement into something like the following pseudocode:
+
+```csharp
+IEnumerator e = names.GetEnumerator();
+while (e.MoveNext())
+{
+    string name = (string)e.Current;    // Current is read-only
+    WriteLine($"{name} has {name.Length} characters.");
+}
 ```
