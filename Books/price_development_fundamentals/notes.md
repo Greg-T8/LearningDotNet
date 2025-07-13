@@ -108,6 +108,9 @@ dotnet run                                                      # Run the curren
     - [Branching with the `switch` statement](#branching-with-the-switch-statement)
     - [Pattern matching with the `switch` statement](#pattern-matching-with-the-switch-statement)
     - [Simplifying switch statements with switch expressions](#simplifying-switch-statements-with-switch-expressions)
+  - [Understanding iteration statements](#understanding-iteration-statements)
+    - [Looping with the while statement](#looping-with-the-while-statement)
+    - [Looping with the do statement](#looping-with-the-do-statement)
 
 
 ## Chapter 2: Speaking C#
@@ -1727,4 +1730,52 @@ foreach (Animal? animal in animals)
 }
 ```
 
-**Note:** The underscore is known as a **Discard**. See [here](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/discards) for more on Discards.
+Main differences are the removal of the `case` and `break` keywords.
+
+**Note:** The underscore is known as a **Discard**, which are placeholder values that are intentionally unused in code. A discard communicates to the compiler and others that read your code: You intended to ignore the result of the expression. See [here](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/functional/discards) for more on Discards.
+
+### Understanding iteration statements
+
+#### Looping with the while statement
+
+```csharp
+int x = 0;
+while (x < 10)
+{
+    WriteLine(x);
+    x++;
+}
+```
+```cmd
+dotnet run
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+```
+
+#### Looping with the do statement
+
+```csharp
+string? actualPassword = "Pa$$w0rd";
+string? password;
+do
+{
+    Write("Enter your password: ");
+    password = ReadLine();
+}
+while (password != actualPassword);
+WriteLine("Correct!");
+```
+```cmd
+Enter your password: abc
+Enter your password: abc
+Enter your password: Pa$$w0rd
+Correct!
+```
