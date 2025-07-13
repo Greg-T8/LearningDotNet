@@ -1625,3 +1625,66 @@ Similar to the `if` statement, the `switch` statement can also use pattern match
 In C# 7, your code can more concisely branch, based on the subtype of a class, and you can declare and assign a local variable to safely use it.
 
 `case` statements can also use the `when` keyword to add a condition that must be true for the case to match.
+
+A simple class hierarhy to illustrate the use of pattern matching with subclasses:
+```csharp
+class Animal
+{
+    public string? Name;            // Allows null values
+    public DateTime Born;
+    public byte Legs;
+}
+class Cat : Animal
+{
+    public bool IsDomestic;
+}
+class Spider : Animal
+{
+    public bool IsVenomous;
+}
+```
+```csharp
+var animals = new Animal?[]         // Allows null values in the array
+{
+    new Cat {Name = "Karen", Born = new(year:2022, month:6, day:12)},
+    null,
+    new Cat {Name = "Mufasa", Born = new(year:1994, month:6, day:12)},
+    new Spider {Name = "Sid Vicious", Born = DateTime.Today, IsVenomous = true},
+    new Spider {Name = "Captain Furry", Born = DateTime.Today},
+};
+
+foreach (Animal? animal in animals)
+{
+    string message;
+    switch (animal)
+    {
+        case Cat fourLeggedCat when fourLeggedCat.Legs == 4:
+            message = $"The cat named {fourLeggedCat.Name} has four legs.";
+            break;
+        case Cat wildCat when wildCat.IsDomestic == false:
+            message = $"The non-domestic cat is named {wildCat.Name}.";
+            break;
+        case Cat cat:
+            message = $"The cat is named {cat.Name}.";
+            break;
+        default: // default is always evaluated last; placed it in the middle deliberabately to illustrate this behavior.
+            message = $"{animal.Name} is a {animal.GetType().Name}";
+            break;
+        case Spider spider when spider.IsVenomous:
+            message = $"The {spider.Name} spider is venomous. Run!";
+            break;
+        case null:
+            message = $"The animal is null.";
+            break;
+    }
+    WriteLine($"switch statement: {message}");
+}
+```
+```cmd
+dotnet run
+switch statement: The non-domestic cat is named Karen.
+switch statement: The animal is null.
+switch statement: The non-domestic cat is named Mufasa.
+switch statement: The Sid Vicious spider is venomous. Run!
+switch statement: Captain Furry is a Spider
+```
