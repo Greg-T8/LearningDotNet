@@ -69,6 +69,8 @@ dotnet fsi
 - [4. F# Fundamentals](#4-f-fundamentals)
   - [4.1 Expressions](#41-expressions)
     - [4.1.1 Purity and side effects](#411-purity-and-side-effects)
+    - [4.1.2 Difficulties with statements](#412-difficulties-with-statements)
+    - [4.1.3 Expressions to the rescue](#413-expressions-to-the-rescue)
 
 
 ## 1. Introducing F#
@@ -743,3 +745,89 @@ Some functional programming languages, such as Haskell, enforce functional purit
 A side effect is typically some effect that a function has on data that exists outside of itself. This could be writing to a database table or modifying some global mutable state. 
 
 Side effects can't be observed from a function's signature (i.e. its inputs or outputs) and so can be harder to test. Instead, you may need to observe side effects by calling other methods on an object and confirming that its behavior has changed or looking to see if a row was added to a database table.
+
+**Exercise 4.1**
+
+Let’s look at some simple examples of statements and expressions. Which of the following do you think is which? 
+
+1. A method on an Employee class, SetSalary(), that takes in their new salary and modifies its private state to the new salary. It returns nothing (known as void in some languages).  - Statement
+
+2. A function Add, which takes in two numbers and returns the sum of them. - Expression
+
+3. A function SaveCustomer, which takes in a customer and saves it to a database. The function returns nothing.  - Statement
+
+4. A function SaveCustomer, which takes in a customer and saves it to a database. The function returns true if it succeeded and false if the customer already exists. - Statement (Wrong!)
+
+**Answers:** 
+
+Answers 1 and 3 are statements: they run some code and change some state somewhere but return nothing. The only way that they can affect the application is by modifying some state or calling external systems. It’s impossible to know their output from the type signature since both return nothing (in some languages, this is known as void). Answers 2 and 4 are expressions: both take in some values and give back something in return.
+
+#### 4.1.2 Difficulties with statements
+
+Object-oriented languages are *statement-oriented*: the primary way you compose code is through statements and functions, which behave as statements.
+
+There are several issues with statements that allow bugs to creep in.
+
+Example:
+
+```csharp
+using System;
+
+public void DescribeAge(int age) {
+    string ageDescription = null;               // Initializes a variable with a default value
+    var greeting = "Hello";                     // Creates a variable to use later
+    if (age < 18)
+    {
+        ageDescription = "Child";               // First if branch
+    }
+    else if (age < 65)                          // Second if branch
+    {
+        greeting = "Adult";
+    }
+    Console.WriteLine($"{greeting}! You are a '{ageDescription}'.");
+}
+```
+
+**Issues:**
+
+- There's no handler for the case when age >= 65. The code will print out `null` for the description.
+- The code accidentally assigned the string to `greeting` rather than `ageDescription`, in the second case.
+- `ageDescription` needed to be declared with a default value before assigning it. This opens the possibility of bugs for complicated logic.
+
+**Note:** Updates to languages, like C#, have non-nullable reference types, which makes it possible to create values that can never be set to `null`.
+
+You may be quick to say that no one really makes mistakes like this, but as code base grows, people make mistakes like this all the time.
+
+#### 4.1.3 Expressions to the rescue
+
+The above code is perfectly valid from the compiler's perspective yet contains mistakes. So, why can't the compiler fix these things for you?
+
+The answer is that statements are weak. Compilers have no understanding that there's any relationship between the branches of the `if/else` block; instead, they're just different paths to execute.
+
+What we need is a more powerful construct for the compiler to understand: expressions.
+
+```csharp
+using System;
+
+private static string GetDescription(int age) {         // Expression with signature int -> string
+    if (age < 18) return "Child!";
+    else if (age < 65) return "Adult!";
+    else return "OAP!";
+}
+
+public void DescribeAge(int age) {
+    var ageDescription = GetDescription(age);           // Call site to function
+    var greeting = "Hello";
+    Console.WriteLine($"{greeting}! You are a '{ageDescriotion}'.");
+}
+```
+
+**Improvements**:
+
+- It's now impossible to forget to include the `else` clause when generating the description; if you do, the compiler will give you an error.
+- You can't accidentally assign the description to the wrong variable because the assignment to `ageDescription` is performed in only one location.
+- You don't need to create an arbitrary default view for your variables.
+
+**Implications**:
+
+There's now a clear separation between working with data transformations and assigning the result to a variable (`ageDescription`).
