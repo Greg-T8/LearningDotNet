@@ -66,6 +66,9 @@ dotnet fsi
     - [3.2.4 Diagnosing unexpected type inference](#324-diagnosing-unexpected-type-inference)
     - [3.2.5 Limitations of type inference](#325-limitations-of-type-inference)
     - [3.2.6 Criticisms of type inference](#326-criticisms-of-type-inference)
+- [4. F# Fundamentals](#4-f-fundamentals)
+  - [4.1 Expressions](#41-expressions)
+    - [4.1.1 Purity and side effects](#411-purity-and-side-effects)
 
 
 ## 1. Introducing F#
@@ -707,3 +710,36 @@ let customersToRemind = loadOverDueCustomers()          // No type annotations, 
 The author advises not to bother with type annotations. 
 
 Type inference fits with the "more with less" philosophy of F# and the idea of trusting the compiler to do its job. Type inference is incredibly useful in writing succinct, easily rfactorable code without needing a third-party tool to rewrite your code for you.
+
+## 4. F# Fundamentals
+
+Two core features of F# will have a large effect on how you write and design code:  expressions and immutability.
+
+Both features go hand-in-hand: without one, the other woudn't be especially useful. 
+
+Both are designed to change the way you write code into one that's oriented around working with values and applying transformations to those values as the basic mechanism of implementing logic.
+
+### 4.1 Expressions
+
+Expressions vs. Statements
+
+|             | Returns Something? | Has side-effects? |
+| ----------- | ------------------ | ----------------- |
+| Expressions | Always             | Occassionally     |
+| Statements  | Never              | Always            |
+
+#### 4.1.1 Purity and side effects
+
+**Purity**
+
+A *pure* function is a function that doesn't have any side effects and is guaranteed to always give the same output for a given input.
+
+Pure functions are easy to test; you only have to worry about giving it some inputs and checking the return value. You don't have to check whether some internal, encapsulated state has been modified or a file has been written; it's just inputs and outputs.
+
+Some functional programming languages, such as Haskell, enforce functional purity. F# doesn't provide any gurantees over pure functions, but it does have some features to help you identify functions that are not pure.
+
+**Side Effect**  
+
+A side effect is typically some effect that a function has on data that exists outside of itself. This could be writing to a database table or modifying some global mutable state. 
+
+Side effects can't be observed from a function's signature (i.e. its inputs or outputs) and so can be harder to test. Instead, you may need to observe side effects by calling other methods on an object and confirming that its behavior has changed or looking to see if a row was added to a database table.
