@@ -71,6 +71,7 @@ dotnet fsi
     - [4.1.1 Purity and side effects](#411-purity-and-side-effects)
     - [4.1.2 Difficulties with statements](#412-difficulties-with-statements)
     - [4.1.3 Expressions to the rescue](#413-expressions-to-the-rescue)
+    - [4.1.4 Expressions in F#](#414-expressions-in-f)
 
 
 ## 1. Introducing F#
@@ -828,6 +829,8 @@ public void DescribeAge(int age) {
 - You can't accidentally assign the description to the wrong variable because the assignment to `ageDescription` is performed in only one location.
 - You don't need to create an arbitrary default view for your variables.
 
-**Implications**:
-
 There's now a clear separation between working with data transformations and assigning the result to a variable (`ageDescription`).
+
+The mixing of calculations and assignments is something you should avoid, as it leads to bugs. You'll see this distinction time and time again in F#&mdash;series of data transformations followed by a final state modifiction.
+
+#### 4.1.4 Expressions in F#
