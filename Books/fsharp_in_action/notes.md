@@ -819,7 +819,7 @@ private static string GetDescription(int age) {         // Expression with signa
 public void DescribeAge(int age) {
     var ageDescription = GetDescription(age);           // Call site to function
     var greeting = "Hello";
-    Console.WriteLine($"{greeting}! You are a '{ageDescriotion}'.");
+    Console.WriteLine($"{greeting}! You are a '{ageDescription}'.");
 }
 ```
 
