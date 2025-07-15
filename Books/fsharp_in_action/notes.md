@@ -73,6 +73,7 @@ dotnet fsi
     - [4.1.3 Expressions to the rescue](#413-expressions-to-the-rescue)
     - [4.1.4 Expressions in F#](#414-expressions-in-f)
     - [4.1.5 Composability](#415-composability)
+      - [Refactoring to functions](#refactoring-to-functions)
 
 
 ## 1. Introducing F#
@@ -860,4 +861,102 @@ Lastly, the function just returns a string instead of printing to the console. T
 
 #### 4.1.5 Composability
 
-Another benefit of expressions
+Another benefit of expressions is that they naturally compose, meaning they tend to create more flexible codebases that you can more easily refactor or repurpose later on without much effort.
+
+Consider introducing the support of writing to a disk rather than printing to the console. If you separate the method into two parts, one that generates a string and another that outputs to the console, you can reuse the first part much more easily (as well making unit testing simpler).
+
+```csharp
+using System;
+public void DescribeAge(int age)
+{
+    string ageDescription = null;
+    var greeting = "Hello";
+    if (age < 18)
+        ageDescription = "Child";
+    else if (age < 65)
+        greeting = "Adult";
+    Console.WriteLine($"{greeting}! You are a '{ageDescription}'.");
+}
+```
+
+##### Refactoring to functions
+
+Let's take a practical look at how to refactor the following code so that it calculates the `ageDescription` in its own function rather than a nested scope, so we can easily use it with other outputs, such as the file system.
+
+```fsharp
+let describeAge age =
+    let ageDescription =                    
+        if age < 18 then "Child"
+        elif age < 65 then "Adult"
+        else "OAP"
+    let greeting = "Hello"
+    $"{greeting}! You are a '{ageDescription}'."
+```
+**Note:** this is a common practice in F#.
+
+**Exercise 4.2:**
+ 
+1. Identify the scope you wish to move into a function of its own.
+
+```fsharp
+        if age < 18 then "Child"
+        elif age < 65 then "Adult"
+        else "OAP"
+```
+
+2. Cut the code and paste it above the function that it's currently in, taking care to correct indentation.
+
+```fsharp
+    if age < 18 then "Child"
+    elif age < 65 then "Adult"
+    else "OAP"
+
+let describeAge age =
+    let ageDescription =                    
+    let greeting = "Hello"
+    $"{greeting}! You are a '{ageDescription}'."
+```
+
+3. Identify any required symbols and add them as inputs to the function. For example, in listing 4.3, this is the `age` symbol. Don’t worry about type annotations; the compiler can normally infer them for you.
+
+```fsharp
+let ageDescription age                      // Note: I missed the `=`. Also, should rename the function to indicate an action.
+    if age < 18 then "Child"
+    elif age < 65 then "Adult"
+    else "OAP"
+
+let describeAge age =
+    let ageDescription =                    
+    let greeting = "Hello"
+    $"{greeting}! You are a '{ageDescription}'."
+```
+
+4. In place of the code in the original function, replace it with a call to the newly created function.
+
+```csharp
+let ageDescription age
+    if age < 18 then "Child"
+    elif age < 65 then "Adult"
+    else "OAP"
+
+let describeAge age =
+    let ageDescription = ageDescription(age)         // Wrong syntax for function call        
+    let greeting = "Hello"
+    $"{greeting}! You are a '{ageDescription}'."
+```
+
+The book's answer:
+
+```fsharp
+open System
+
+let calculateAgeDescription age =
+    if age < 18 then "Child"
+    elif age < 65 then "Adult"
+    else "OAP"
+
+let describeAge age =
+    let ageDescription = calculateAgeDescription age
+    let greeting = "Hello"
+    printfn $"{greeting}! You are a '{ageDescription}'."
+```
