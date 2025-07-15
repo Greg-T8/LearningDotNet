@@ -72,6 +72,7 @@ dotnet fsi
     - [4.1.2 Difficulties with statements](#412-difficulties-with-statements)
     - [4.1.3 Expressions to the rescue](#413-expressions-to-the-rescue)
     - [4.1.4 Expressions in F#](#414-expressions-in-f)
+    - [4.1.5 Composability](#415-composability)
 
 
 ## 1. Introducing F#
@@ -834,3 +835,29 @@ There's now a clear separation between working with data transformations and ass
 The mixing of calculations and assignments is something you should avoid, as it leads to bugs. You'll see this distinction time and time again in F#&mdash;series of data transformations followed by a final state modifiction.
 
 #### 4.1.4 Expressions in F#
+
+F# is an expression-oriented language. Virtually everything is an expression; there are no statements or functions that return `void` (although there is a nifty escape hatch for cases wher8you don't have any result).
+
+You don't need the `return` keyword in F#: since every scope of code must return something, the `return` keyword isn't needed.
+
+Even `if/then` branching logic constructs are expressions.
+
+```fsharp
+let describeAge age =
+    let ageDescription =                    // As an expression, each branch of `if/then` must return the same type.
+        if age < 18 then "Child"
+        elif age < 65 then "Adult"
+        else "OAP"
+    let greeting = "Hello"
+    $"{greeting}! You are a '{ageDescription}'."
+```
+
+With this method, you don't have to create arbitrary methods or functions to benefit from the extra safety that expressions provide; they're baked into the language.
+
+Also, this sample no longer relies on modifying (mutating) any data: `ageDescription` and greeting are never modified; they are only set once.
+
+Lastly, the function just returns a string instead of printing to the console. This makes the overall function an expression as it now returns a string. If you had printed it out, it would have returned a `unit`.
+
+#### 4.1.5 Composability
+
+Another benefit of expressions
