@@ -749,7 +749,7 @@ Some functional programming languages, such as Haskell, enforce functional purit
 
 **Side Effect**  
 
-A side effect is typically some effect that a function has on data that exists outside of itself. This could be writing to a database table or modifying some global mutable state. 
+A side effect is typically some effect that a function has on data that exists outside of itself. This could be writing to a database table, printing to the console, getting the current date or time, or modifying some global mutable state. 
 
 Side effects can't be observed from a function's signature (i.e. its inputs or outputs) and so can be harder to test. Instead, you may need to observe side effects by calling other methods on an object and confirming that its behavior has changed or looking to see if a row was added to a database table.
 
@@ -803,7 +803,7 @@ public void DescribeAge(int age) {
 
 **Note:** Updates to languages, like C#, have non-nullable reference types, which makes it possible to create values that can never be set to `null`.
 
-You may be quick to say that no one really makes mistakes like this, but as code base grows, people make mistakes like this all the time.
+In the above code, you may be quick to say that no one really makes mistakes like this, but as code base grows, people make mistakes like this all the time.
 
 #### 4.1.3 Expressions to the rescue
 
