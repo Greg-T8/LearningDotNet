@@ -18,3 +18,14 @@ let addDays days =
     printfn $"You gave me {days} days and I gave you {newDays}."
     newDays
 let result = addDays 3
+
+
+let addSeveralDays () =
+    addDays 1
+    addDays 2
+    addDays 3
+
+let addSeveralDays () =
+    ignore (addDays 3)
+    ignore (addDays 5)
+    addDays 7
