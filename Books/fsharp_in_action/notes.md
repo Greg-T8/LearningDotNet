@@ -1024,3 +1024,35 @@ let result = addDays 3
 ```
 
 #### 4.1.7 Ignore
+
+There are times when you call a function that returns a value you're not interested in. This is common with functions like `addDays` above that have some side effect (printing to the console) but return a value you don't care about.
+
+Let's assume we're only interested in calling `addDays` for its ability to print to the console. We're not interested in its return value, and we write the following code:
+
+```fsharp
+let addSeveralDays () =         // Defines a function that takes unit as input
+    addDays 1                   // Calls addDays several times and implicitly ignores the outputs
+    addDays 2
+    addDays 3                   // Final call: the result from this call is returned back out
+```
+F# provides a warning for the first two calls:
+
+<img src="images/1752656878056.png" width=1000 />
+
+Warning message:
+`The result of this expression has type 'DateTime' and is implicitly ignored. Consider using 'ignore' to discard this value explicitly, e.g. 'expr |> ignore', or 'let' to bind the result to a name, e.g. 'let result = expr'.`
+
+Why are we getting this warning? 
+
+Remember that F# is an expression-oriented language, and in such a language, you compose code by plugging together functions that take in some data and return a result, which can be acted on by another piece of code. So, throwing away the result of a function makes no sense. That is unless your code executes some side effect that the compiler is unaware of (as in the case of `addDays`).
+
+In this case, you need to tell F# that this function returns something, but you know better and are happy to ignore the result. This is done by using the built-in function `ignore`:
+
+```fsharp
+let addSeveralDays () =
+    ignore (addDays 3)      // Explicitly ignores the result of addDays
+    ignore (addDays 5)
+    addDays 7
+```
+
+`ignore` takes in any value and gives back a `unit` value, which the F# compiler understands can be discarded without a warning.
