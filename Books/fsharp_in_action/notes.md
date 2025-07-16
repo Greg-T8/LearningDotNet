@@ -1056,3 +1056,6 @@ let addSeveralDays () =
 ```
 
 `ignore` takes in any value and gives back a `unit` value, which the F# compiler understands can be discarded without a warning.
+
+**Creating statements in F#**  
+While atypical, you can do statement-based evaluation in F#. Essentially, just make sure that all of your code returns `unit` (using `ignore` where necessary). In addition, you'll need to use mutable data throughout your codebase, which is deliberately more work than using *immutable* data.
