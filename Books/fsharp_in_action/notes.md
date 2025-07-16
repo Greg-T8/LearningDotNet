@@ -74,6 +74,10 @@ dotnet fsi
     - [4.1.4 Expressions in F#](#414-expressions-in-f)
     - [4.1.5 Composability](#415-composability)
       - [Refactoring to functions](#refactoring-to-functions)
+    - [4.1.6 Unit](#416-unit)
+      - [Unit as an input](#unit-as-an-input)
+      - [Unit and side effects](#unit-and-side-effects)
+    - [4.1.7 Ignore](#417-ignore)
 
 
 ## 1. Introducing F#
@@ -960,3 +964,63 @@ let describeAge age =
     let greeting = "Hello"
     printfn $"{greeting}! You are a '{ageDescription}'."
 ```
+
+#### 4.1.6 Unit
+
+F# insists that every function you create returns something. So, how do you handle cases where code doesn't return any value, e.g. a function whose result is simply to print something to the console?
+
+The answer: F# has a built-in value called `unit` that represents nothing. However, unlike `void` in other languages, `unit` acts like a regular value that can be returned from any piece of code or even bound to a symbol.
+
+```fsharp
+let printAddition a b =
+    let answer = a + b
+    printfn $"{a} plus {b} is {answer}."            // The function result is a unit
+```
+
+**Interoperating with void**
+
+When interoperating with the .NET Framework Class Library (FCL), there are thousands of methods that return `void`. F# implicitly converts `unit` to `void`, so anywhere there are code listings that return `void`, it'll be represented in F# as `unit`, and vice versa.
+
+
+Note how the code lens signatures indicates a return type of `unit`:  
+
+<img src="images/1752655022812.png" width="450"/>
+
+##### Unit as an input
+
+You can also use `unit` as an input to a function. This is useful to have some code that is executed every single time it is called.
+
+In the following code, `getCurrentTime` always returns its initial value; it doesn't recalculate itself once it's been bound.
+
+```fsharp
+let getTheCurrentTime = System.DateTime.Now         // Calculates the current time and assigns it to a symbol
+let x = getTheCurrentTime                           // Copies the value of getCurrentTime to another symbol
+let y = getTheCurrentTime                           // Copies the value of getCurrentTime to another symbol
+```
+However, if you change the definition to take `unit` as input, signified by `()`, this behavior changes:
+
+```fsharp
+let getTheCurrentTime () = System.DateTime.Now      // Creates a function that returns the current time
+let x = getTheCurrentTime ()                        // Calls a function and assigns the current time to a symbol
+let y = getTheCurrentTime ()                        // Calls a function and assigns the current time to a symbol
+```
+Think of this as telling the F# compiler that every time you call this piece of code, the state of the world has changed, and therefore it should re-evaluate the function.
+
+##### Unit and side effects
+
+Seeing `unit` in a function signature, either as input or as output, is a tell-tale sign that this function has some kind of side effect, in that calling it multiple times will probably yield different results every time.
+
+- *`Unit` as input*: Probably calling some impure code that will affect the result, e.g. getting the current time, generating a random number.
+- *`Unit` as output*: Probably writing to some I/O as the final action in the body, e.g. print to console, write to filesystem, save to database.
+
+However, since F# doesn't enforce purity, it's still possible that code that doesn't take in or return `unit` still has a side effect.
+
+```fsharp
+let addDays days =                                                      // Function has signature float -> System.DateTime
+    let newDays = System.DateTime.Today.AddDays days                    // Invisible side effect: it gets the current date
+    printfn $"You gave me {days} days and I gave you {newDays}."        // Invisible side effect: it prints to the console
+    newDays
+let result = addDays 3
+```
+
+#### 4.1.7 Ignore
