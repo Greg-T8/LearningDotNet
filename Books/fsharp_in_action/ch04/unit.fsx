@@ -20,10 +20,10 @@ let addDays days =
 let result = addDays 3
 
 
-let addSeveralDays () =
-    addDays 1
-    addDays 2
-    addDays 3
+// let addSeveralDays () =
+//     addDays 1
+//     addDays 2
+//     addDays 3
 
 let addSeveralDays () =
     ignore (addDays 3)
