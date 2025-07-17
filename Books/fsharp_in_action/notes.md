@@ -81,6 +81,7 @@ dotnet fsi
   - [4.2 Immutable Data](#42-immutable-data)
     - [4.2.1 The problem with mutability](#421-the-problem-with-mutability)
     - [4.2.2 Modeling with mutable and immutable data](#422-modeling-with-mutable-and-immutable-data)
+    - [4.2.3 Optimizing and opinionated languages](#423-optimizing-and-opinionated-languages)
 
 
 ## 1. Introducing F#
@@ -1108,3 +1109,21 @@ Working with mutable structures in the object-oriented world follows a simple mo
 <img src="images/1752743680801.png" alt="alt text" width="400"/>
 
 What's tricky about this model is it can be hard to reason about your code: calling a method such as `UpdateState()` will generally have no return value; the result of calling the method is a *side effect* that takes place internally on the object on some encapsulated state.
+
+In the immutable world, you cannot modify any data. Instead, every time you want to apply an operation, you create a new copy of the data with any updates applied to that, which is then given back to the caller. That state becomes the new, current state, which is passed downstream.
+
+<img src="images/1752743900036.png" alt="alt text" width="200"/>
+
+Every call to `GenerateNewState()` creates a new object rather than modifying a single item.
+
+**Performance of immutable data**
+
+A common but nearly always unsubstantiated concern of immutable data is that it must be slow. After all, we're creating copies of data rather than making changes to a single version, right?
+
+The author's advice: unless you can back up that concerns with real evidence, then don't worry about it. The author's experience is you simply won't notice any difference except for very specific use cases.
+
+Yes, it does involve more work to create a copy of the data rather than making an in-place update to it. However, unless you're in a tight loop performing millions of updates per second, the cost of doing so is negligible compared to, say, opening a database connection or deserializing some JSON data.
+
+Many languages, including F#, also have data structures designed to work with immutable data in a highly efficient manner, as well as some compiler tricks to help keep garbage collection to a minimum.
+
+#### 4.2.3 Optimizing and opinionated languages
