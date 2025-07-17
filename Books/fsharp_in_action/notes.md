@@ -80,6 +80,7 @@ dotnet fsi
     - [4.1.7 Ignore](#417-ignore)
   - [4.2 Immutable Data](#42-immutable-data)
     - [4.2.1 The problem with mutability](#421-the-problem-with-mutability)
+    - [4.2.2 Modeling with mutable and immutable data](#422-modeling-with-mutable-and-immutable-data)
 
 
 ## 1. Introducing F#
@@ -1094,4 +1095,16 @@ You mock out the dependencies required by these other methods and then try to as
 
 **Summary**
 
-The single truth: working with mutable data is hard. It's hard to reason about the lifetime of data, and changes of state can happen in ways that are hard to trace or predict, especially in comp
+The single truth: working with mutable data is hard. It's hard to reason about the lifetime of data, and changes of state can happen in ways that are hard to trace or predict, especially in complex systems.
+
+The problem is we simply assume that mutability is a way of life, something we can't escape. So we look for other ways around these sorts of issues, including encapsulation, hacks, or design patterns that add more code, effort, and complexity. 
+
+It turns out that working with immutable data solves many of these issues.
+
+#### 4.2.2 Modeling with mutable and immutable data
+
+Working with mutable structures in the object-oriented world follows a simple model: you create an object and then modify its state through operations on that object. 
+
+<img src="images/1752743680801.png" alt="alt text" width="400"/>
+
+What's tricky about this model is it can be hard to reason about your code: calling a method such as `UpdateState()` will generally have no return value; the result of calling the method is a *side effect* that takes place internally on the object on some encapsulated state.
