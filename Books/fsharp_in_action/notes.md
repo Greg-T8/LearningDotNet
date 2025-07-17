@@ -78,6 +78,8 @@ dotnet fsi
       - [Unit as an input](#unit-as-an-input)
       - [Unit and side effects](#unit-and-side-effects)
     - [4.1.7 Ignore](#417-ignore)
+  - [4.2 Immutable Data](#42-immutable-data)
+    - [4.2.1 The problem with mutability](#421-the-problem-with-mutability)
 
 
 ## 1. Introducing F#
@@ -1061,3 +1063,35 @@ let addSeveralDays () =
 
 **Creating statements in F#**  
 While atypical, you can do statement-based evaluation in F#. Essentially, just make sure that all of your code returns `unit` (using `ignore` where necessary). In addition, you'll need to use mutable data throughout your codebase, which is deliberately more work than using *immutable* data.
+
+### 4.2 Immutable Data
+
+If expressions are the one part of the core of how you architect and organize code in F#, immutability is the other half. Immutability is almost mandatory once you accept that you want to develop using expressions.
+
+#### 4.2.1 The problem with mutability
+
+Immutability is the concept of working with data that never changes. You create data with a value, and that value is set for the lifetime of a symbol.
+
+Realword issues of working with mutable data:
+
+**The unrepeatable bug**
+
+Applications that use a shared mutable state stored in the middle can cause bugs that are difficult to reproduce.
+
+**Multithreading pitfalls**
+
+When using multithreading, race conditions that only occur under a specific load and a certain ordering of messages. 
+
+**Accidentally sharing state**
+
+You designed a business object class, while your colleague has written code to operate on that object. You call their code, supplying an appropriate object. Some time later, a bug arises: the state of the business object no longer looks as it did previously! It turns out the code your colleague wrote modified a property on the object without you realizing it. You made the property public only so thatyou could change it; you didn't intend or expect other areas of code to modify it. You fix the problem by making an interface for the type that exposes the bits that are really public on the type and give it to the consumers instead.
+
+**Testing hidden state**
+
+You're writing unit tests. You want to test a branch of a specific method on your class, but you first need to get the object into a particular state by calling other methods on the class.
+
+You mock out the dependencies required by these other methods and then try to assess whether your actual method under test worked as expected. However, you only then realize the only way to do this is to access some private state of the class, which is not visible to your unit test, so you simply change the accessibility of the private field to public.
+
+**Summary**
+
+The single truth: working with mutable data is hard. It's hard to reason about the lifetime of data, and changes of state can happen in ways that are hard to trace or predict, especially in comp
