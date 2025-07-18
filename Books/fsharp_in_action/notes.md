@@ -27,6 +27,11 @@ dotnet run
 # Start the FSI (F# Interactive) REPL
 dotnet fsi
 ```
+<!-- omit in toc -->
+## FSI Commands
+```fsharp
+System.Console.Clear()  // Clear the console
+```
 
 <!-- omit in toc -->
 ## Contents
@@ -83,6 +88,8 @@ dotnet fsi
     - [4.2.2 Modeling with mutable and immutable data](#422-modeling-with-mutable-and-immutable-data)
     - [4.2.3 Optimizing and opinionated languages](#423-optimizing-and-opinionated-languages)
       - [Working with immutable data: a worked example](#working-with-immutable-data-a-worked-example)
+    - [4.2.4 Other benefits of immutable data](#424-other-benefits-of-immutable-data)
+- [5. Shaping Data](#5-shaping-data)
 
 
 ## 1. Introducing F#
@@ -1212,6 +1219,40 @@ val it: float = 14.5
 
 **Immutable version:**
 
+```fsharp
+let drive gas distance =                            // Function is explicitly dependent on the state
+    if distance = "far" then gas / 2.0
+    elif distance = "medium" then gas - 10.0
+    else gas - 1.0
+
+let gas = 100.0                                     // Stores the initial start date
+let firstState = drive gas "far"                    // Stores the result of each function call in a separate symbol
+let secondState =  drive firstState "medium"
+let thirdState = drive secondState "near"           // Manually chains calls together
 ```
+<img src="images/1752828136362.png" alt="alt text" width="350"/>
+
+Important change:
+
+There is no longer a mutable version of `gas`, but an initial state of `100` and then a set of immutable values threaded through each function call. There are several benefits to this:
+- You can reason about the behavior easily. The function is "honest" and easily understandable from the type signature: the function takes in `gas` and `distance` and returns the updated `gas`.
+- Rather than hidden side effects on private fields, each method or function call returns a new version of the state that you can easily understand.
+- Function calls are repeatable. You can `drive 50 "far"` as many times as you want and get the same result each time. This is because the only values that can affect the result are the inputs to the function; there's no global state that is implicitly used&mdash;in other words, a pure function.
+- The compiler can protect you from accidentally misordering function calls because each function call is explicitly dependent on the output of the previous call.
+- You can also see the value of each intermediate step as you work up toward the final state.
+
+In the above code, we manually stored the intermediate state and explicitly passed it to the next function call in the chain. This is not necessary in F#. The author will later show how F# has syntax designed specifically to avoid this behavior.
+
+#### 4.2.4 Other benefits of immutable data
+
+- Encapsulation is no longer as important: since everything is read-only, you don't have to live in fear that some other part of the code will pull the rug underneath you and change the value of your data. While encapsulation is useful to have (i.e. as part of a public API), and F# has modifiers such as `public`, `private`, and `internal`, making your data read-only eliminates the need to hide data values.
+- You don't need to worry about locks within a multithreaded environment. Because there's no shared mutable state, you never have to be concerned with race conditions. Every thread can access the same piece of data as often as it likes, as it can never change.
+
+## 5. Shaping Data
+
+
+
+
+
 
    
