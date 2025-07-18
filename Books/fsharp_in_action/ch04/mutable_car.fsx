@@ -4,4 +4,8 @@ let drive distance =
     elif distance = "medium" then gas <- gas - 10.0
     else gas <- gas - 1.0
 
-    
+drive "far"
+drive "near"
+drive "far"
+drive "medium"
+gas

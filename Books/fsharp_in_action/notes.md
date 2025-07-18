@@ -1170,3 +1170,48 @@ let drive distance =                                    // Creates a function th
     else gas <- gas - 1.0                               // Mutates using the <- operator
 ```
 
+Things to note:
+
+1. Look at the type signature of the `drive` function. It's dishonest in two ways:
+
+<img src="images/1752826967230.png" width="400"/>  
+
+- It's dependent on two pieces of data, but only one is shown as an input. `gas` is implicitly utilized, but you can't see that from the type signature. This is similar to a method on a class that uses some encapsulated private state.
+- `drive` has no outputs. You call it, and it silently modifies the mutable `gas` variable; you can't know this from the type signature, which returns `unit`.
+
+2. Methods are nondeterministic. You can't know the behavior of a method without knowing the state. If you call `drive "far"` three times, the value of `gas` will change every time by a different amount, depending on the previous calls.
+
+3. You have no control over the ordering of method calls. If you switch the order of calls to `drive` you'll get a different answer at the end.
+
+```cmd
+> # 1 @"...\LearningDotNet\Books\fsharp_in_action\ch04\mutable_car.fsx"
+- let mutable gas = 100.0
+- let drive distance =
+-     if distance = "far" then gas <- gas / 2.0
+-     elif distance = "medium" then gas <- gas - 10.0
+-     else gas <- gas - 1.;;
+val mutable gas: float = 100.0
+val drive: distance: string -> unit
+
+> # 7 @"...\LearningDotNet\Books\fsharp_in_action\ch04\mutable_car.fsx"
+- drive "far";;
+val it: unit = ()
+
+> drive "near";;
+val it: unit = ()
+
+> drive "far";;
+val it: unit = ()
+
+> drive "medium";;
+val it: unit = ()
+
+> gas;;
+val it: float = 14.5
+```
+
+**Immutable version:**
+
+```
+
+   
