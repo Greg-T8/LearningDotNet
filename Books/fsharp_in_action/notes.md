@@ -82,6 +82,7 @@ dotnet fsi
     - [4.2.1 The problem with mutability](#421-the-problem-with-mutability)
     - [4.2.2 Modeling with mutable and immutable data](#422-modeling-with-mutable-and-immutable-data)
     - [4.2.3 Optimizing and opinionated languages](#423-optimizing-and-opinionated-languages)
+      - [Working with immutable data: a worked example](#working-with-immutable-data-a-worked-example)
 
 
 ## 1. Introducing F#
@@ -1127,3 +1128,45 @@ Yes, it does involve more work to create a copy of the data rather than making a
 Many languages, including F#, also have data structures designed to work with immutable data in a highly efficient manner, as well as some compiler tricks to help keep garbage collection to a minimum.
 
 #### 4.2.3 Optimizing and opinionated languages
+
+All languages are opinionated and optimized in some way. F# is optimized for working with immutable data. While F# can work with mutable data, the syntax is more verbose than for immutable data. The inverse is true in other languages.
+
+Here's the C# version:
+```csharp
+const string name = "isaac";                // Immutable data in C#
+var age = 42;                               // Declares a mutable variable
+age = 43;                                   // Performs an assignment
+if (age == 43) {...}                        // Performs an  expression
+```
+Here's the F# version:
+```fsharp
+let name = "isaac"                          // Declares an immutable value
+let mutable age = 42                        // Declares a mutable variable
+age <- 43                                   // Performs an assignment
+if age = 43 then ...                        // Performs a comparison
+```
+
+Things to note:
+- F# optimizes for creating immutable data: it's less code to write than for mutable data, where you need an extra keyword.
+- F# optimizes for working with immutable data: when it comes to the equality comparison, the equals symbol `=` is used for equality checks, and the new operator `<-` is used for mutation/assignment. In C#, `=` is used for assignment and `==` is used for equality checks. 
+
+##### Working with immutable data: a worked example
+
+In this scenario, we model a car with both mutable and immutable data&mdash;code that can simulate the gas tank in a car.
+
+- A function called `drive` that takes the distance driven as input, which is a string of either `far`, `medium`, or `near`.
+- The gas tank starts at `100`.
+- If driving far, reduce the amount of gas by half in the gas tank.
+- If driving medium, reduce the amount by 10.
+- Otherwise, reduce the amount by 1.
+
+**Mutable version:**
+
+```fsharp
+let mutable gas = 100.0                                 // Creates a mutable variable and sets its value to a float
+let drive distance =                                    // Creates a function that is dependent on the mutable state
+    if distance = "far" then gas <- gas / 2.0           // Mutates using the <- operator
+    elif distance = "medium" then gas <- gas - 10.0     // Mutates using the <- operator
+    else gas <- gas - 1.0                               // Mutates using the <- operator
+```
+
