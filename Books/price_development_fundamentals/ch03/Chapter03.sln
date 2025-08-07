@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelectionStatements", "Sele
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IterationStatements", "IterationStatements\IterationStatements.csproj", "{39AF4E31-09F1-4A2E-8527-C33B63382C85}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrays", "Arrays\Arrays.csproj", "{696278F2-6D33-4D83-BC06-E332A92E1E39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,18 @@ Global
 		{39AF4E31-09F1-4A2E-8527-C33B63382C85}.Release|x64.Build.0 = Release|Any CPU
 		{39AF4E31-09F1-4A2E-8527-C33B63382C85}.Release|x86.ActiveCfg = Release|Any CPU
 		{39AF4E31-09F1-4A2E-8527-C33B63382C85}.Release|x86.Build.0 = Release|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Debug|x64.Build.0 = Debug|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Debug|x86.Build.0 = Debug|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|x64.ActiveCfg = Release|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|x64.Build.0 = Release|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|x86.ActiveCfg = Release|Any CPU
+		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
