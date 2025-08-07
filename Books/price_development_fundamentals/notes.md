@@ -24,6 +24,8 @@ dotnet --list-runtimes                                          # List all insta
 dotnet new --list                                               # List all templates
 dotnet new console --help   
 
+
+dotnet sln list                                                 # List all projects in the current solution
 dotnet new sln --name Chapter01                                 # Create a new solution file in the current folder
 dotnet new console -n HelloCS -o .                              # Create a new console app in the current folder
 dotnet sln add HelloCS                                          # Add the HelloCS project to the solution 
@@ -115,6 +117,7 @@ dotnet run                                                      # Run the curren
     - [Looping with the foreach statement](#looping-with-the-foreach-statement)
       - [Understanding how foreach works internally](#understanding-how-foreach-works-internally)
   - [Storing muliple values in an array](#storing-muliple-values-in-an-array)
+    - [Single-dimensional arrays](#single-dimensional-arrays)
 
 
 ## Chapter 2: Speaking C#
@@ -1837,3 +1840,35 @@ while (e.MoveNext())
 Because the `Current` property is read-only, the variable declared in the `foreach` statement cannot be used to modify the value of the current item.
 
 ### Storing muliple values in an array
+
+Declare an array when you need to store multiple values of the same type.
+
+#### Single-dimensional arrays
+
+The following code allocates memory for storing four `string` values. It then stores `string` values at index positions 0 to 3. 
+
+**Note:** Don't assume all arrays count from zero. The most common type of array in .NET is `szArray`, a single-dimensional zero-indexed array, and these use the normal `[]` syntax. However, .NET also has `mdArray`, a multi-dimensional array, and these do not have to start at zero. 
+
+```cs
+string[] names;                 // This can reference any size array of strings
+names = new string[4];          // Allocate memory for four strings in an array
+
+// Assign names to each element in the array
+names[0] = "Kate";
+names[1] = "Jack";
+names[2] = "Rebecca";
+names[3] = "Tom";
+
+// Iterate through the array and print each name with its position
+for (int i = 0; i < names.Length; i++)
+{
+    WriteLine($"{names[i]} is at position {i}.");
+}
+```
+```
+% dotnet run
+Kate is at position 0.
+Jack is at position 1.
+Rebecca is at position 2.
+Tom is at position 3.
+```
