@@ -118,6 +118,7 @@ dotnet run                                                      # Run the curren
       - [Understanding how foreach works internally](#understanding-how-foreach-works-internally)
   - [Storing muliple values in an array](#storing-muliple-values-in-an-array)
     - [Single-dimensional arrays](#single-dimensional-arrays)
+    - [Multi-dimensional arrays](#multi-dimensional-arrays)
 
 
 ## Chapter 2: Speaking C#
@@ -1847,7 +1848,6 @@ Declare an array when you need to store multiple values of the same type.
 
 The following code allocates memory for storing four `string` values. It then stores `string` values at index positions 0 to 3. 
 
-**Note:** Don't assume all arrays count from zero. The most common type of array in .NET is `szArray`, a single-dimensional zero-indexed array, and these use the normal `[]` syntax. However, .NET also has `mdArray`, a multi-dimensional array, and these do not have to start at zero. 
 
 ```cs
 string[] names;                 // This can reference any size array of strings
@@ -1872,3 +1872,18 @@ Jack is at position 1.
 Rebecca is at position 2.
 Tom is at position 3.
 ```
+Arrays are always of a fixed size at the time of memory allocation, so you need to decide how many items you want to store before instantiating them.
+
+**Note:** Don't assume all arrays count from zero. The most common type of array in .NET is `szArray`, a single-dimensional zero-indexed array, and these use the normal `[]` syntax. However, .NET also has `mdArray`, a multi-dimensional array, and these do not have to start at zero. 
+
+You can also define an array using array initializer syntax, which is more concise:
+
+```cs
+string[] names2 = { "Kate", "Jack", "Rebecca", "Tom" }; // Array initializer syntax
+for (int i = 0; i < names2.Length; i++)
+{
+    WriteLine($"{names2[i]} is at position {i}.");
+}
+```
+
+#### Multi-dimensional arrays

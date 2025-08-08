@@ -20,3 +20,9 @@ for (int i = 0; i < names.Length; i++)
 {
     WriteLine($"{names[i]} is at position {i}.");
 }
+
+string[] names2 = { "Kate", "Jack", "Rebecca", "Tom" }; // Array initializer syntax
+for (int i = 0; i < names2.Length; i++)
+{
+    WriteLine($"{names2[i]} is at position {i}.");
+}
