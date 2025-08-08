@@ -119,6 +119,7 @@ dotnet run                                                      # Run the curren
   - [Storing muliple values in an array](#storing-muliple-values-in-an-array)
     - [Single-dimensional arrays](#single-dimensional-arrays)
     - [Multi-dimensional arrays](#multi-dimensional-arrays)
+    - [List pattern matching with arrays](#list-pattern-matching-with-arrays)
 
 
 ## Chapter 2: Speaking C#
@@ -1981,3 +1982,5 @@ Row 1, Column 3: Doug
 Row 2, Column 0: Aardvark
 Row 2, Column 1: Bear
 ```
+
+#### List pattern matching with arrays
