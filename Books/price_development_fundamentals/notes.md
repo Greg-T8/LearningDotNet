@@ -119,6 +119,7 @@ dotnet run                                                      # Run the curren
   - [Storing muliple values in an array](#storing-muliple-values-in-an-array)
     - [Single-dimensional arrays](#single-dimensional-arrays)
     - [Multi-dimensional arrays](#multi-dimensional-arrays)
+    - [Working with jagged arrays](#working-with-jagged-arrays)
 
 
 ## Chapter 2: Speaking C#
@@ -1887,3 +1888,65 @@ for (int i = 0; i < names2.Length; i++)
 ```
 
 #### Multi-dimensional arrays
+
+```cs
+// Declare and initialize a two-dimensional string array, then print its bounds and contents
+string[,] grid1 =
+{
+    { "Alpha", "Beta", "Gamma", "Delta" },
+    { "Anne", "Ben", "Charlie", "Doug" },
+    { "Aardvark", "Bear", "Cat", "Dog" }
+};
+
+// Print the lower and upper bounds of each dimension of the two-dimensional array
+WriteLine($"1st dimension, lower bound: {grid1.GetLowerBound(0)}");
+WriteLine($"1st dimension, upper bound: {grid1.GetUpperBound(0)}");
+WriteLine($"2nd dimension, lower bound: {grid1.GetLowerBound(1)}");
+WriteLine($"2nd dimension, upper bound: {grid1.GetUpperBound(1)}");
+
+// Iterate through the two-dimensional array and print each element with its row and column
+for (int row = 0; row <= grid1.GetUpperBound(0); row++)
+{
+    for (int col = 0; col <= grid1.GetUpperBound(1); col++)
+    {
+        WriteLine($"Row {row}, Column {col}: {grid1[row, col]}");
+    }
+} 
+```
+```cmd
+1st dimension, lower bound: 0
+1st dimension, upper bound: 2
+2nd dimension, lower bound: 0
+2nd dimension, upper bound: 3
+
+Row 0, Column 0: Alpha
+Row 0, Column 1: Beta
+Row 0, Column 2: Gamma
+Row 0, Column 3: Delta
+Row 1, Column 0: Anne
+Row 1, Column 1: Ben
+Row 1, Column 2: Charlie
+Row 1, Column 3: Doug
+Row 2, Column 0: Aardvark
+Row 2, Column 1: Bear
+Row 2, Column 2: Cat
+Row 2, Column 3: Dog
+```
+
+You must supply a value for every row and column when it is instantiated or you will get compile errors.
+
+Use `string.Empty` if you need to indicate a missing value.
+
+Or you can declare the array to be nullable values by using `string?[]`; then you can use `null` for a missing value.
+
+If you cannot use array initialization syntax, perhaps because you are loading values from a file or database, you can separate the declaration of the array dimension and the allocation of memory from the assignment of values:
+
+```cs
+string[,] grid2 = new string[3, 4];     // Allocate memory
+grid2[0, 0] = "Alpha";                  // Assign values
+grid2[0, 1] = "Beta";
+// And so on
+grid[2, 3] = "Dog";
+```
+
+#### Working with jagged arrays
