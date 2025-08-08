@@ -53,9 +53,35 @@ for (int row = 0; row <= grid1.GetUpperBound(0); row++)
     }
 }
 
-// Alternative syntax
+// Alternative syntax for declaring and initializing a two-dimensional array
 string[,] grid2 = new string[3, 4];     // Allocate memory
 grid2[0, 0] = "Alpha";                  // Assign values
 grid2[0, 1] = "Beta";
 // And so on
-grid[2, 3] = "Dog";
+grid2[2, 3] = "Dog";
+
+
+
+// Declare and initialize a jagged array (array of arrays)
+string[][] jagged =
+{
+    new[]{"Alpha", "Beta", "Gamma"},
+    new[]{"Anne", "Ben", "Charlie", "Doug"},
+    new[]{"Aardvark", "Bear"}
+};
+
+// Print the upper bound of the jagged array and each sub-array
+WriteLine("Upper bound of the array of arrays is: {0}", jagged.GetUpperBound(0));
+for (int array = 0; array <= jagged.GetUpperBound(0); array++)
+{
+    WriteLine("Upper bound of array {0} is {1}", arg0: array, arg1: jagged[array].GetUpperBound(0));
+}
+
+// Iterate through the jagged array and print each element with its row and column
+for (int row = 0; row <= jagged.GetUpperBound(0); row++)
+{
+    for (int col = 0; col <= jagged[row].GetUpperBound(0); col++)
+    {
+        WriteLine($"Row {row}, Column {col}: {jagged[row][col]}");
+    }
+}
