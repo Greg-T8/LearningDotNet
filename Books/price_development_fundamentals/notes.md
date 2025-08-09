@@ -120,6 +120,12 @@ dotnet run                                                      # Run the curren
     - [Single-dimensional arrays](#single-dimensional-arrays)
     - [Multi-dimensional arrays](#multi-dimensional-arrays)
     - [List pattern matching with arrays](#list-pattern-matching-with-arrays)
+    - [Trailing commas](#trailing-commas)
+    - [Understanding inline arrays](#understanding-inline-arrays)
+    - [Summarizing arrays](#summarizing-arrays)
+  - [Casting and converting between types](#casting-and-converting-between-types)
+    - [Casting numbers implicitly and explicitly](#casting-numbers-implicitly-and-explicitly)
+    - [How negative numbers are represented in binary](#how-negative-numbers-are-represented-in-binary)
 
 
 ## Chapter 2: Speaking C#
@@ -1991,16 +1997,195 @@ When you define multiple list patterns in the same `switch` expression, you must
 
 Examples of list pattern matching:
 
-| Example                                   | Description                                                                                                                                                       |
-|-------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `[]`                                       | Matches an empty array or collection.                                                                                                                             |
-| `[..]`                                     | Matches an array or collection with any number of items, including zero, so `[..]` must come after `[]` if you need to switch on both.                               |
-| `[_]`                                      | Matches a list with any single item.                                                                                                                              |
-| `[int item1]` or `[var item1]`             | Matches a list with any single item and can use the value in the return expression by referring to `item1`.                                                         |
-| `[7, 2]`                                   | Matches exactly a list of two items with those values in that order.                                                                                              |
-| `[_, _]`                                   | Matches a list with any two items.                                                                                                                                |
-| `[var item1, var item2]`                   | Matches a list with any two items and can use the values in the return expression by referring to `item1` and `item2`.                                                |
-| `[_, _, _]`                                | Matches a list with any three items.                                                                                                                              |
-| `[var item1, ..]`                          | Matches a list with one or more items. Can refer to the value of the first item in its return expression by referring to `item1`.                                   |
-| `[var firstItem, .., var lastItem]`        | Matches a list with two or more items. Can refer to the value of the first and last item in its return expression by referring to firstItem and lastItem.         |
-| `[.., var lastItem]`                       | Matches a list with one or more items. Can refer to the value of the last item in its return expression by referring to lastItem.                                 |
+| Example                             | Description                                                                                                                                               |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `[]`                                | Matches an empty array or collection.                                                                                                                     |
+| `[..]`                              | Matches an array or collection with any number of items, including zero, so `[..]` must come after `[]` if you need to switch on both.                    |
+| `[_]`                               | Matches a list with any single item.                                                                                                                      |
+| `[int item1]` or `[var item1]`      | Matches a list with any single item and can use the value in thereturn expression by referring to `item1`.                                                |
+| `[7, 2]`                            | Matches exactly a list of two items with those values in that order.                                                                                      |
+| `[_, _]`                            | Matches a list with any two items.                                                                                                                        |
+| `[var item1, var item2]`            | Matches a list with any two items and can use the values in the return expression by referring to `item1` and `item2`.                                    |
+| `[_, _, _]`                         | Matches a list with any three items.                                                                                                                      |
+| `[var item1, ..]`                   | Matches a list with one or more items. Can refer to the value of the first item in its return expression by referring to `item1`.                         |
+| `[var firstItem, .., var lastItem]` | Matches a list with two or more items. Can refer to the value of the first and last item in its return expression by referring to firstItem and lastItem. |
+| `[.., var lastItem]`                | Matches a list with one or more items. Can refer to the value of the last item in its return expression by referring to lastItem.                         |
+
+```cs
+// Declare and initialize various arrays for pattern matching examples
+int[] sequentialNumbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+int[] oneTwoNumbers = { 1, 2 };
+int[] oneTwoTenNumbers = { 1, 2, 10 };
+int[] oneTwoThreeTenNumbers = { 1, 2, 3, 10 };
+int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
+int[] fibonacciNumbers = { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
+int[] emptyNumbers = { }; // Or use Array.Empty<int>()
+int[] threeNumbers = { 9, 7, 5 };
+int[] sixNumbers = { 9, 7, 5, 4, 2, 10 };
+
+// Print the results of pattern matching on each array
+WriteLine($"{nameof(sequentialNumbers)}: {CheckSwitch(sequentialNumbers)}");
+WriteLine($"{nameof(oneTwoNumbers)}: {CheckSwitch(oneTwoNumbers)}");
+WriteLine($"{nameof(oneTwoTenNumbers)}: {CheckSwitch(oneTwoTenNumbers)}");
+WriteLine($"{nameof(oneTwoThreeTenNumbers)}: {CheckSwitch(oneTwoThreeTenNumbers)}");
+WriteLine($"{nameof(primeNumbers)}: {CheckSwitch(primeNumbers)}");
+WriteLine($"{nameof(fibonacciNumbers)}: {CheckSwitch(fibonacciNumbers)}");
+WriteLine($"{nameof(emptyNumbers)}: {CheckSwitch(emptyNumbers)}");
+WriteLine($"{nameof(threeNumbers)}: {CheckSwitch(threeNumbers)}");
+WriteLine($"{nameof(sixNumbers)}: {CheckSwitch(sixNumbers)}");
+
+// Define a method to perform pattern matching on arrays
+static string CheckSwitch(int[] values) => values switch
+{
+    [] => "Empty array",
+    [1, 2, _, 10] => "Contains 1, 2, any single number, 10.",
+    [1, 2, .., 10] => "Contains 1, 2, any range including empty, 10.",
+    [1, 2] => "Contains 1 then 2.",
+    [int item1, int item2, int item3] =>
+      $"Contains {item1} then {item2} then {item3}.",
+    [0, _] => "Starts with 0, then one other number.",
+    [0, ..] => "Starts with 0, then any range of numbers.",
+    [2, .. int[] others] => $"Starts with 2, then {others.Length} more numbers.",
+    [..] => "Any items in any order.",              // Notice trailing comma (see next section)
+};
+```
+```
+sequentialNumbers: Contains 1, 2, any range including empty, 10.
+oneTwoNumbers: Contains 1 then 2.
+oneTwoTenNumbers: Contains 1, 2, any range including empty, 10.
+oneTwoThreeTenNumbers: Contains 1, 2, any single number, 10.
+primeNumbers: Starts with 2, then 9 more numbers.
+fibonacciNumbers: Starts with 0, then any range of numbers.
+emptyNumbers: Empty array
+threeNumbers: Contains 9 then 7 then 5.
+sixNumbers: Any items in any order.
+```
+
+**Note:** The `Check-Switch` function above uses syntax for expression-bodied function members. In C#, lambdas are the use of the `=>` character to indicate a return value from a function.
+
+#### Trailing commas
+
+The trailing comman after the last item in the `switch` expression is optional, and the compiler won't complain about it.
+
+C# allows you to have the trailing comma so that you can easily rearrange the order of the items without having to keep adding and removing columns.
+
+#### Understanding inline arrays
+
+Inline arrays are an advanced feature used by the .NET runtime team to improve performance. You are unlikely to use them yourself unless you are a public library author.
+
+https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-12.0/inline-arrays
+
+#### Summarizing arrays
+
+Summary of array declaration syntax:
+
+| **Type of Array**                                             | **Declaration Syntax**                |
+| ------------------------------------------------------------- | ------------------------------------- |
+| One dimension                                                 | `datatype[]`, for example, `string[]` |
+| Two dimensions                                                | `string[,]`                           |
+| Three dimensions                                              | `string[,,]`                          |
+| Ten dimensions                                                | `string[,,,,,,,,,]`                   |
+| Array of arrays, aka two-dimensional jagged array             | `string[][]`                          |
+| Array of arrays of arrays, aka three-dimensional jagged array | `string[][][]`                        |
+
+Arrays are useful for temporarily storing multiple items, but collections are a more flexible option when adding and removing items dynamically.
+
+If you don't need to dynamically add and remove items, then you should use an array instead of a colection like `List<T>` because arrays are more efficient in memory use and the items are stored contiguously, which can improve performance.
+
+### Casting and converting between types
+
+Converting between types is also known as **casting**, and it has two varieties: **implicit** and **explicit**. 
+
+Implicit casting happens automatically and is safe, meaning you don't lose any information.
+
+Explicit casting must be performed manually because it may lose information.
+
+#### Casting numbers implicitly and explicitly
+
+```cs
+int a = 10;
+double b = a;       //An int can be safely cast into a double
+WriteLine($"a is {a}, b is {b}");
+
+double c = 9.8;
+int d = (int)c;     //Explicit cast is required to convert a double to an int
+WriteLine($"c is {c}, d is {d}");
+```
+```pwsh
+a is 10, b is 10
+c is 9.8, d is 9        # d loses the .8 part
+```
+
+```cs
+long e = 10;
+int f = (int)e;     //Explicit cast is required to convert a long to an int
+WriteLine($"e is {e:N0}, f is {f:N0}");
+
+e = long.MaxValue;
+f = (int)e;
+WriteLine($"e is {e:N0}, f is {f:N0}");
+```
+```pwsh
+e is 10, f is 10
+e is 9,223,372,036,854,775,807, f is -1     # This is an overflow. It is -1 because (see next section)
+```
+
+```cs
+e = 5_000_000_000;
+f = (int)e;
+WriteLine($"e is {e:N0}, f is {f:N0}")
+```
+```pwsh
+e is 5,000,000,000, f is 705,032,704        # 5 billion cannot fit into a 32-bit integer, so it overflows to about 705 million.
+```
+
+#### How negative numbers are represented in binary
+
+Why was the value of `f` equal to `-1` in the previous code?
+
+```cs
+WriteLine("{0,12}{1,34}", "Decimal", "Binary");     // 12 and 34 mean right-align with those values
+WriteLine("{0,12}{0,34:B32}", int.MaxValue);        // Binary padded to 32 bits
+for (int i = 8; i >= -8; i--)
+{
+    WriteLine("{0,12}{0,34:B32}", i);
+}
+WriteLine("{0,12}{0,34:B32}", int.MinValue);
+```
+```pwsh
+     Decimal                            Binary
+  2147483647  01111111111111111111111111111111
+           8  00000000000000000000000000001000
+           7  00000000000000000000000000000111
+           6  00000000000000000000000000000110
+           5  00000000000000000000000000000101
+           4  00000000000000000000000000000100
+           3  00000000000000000000000000000011
+           2  00000000000000000000000000000010
+           1  00000000000000000000000000000001
+           0  00000000000000000000000000000000
+          -1  11111111111111111111111111111111          # long.MaxValue contains all 1's in its least significant bits
+          -2  11111111111111111111111111111110
+          -3  11111111111111111111111111111101
+          -4  11111111111111111111111111111100
+          -5  11111111111111111111111111111011
+          -6  11111111111111111111111111111010
+          -7  11111111111111111111111111111001
+          -8  11111111111111111111111111111000
+ -2147483648  10000000000000000000000000000000
+```
+
+**Note:** All positive binary number represntations start with `0` and all negative binary number representations start with `1`.
+
+When casting from a wider integer data type to a narrower integer data type, the most significant bits get truncated. The least significant bits represent the result of the casting.
+
+```cs
+long r = 0b_101000101010001100100111010100101010;
+int s = (int)r;
+Console.WriteLine($"{r,38:B38} = {r}");
+Console.WriteLine($"{s,38:B38} = {s}");
+```
+```pwsh
+00101000101010001100100111010100101010 = 43657622826
+00000000101010001100100111010100101010 = 707949866          # Most significant bits are truncated; least significant bits represent the result of the casting.
+```

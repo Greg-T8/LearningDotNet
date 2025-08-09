@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IterationStatements", "Iter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrays", "Arrays\Arrays.csproj", "{696278F2-6D33-4D83-BC06-E332A92E1E39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CastingConverting", "CastingConverting\CastingConverting.csproj", "{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|x64.Build.0 = Release|Any CPU
 		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|x86.ActiveCfg = Release|Any CPU
 		{696278F2-6D33-4D83-BC06-E332A92E1E39}.Release|x86.Build.0 = Release|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Debug|x64.Build.0 = Debug|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Debug|x86.Build.0 = Debug|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|x64.ActiveCfg = Release|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|x64.Build.0 = Release|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|x86.ActiveCfg = Release|Any CPU
+		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

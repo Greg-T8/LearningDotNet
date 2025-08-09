@@ -7,7 +7,8 @@ Description: Demonstrates array declaration, initialization, and iteration.
 */
 
 // Declare a string array reference and allocate memory for four strings
-string[] names;                 // This can reference any size array of strings
+// This can reference any size array of strings
+string[] names;
 names = new string[4];          // Allocate memory for four strings in an array
 
 // Assign names to each element in the array
@@ -22,15 +23,17 @@ for (int i = 0; i < names.Length; i++)
     WriteLine($"{names[i]} is at position {i}.");
 }
 
-// Declare and initialize a string array using array initializer syntax, then print each name with its position
-string[] names2 = { "Kate", "Jack", "Rebecca", "Tom" }; // Array initializer syntax
+// Declare and initialize a string array using array initializer syntax
+// Then print each name with its position
+string[] names2 = { "Kate", "Jack", "Rebecca", "Tom" };
 for (int i = 0; i < names2.Length; i++)
 {
     WriteLine($"{names2[i]} is at position {i}.");
 }
 
 
-// Declare and initialize a two-dimensional string array, then print its bounds and contents
+// Declare and initialize a two-dimensional string array
+// Then print its bounds and contents
 string[,] grid1 =
 {
     { "Alpha", "Beta", "Gamma", "Delta" },
@@ -53,9 +56,10 @@ for (int row = 0; row <= grid1.GetUpperBound(0); row++)
     }
 }
 
-// Alternative syntax for declaring and initializing a two-dimensional array
-string[,] grid2 = new string[3, 4];     // Allocate memory
-grid2[0, 0] = "Alpha";                  // Assign values
+// Declare and initialize a two-dimensional array using alternative syntax
+// Then assign values to specific elements
+string[,] grid2 = new string[3, 4];
+grid2[0, 0] = "Alpha";
 grid2[0, 1] = "Beta";
 // And so on
 grid2[2, 3] = "Dog";
@@ -63,6 +67,7 @@ grid2[2, 3] = "Dog";
 
 
 // Declare and initialize a jagged array (array of arrays)
+// Then print the upper bound of the jagged array and each sub-array
 string[][] jagged =
 {
     new[]{"Alpha", "Beta", "Gamma"},
@@ -70,7 +75,6 @@ string[][] jagged =
     new[]{"Aardvark", "Bear"}
 };
 
-// Print the upper bound of the jagged array and each sub-array
 WriteLine("Upper bound of the array of arrays is: {0}", jagged.GetUpperBound(0));
 for (int array = 0; array <= jagged.GetUpperBound(0); array++)
 {
@@ -85,3 +89,44 @@ for (int row = 0; row <= jagged.GetUpperBound(0); row++)
         WriteLine($"Row {row}, Column {col}: {jagged[row][col]}");
     }
 }
+
+#region List pattern matching with arrays
+
+// Declare and initialize various arrays for pattern matching examples
+int[] sequentialNumbers = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+int[] oneTwoNumbers = { 1, 2 };
+int[] oneTwoTenNumbers = { 1, 2, 10 };
+int[] oneTwoThreeTenNumbers = { 1, 2, 3, 10 };
+int[] primeNumbers = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 };
+int[] fibonacciNumbers = { 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89 };
+int[] emptyNumbers = { }; // Or use Array.Empty<int>()
+int[] threeNumbers = { 9, 7, 5 };
+int[] sixNumbers = { 9, 7, 5, 4, 2, 10 };
+
+// Print the results of pattern matching on each array
+WriteLine($"{nameof(sequentialNumbers)}: {CheckSwitch(sequentialNumbers)}");
+WriteLine($"{nameof(oneTwoNumbers)}: {CheckSwitch(oneTwoNumbers)}");
+WriteLine($"{nameof(oneTwoTenNumbers)}: {CheckSwitch(oneTwoTenNumbers)}");
+WriteLine($"{nameof(oneTwoThreeTenNumbers)}: {CheckSwitch(oneTwoThreeTenNumbers)}");
+WriteLine($"{nameof(primeNumbers)}: {CheckSwitch(primeNumbers)}");
+WriteLine($"{nameof(fibonacciNumbers)}: {CheckSwitch(fibonacciNumbers)}");
+WriteLine($"{nameof(emptyNumbers)}: {CheckSwitch(emptyNumbers)}");
+WriteLine($"{nameof(threeNumbers)}: {CheckSwitch(threeNumbers)}");
+WriteLine($"{nameof(sixNumbers)}: {CheckSwitch(sixNumbers)}");
+
+// Define a method to perform pattern matching on arrays
+static string CheckSwitch(int[] values) => values switch
+{
+    [] => "Empty array",
+    [1, 2, _, 10] => "Contains 1, 2, any single number, 10.",
+    [1, 2, .., 10] => "Contains 1, 2, any range including empty, 10.",
+    [1, 2] => "Contains 1 then 2.",
+    [int item1, int item2, int item3] =>
+      $"Contains {item1} then {item2} then {item3}.",
+    [0, _] => "Starts with 0, then one other number.",
+    [0, ..] => "Starts with 0, then any range of numbers.",
+    [2, .. int[] others] => $"Starts with 2, then {others.Length} more numbers.",
+    [..] => "Any items in any order.",
+};
+
+#endregion
