@@ -126,6 +126,7 @@ dotnet run                                                      # Run the curren
   - [Casting and converting between types](#casting-and-converting-between-types)
     - [Casting numbers implicitly and explicitly](#casting-numbers-implicitly-and-explicitly)
     - [How negative numbers are represented in binary](#how-negative-numbers-are-represented-in-binary)
+    - [Converting with the `System.Convert` type](#converting-with-the-systemconvert-type)
 
 
 ## Chapter 2: Speaking C#
@@ -2189,3 +2190,5 @@ Console.WriteLine($"{s,38:B38} = {s}");
 00101000101010001100100111010100101010 = 43657622826
 00000000101010001100100111010100101010 = 707949866          # Most significant bits are truncated; least significant bits represent the result of the casting.
 ```
+
+#### Converting with the `System.Convert` type
