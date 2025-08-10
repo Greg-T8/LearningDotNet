@@ -131,6 +131,8 @@ dotnet run                                                      # Run the curren
       - [Taking control of rounding rules](#taking-control-of-rounding-rules)
     - [Converting from any type to a string](#converting-from-any-type-to-a-string)
     - [Converting from a binary object to a string](#converting-from-a-binary-object-to-a-string)
+    - [Base64 for URLs](#base64-for-urls)
+    - [Passing from strings to numbers or dates and times](#passing-from-strings-to-numbers-or-dates-and-times)
 
 
 ## Chapter 2: Speaking C#
@@ -2341,3 +2343,22 @@ F8 7C CF 29 97 5A E3 96 27 78 B3 3E BC F4 21 4F F5 63 9C 60 82 A5 2B 94 5C 94 58
 
 Binary Object as Base64: +HzPKZda45YneLM+vPQhT/VjnGCCpSuUXJRYPD944chaTh6zybB1N/D09GSq1OH3ZTNCT7DXvesHhCxUnefjbxvDaCQGBG3w7o5XsvB1HyCWUWJqVWrc+kkuVebqsZRuHQ+SFvlBRYLbQDANE5VMJUVD0OlktknbcYBvAyGH0pk=
 ```
+
+#### Base64 for URLs
+
+Base64 is useful, but some of its characters—such as + and /—can cause issues in certain cases, like query strings in URLs where they have special meanings. To solve this, the Base64Url scheme was developed. It works like Base64 but uses a slightly different character set, making it safe for use in URLs and similar contexts.
+
+More info: https://base64.guru/standards/base64url
+
+.Net 9 introduced the `Base64Url` class, which provides methods for encoding and decoding Base64Url strings.
+
+```cs
+string encoded = Base64Url.EncodeToString(binaryObject);
+WriteLine(encoded);
+```
+```pwsh
+# Base64Url encoded string (that does't contain any special characters that could cause issues in URLs)
+xZ3xfpjCWOObnhLTPbo8j9IGKs86EwSDGnNbC28H4Nz_Wz65TMHdmCHolfnFR_tYdU9zRIrQrFApbg20fJtC__XdGCzm-a_OCJwZdaS7ksyZo1mOX5GRDnwtSDPF5xZhxdopkCU21rDPxTkgcMRMe0vfAKjcaXoU57AQhcwO7Kk
+```
+
+#### Passing from strings to numbers or dates and times

@@ -1,4 +1,6 @@
 ﻿using static System.Convert;        // To use the ToInt32 method
+using System.Buffers.Text;          // For Base64Url encoding
+
 
 // Declare an integer and implicitly cast it to a double
 int a = 10;
@@ -105,5 +107,8 @@ for (int index = 0; index < binaryObject.Length; index++)
 WriteLine();
 
 // Convert the array to Base64 string and output as text
-string encoded = ToBase64String(binaryObject);
-WriteLine($"Binary Object as Base64: {encoded}");
+// string encoded = ToBase64String(binaryObject);
+// WriteLine($"Binary Object as Base64: {encoded}");
+
+string encoded = Base64Url.EncodeToString(binaryObject);
+WriteLine(encoded);
