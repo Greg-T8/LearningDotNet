@@ -129,6 +129,8 @@ dotnet run                                                      # Run the curren
     - [Converting with the `System.Convert` type](#converting-with-the-systemconvert-type)
       - [Rounding numbers and the default rounding rules](#rounding-numbers-and-the-default-rounding-rules)
       - [Taking control of rounding rules](#taking-control-of-rounding-rules)
+    - [Converting from any type to a string](#converting-from-any-type-to-a-string)
+    - [Converting from a binary object to a string](#converting-from-a-binary-object-to-a-string)
 
 
 ## Chapter 2: Speaking C#
@@ -2284,4 +2286,58 @@ Math.Round(-10.51, 0, MidpointRounding.AwayFromZero) is -11
 Math.Round(-9.49, 0, MidpointRounding.AwayFromZero) is -9
 Math.Round(-9.5, 0, MidpointRounding.AwayFromZero) is -10
 Math.Round(-9.51, 0, MidpointRounding.AwayFromZero) is -10
+```
+
+#### Converting from any type to a string
+
+The most common conversion is from any type to a `string` for outputting as human-readable text. All types have a `ToString` method that they inherit from the `System.Object` class.
+
+```cs
+int number = 12;
+WriteLine(number.ToString());
+bool boolean = true;
+WriteLine(boolean.ToString());
+DateTime now = DateTime.Now;
+WriteLine(now.ToString());
+object me = new();
+WriteLine(me.ToString());
+```
+```pwsh
+12
+True
+8/10/2025 4:16:27 AM
+System.Object
+```
+
+**Note:** Passing any object to the `WriteLine` implictly converts it to a `string`, so it is not necessary to call the `ToString` method explicitly.
+
+#### Converting from a binary object to a string
+
+When you need to store or send binary data like images or videos, it’s often best not to transmit the raw bytes. Some systems or network protocols might misread those bytes as control data. This can cause the data to be interpreted incorrectly by the network or another operating system.
+
+The safest approach is to convert binary data into a string of safe characters. This process is called Base64 encoding. It transforms any sequence of bytes into text using a fixed set of 64 characters. Base64 is widely used for transferring data and has been supported in many programming tools for a long time.
+
+```cs
+// Allocate an array of 128 bytes
+byte[] binaryObject = new byte[128];
+
+// Populate the array with random bytes
+Random.Shared.NextBytes(binaryObject);
+
+WriteLine("Binary Object as bytes:");
+for (int index = 0; index < binaryObject.Length; index++)
+{
+    Write($"{binaryObject[index]:X2} "); // Display each byte in hexadecimal format
+}
+WriteLine();
+
+// Convert the array to Base64 string and output as text
+string encoded = ToBase64String(binaryObject);
+WriteLine($"Binary Object as Base64: {encoded}");
+```
+```pwsh
+Binary Object as bytes:
+F8 7C CF 29 97 5A E3 96 27 78 B3 3E BC F4 21 4F F5 63 9C 60 82 A5 2B 94 5C 94 58 3C 3F 78 E1 C8 5A 4E 1E B3 C9 B0 75 37 F0 F4 F4 64 AA D4 E1 F7 65 33 42 4F B0 D7 BD EB 07 84 2C 54 9D E7 E3 6F 1B C3 68 24 06 04 6D F0 EE 8E 57 B2 F0 75 1F 20 96 51 62 6A 55 6A DC FA 49 2E 55 E6 EA B1 94 6E 1D 0F 92 16 F9 41 45 82 DB 40 30 0D 13 95 4C 25 45 43 D0 E9 64 B6 49 DB 71 80 6F 03 21 87 D2 99
+
+Binary Object as Base64: +HzPKZda45YneLM+vPQhT/VjnGCCpSuUXJRYPD944chaTh6zybB1N/D09GSq1OH3ZTNCT7DXvesHhCxUnefjbxvDaCQGBG3w7o5XsvB1HyCWUWJqVWrc+kkuVebqsZRuHQ+SFvlBRYLbQDANE5VMJUVD0OlktknbcYBvAyGH0pk=
 ```
