@@ -127,6 +127,7 @@ dotnet run                                                      # Run the curren
     - [Casting numbers implicitly and explicitly](#casting-numbers-implicitly-and-explicitly)
     - [How negative numbers are represented in binary](#how-negative-numbers-are-represented-in-binary)
     - [Converting with the `System.Convert` type](#converting-with-the-systemconvert-type)
+      - [Rounding numbers and the default rounding rules](#rounding-numbers-and-the-default-rounding-rules)
 
 
 ## Chapter 2: Speaking C#
@@ -2192,3 +2193,60 @@ Console.WriteLine($"{s,38:B38} = {s}");
 ```
 
 #### Converting with the `System.Convert` type
+
+You can only cast between similar types, e.g. `byte`, `int`, and `long` or between classes and subclasses. You cannot cast a `long` to a `string` or a `byte` to a `DateTime`.
+
+An alternative to using the cast operator, `(cast)`, is to use the `System.Convert` type. The `System.Convert` type can convert to and from all the C# number types, as well as `Boolean`, `string`, and `DateTime`.
+
+```cs
+using static System.Convert;            // To use the ToInt32 method
+
+double g = 9.8;
+int h = ToInt32(g);                     // A method of the System.Convert type
+WriteLine($"g is {g}, h is {h}");       // Rounds the number up
+```
+```pwsh
+g is 9.8, h is 10
+```
+**Note:**  
+- Converting rounds the value up to the nearest integer, so `9.8` becomes `10` while casting truncates the value, so `9.8` becomes `9`.
+- Another difference is that casting allows overflows while converting throws an exception if the value is too large or too small for the target type.
+
+##### Rounding numbers and the default rounding rules
+
+```cs
+// Create a 2D array of doubles and demonstrate rounding behavior
+double[,] doubles = {
+    { 9.49, 9.5, 9.51 },
+    { 10.49, 10.5, 10.51 },
+    { 11.49, 11.5, 11.51 },
+    { 12.49, 12.5, 12.51 },
+    {-12.49, -12.5, -12.51 },
+    {-11.49, -11.5, -11.51 },
+    {-10.49, -10.5, -10.51 },
+    {-9.49, -9.5, -9.51 }
+};
+
+// Display the rounding results for each value in the 2D array
+WriteLine($"| double | ToInt32 | double | ToInt32 | double | ToInt32 |");
+for (int x = 0; x < 8; x++)
+{
+    for (int y = 0; y < 3; y++)
+    {
+        Write($"| {doubles[x, y],6} | {ToInt32(doubles[x, y]),7} ");
+    }
+    WriteLine("|");
+}
+WriteLine();
+```
+```pwsh
+| double | ToInt32 | double | ToInt32 | double | ToInt32 |
+|   9.49 |       9 |    9.5 |      10 |   9.51 |      10 |
+|  10.49 |      10 |   10.5 |      10 |  10.51 |      11 |
+|  11.49 |      11 |   11.5 |      12 |  11.51 |      12 |
+|  12.49 |      12 |   12.5 |      12 |  12.51 |      13 |
+| -12.49 |     -12 |  -12.5 |     -12 | -12.51 |     -13 |
+| -11.49 |     -11 |  -11.5 |     -12 | -11.51 |     -12 |
+| -10.49 |     -10 |  -10.5 |     -10 | -10.51 |     -11 |
+|  -9.49 |      -9 |   -9.5 |     -10 |  -9.51 |     -10 |
+```
