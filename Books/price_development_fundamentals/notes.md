@@ -128,6 +128,7 @@ dotnet run                                                      # Run the curren
     - [How negative numbers are represented in binary](#how-negative-numbers-are-represented-in-binary)
     - [Converting with the `System.Convert` type](#converting-with-the-systemconvert-type)
       - [Rounding numbers and the default rounding rules](#rounding-numbers-and-the-default-rounding-rules)
+      - [Taking control of rounding rules](#taking-control-of-rounding-rules)
 
 
 ## Chapter 2: Speaking C#
@@ -2241,12 +2242,46 @@ WriteLine();
 ```
 ```pwsh
 | double | ToInt32 | double | ToInt32 | double | ToInt32 |
-|   9.49 |       9 |    9.5 |      10 |   9.51 |      10 |
-|  10.49 |      10 |   10.5 |      10 |  10.51 |      11 |
+|   9.49 |       9 |    9.5 |      10 |   9.51 |      10 |          # 9.5 rounds up to 10 because it is the midpoint and the non-decimal part is odd.
+|  10.49 |      10 |   10.5 |      10 |  10.51 |      11 |          # 10.5 rounds down to 10 because it is the midpoint and the non-decimal part is even.
 |  11.49 |      11 |   11.5 |      12 |  11.51 |      12 |
 |  12.49 |      12 |   12.5 |      12 |  12.51 |      13 |
 | -12.49 |     -12 |  -12.5 |     -12 | -12.51 |     -13 |
 | -11.49 |     -11 |  -11.5 |     -12 | -11.51 |     -12 |
-| -10.49 |     -10 |  -10.5 |     -10 | -10.51 |     -11 |
-|  -9.49 |      -9 |   -9.5 |     -10 |  -9.51 |     -10 |
+| -10.49 |     -10 |  -10.5 |     -10 | -10.51 |     -11 |          # -10.5 rounds down to -10 because it is the midpoint and the non-decimal part is even.
+|  -9.49 |      -9 |   -9.5 |     -10 |  -9.51 |     -10 |          # -9.5 rounds up to -10 because it is the midpoint and the non-decimal part is odd.
+```
+Rules for rounding:
+- Always rounds *toward zero* if the decimal part is less than the midpoint (0.5).
+- Always rounds *away from zero* if the decimal part is greater than the midpoint (0.5).
+- It will round *away from zero*  if the decimal part is the midpoint (0.5) and the non-decimal part is odd, and it will round *toward zero* if the non-decimal part is even.
+
+##### Taking control of rounding rules
+
+You can control the rounding rules by using the `Round` method of the `Math` class:
+
+```cs
+foreach (double n in doubles)
+{
+    WriteLine(format:
+        "Math.Round({0}, 0, MidpointRounding.AwayFromZero) is {1}",
+        arg0: n,
+        arg1: Math.Round(value: n, digits: 0, mode: MidpointRounding.AwayFromZero)
+    );
+}
+```
+```pwsh
+Math.Round(9.49, 0, MidpointRounding.AwayFromZero) is 9
+Math.Round(9.5, 0, MidpointRounding.AwayFromZero) is 10
+Math.Round(9.51, 0, MidpointRounding.AwayFromZero) is 10
+Math.Round(10.49, 0, MidpointRounding.AwayFromZero) is 10
+Math.Round(10.5, 0, MidpointRounding.AwayFromZero) is 11                # 10.5 rounds up to 11 instead of down to 10.
+Math.Round(10.51, 0, MidpointRounding.AwayFromZero) is 11
+...
+Math.Round(-10.49, 0, MidpointRounding.AwayFromZero) is -10
+Math.Round(-10.5, 0, MidpointRounding.AwayFromZero) is -11
+Math.Round(-10.51, 0, MidpointRounding.AwayFromZero) is -11
+Math.Round(-9.49, 0, MidpointRounding.AwayFromZero) is -9
+Math.Round(-9.5, 0, MidpointRounding.AwayFromZero) is -10
+Math.Round(-9.51, 0, MidpointRounding.AwayFromZero) is -10
 ```
