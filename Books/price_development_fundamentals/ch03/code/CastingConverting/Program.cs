@@ -1,6 +1,11 @@
 ﻿using static System.Convert;        // To use the ToInt32 method
 using System.Buffers.Text;          // For Base64Url encoding
+using System.Globalization;         // To use CultureInfo
 
+// #define COMMENT_TO_IGNORE
+
+#region CastingConverting
+#if COMMENT_TO_IGNORE
 
 // Declare an integer and implicitly cast it to a double
 int a = 10;
@@ -112,3 +117,39 @@ WriteLine();
 
 string encoded = Base64Url.EncodeToString(binaryObject);
 WriteLine(encoded);
+
+#endif
+#endregion
+
+
+#region Parsing strings from numbers to dates
+#if COMMENT_TO_IGNORE
+
+CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+
+int friends = int.Parse("27");
+DateTime birthday = DateTime.Parse("4 June 1980");
+
+WriteLine($"I have {friends} friends to invite to my party.");
+WriteLine($"My birthday is {birthday}.");
+WriteLine($"My birthday is {birthday:D}.");
+
+#endif
+#endregion
+
+
+#region Avoid Parse exceptions by using the TryParse method
+#if COMMENT_TO_IGNORE
+
+Write("How many eggs are there? ");
+string? input = ReadLine();
+if (int.TryParse(input, out int count))
+{
+    WriteLine($"There are {count} eggs.");
+}
+else {
+    WriteLine("I could not parse the input.");
+}
+
+#endif
+#endregion

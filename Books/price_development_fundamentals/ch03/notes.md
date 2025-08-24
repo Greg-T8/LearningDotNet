@@ -37,6 +37,8 @@
   - [Converting from a binary object to a string](#converting-from-a-binary-object-to-a-string)
   - [Base64 for URLs](#base64-for-urls)
   - [Parsing from strings to numbers or dates and times](#parsing-from-strings-to-numbers-or-dates-and-times)
+  - [Avoid Parse exceptions by using the TryParse method](#avoid-parse-exceptions-by-using-the-tryparse-method)
+  - [Understanding the Try method naming convention](#understanding-the-try-method-naming-convention)
 
 
 ## Operating on Variables
@@ -1051,3 +1053,100 @@ xZ3xfpjCWOObnhLTPbo8j9IGKs86EwSDGnNbC28H4Nz_Wz65TMHdmCHolfnFR_tYdU9zRIrQrFApbg20
 ```
 
 ### Parsing from strings to numbers or dates and times
+
+The second most common conversion is from strings to numbers or date and time values. The reverse of ToString is Parse. Only certain types provide a Parse method, including all numeric types and DateTime.
+
+At the top of Program.cs, import the namespace for culture support:
+
+```csharp
+using System.Globalization;    // To use CultureInfo
+```
+
+At the bottom of Program.cs, parse an integer and a date value from strings, then print the results:
+
+```csharp
+// Set the current culture to ensure date parsing works
+CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+
+int friends = int.Parse("27");
+DateTime birthday = DateTime.Parse("4 June 1980");
+
+WriteLine($"I have {friends} friends to invite to my party.");
+WriteLine($"My birthday is {birthday}.");
+WriteLine($"My birthday is {birthday:D}.");
+```
+
+When you run the code, the output will be:
+
+```
+> dotnet run
+I have 27 friends to invite to my party.
+My birthday is 6/4/1980 12:00:00 AM.
+My birthday is Wednesday, June 4, 1980.
+```
+
+By default, DateTime prints in the short date and time format. You can use format specifiers like `D` to display only the long date. 
+
+For a full list of standard date and time format specifiers, see:
+[https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#table-of-format-specifiers](https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#table-of-format-specifiers)
+
+### Avoid Parse exceptions by using the TryParse method
+
+One drawback of Parse is that it throws an exception if the string cannot be converted.
+
+```csharp
+int count = int.Parse("abc");
+```
+
+Running this throws: 
+```
+Unhandled Exception: System.FormatException: Input string was not in a correct format. 
+```
+A stack trace follows.
+
+To avoid exceptions, use TryParse. It attempts the conversion and returns true on success and false on failure. Exceptions are relatively expensive, so avoid them when you can. The out keyword lets TryParse assign the parsed value.
+
+```csharp
+Write("How many eggs are there? ");
+string? input = ReadLine();
+if (int.TryParse(input, out int count))             // The out keyword lets TryParse assign the parsed value to count
+{
+  WriteLine($"There are {count} eggs.");
+}
+else
+{
+  WriteLine("I could not parse the input.");
+}
+```
+
+Example runs:
+```
+> dotnet run
+How many eggs are there? 12
+There are 12 eggs.
+
+> dotnet run
+How many eggs are there? Twelve
+I could not parse the input.
+```
+
+You can also use System.Convert methods to convert strings, but like Parse they throw if conversion fails.
+
+### Understanding the Try method naming convention
+
+.NET follows a standard pattern for all methods using the Try naming convention. If a method named Something normally returns a value, its TrySomething equivalent returns a bool for success or failure and uses an out parameter instead of a return value.
+
+```csharp
+// A method that might throw an exception
+int number = int.Parse("123");
+
+// The Try equivalent
+bool success = int.TryParse("123", out int number);
+
+// Trying to create a Uri for a Web API
+bool success = Uri.TryCreate(
+  "https://localhost:5000/api/customers",
+  UriKind.Absolute, 
+  out Uri serviceUrl
+);
+```
