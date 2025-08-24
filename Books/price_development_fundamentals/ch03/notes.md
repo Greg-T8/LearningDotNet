@@ -40,7 +40,7 @@
   - [Avoid Parse exceptions by using the TryParse method](#avoid-parse-exceptions-by-using-the-tryparse-method)
   - [Understanding the Try method naming convention](#understanding-the-try-method-naming-convention)
 - [Handling exceptions](#handling-exceptions)
-  - [Wrapping error-prone code in a try block](#wrapping-error-prone-code-in-a-try-block)
+  - [Wrapping error-prone code in a try block and using the null-forgiving operator](#wrapping-error-prone-code-in-a-try-block-and-using-the-null-forgiving-operator)
   - [Catching specific exceptions](#catching-specific-exceptions)
 
 
@@ -1166,7 +1166,7 @@ Your code should only catch exceptions it can correctly handle. As a best practi
 
 Starting in .NET 9, exception handling is built on the NativeAOT model, improving performance by 2–4 times in benchmarks from the .NET team.
 
-### Wrapping error-prone code in a try block
+### Wrapping error-prone code in a try block and using the null-forgiving operator
 
 When you know a statement might fail, wrap it in a try block. For example, parsing text into a number can throw an error. A catch block runs only if an exception occurs inside the try block.
 
