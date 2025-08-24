@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrays", "Arrays\Arrays.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CastingConverting", "CastingConverting\CastingConverting.csproj", "{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandlingExceptions", "HandlingExceptions\HandlingExceptions.csproj", "{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|x64.Build.0 = Release|Any CPU
 		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|x86.ActiveCfg = Release|Any CPU
 		{2B5A9F08-3871-4BFC-8088-6BE31B406DBD}.Release|x86.Build.0 = Release|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Debug|x64.Build.0 = Debug|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Debug|x86.Build.0 = Debug|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Release|x64.ActiveCfg = Release|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Release|x64.Build.0 = Release|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1DDFB52-1992-478D-86BB-B9D5D6E47F49}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

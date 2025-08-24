@@ -39,6 +39,9 @@
   - [Parsing from strings to numbers or dates and times](#parsing-from-strings-to-numbers-or-dates-and-times)
   - [Avoid Parse exceptions by using the TryParse method](#avoid-parse-exceptions-by-using-the-tryparse-method)
   - [Understanding the Try method naming convention](#understanding-the-try-method-naming-convention)
+- [Handling exceptions](#handling-exceptions)
+  - [Wrapping error-prone code in a try block](#wrapping-error-prone-code-in-a-try-block)
+  - [Catching specific exceptions](#catching-specific-exceptions)
 
 
 ## Operating on Variables
@@ -1150,3 +1153,91 @@ bool success = Uri.TryCreate(
   out Uri serviceUrl
 );
 ```
+
+## Handling exceptions
+
+You’ve seen that type conversions can cause errors. Some languages return error codes in these cases, but .NET uses exceptions, which are richer and dedicated to reporting failures. When this happens, we say a runtime exception is thrown.
+
+Other systems sometimes overload return values. For example, a positive number might mean row count, while a negative number might mean an error code. Some third-party libraries provide “result” types to represent both success and failure, and many .NET developers prefer these over exceptions.
+
+When an exception is thrown, the current thread is suspended. If the code includes a try-catch block, it can handle the exception. If not, the call stack is searched upward until something handles it. If nothing does, the console app prints the exception message and stack trace, then terminates. This is safer than letting the program continue in a broken state.
+
+Your code should only catch exceptions it can correctly handle. As a best practice, try to prevent exceptions in the first place, for example with if checks. Still, sometimes you must throw exceptions, or let them bubble up to higher-level code that can deal with them.
+
+Starting in .NET 9, exception handling is built on the NativeAOT model, improving performance by 2–4 times in benchmarks from the .NET team.
+
+### Wrapping error-prone code in a try block
+
+When you know a statement might fail, wrap it in a try block. For example, parsing text into a number can throw an error. A catch block runs only if an exception occurs inside the try block.
+
+Create a new Console App project named **HandlingExceptions**. In Program.cs, clear any existing code and add the following:
+
+```csharp
+WriteLine("Before parsing");
+Write("What is your age? ");
+string? input = ReadLine();
+
+try
+{
+  int age = int.Parse(input);
+  WriteLine($"You are {age} years old.");
+}
+catch
+{
+}
+
+WriteLine("After parsing");
+```
+
+The compiler shows warning **CS8604** about a possible null argument for `int.Parse`. 
+
+```
+> dotnet run
+HandlingExceptions\Program.cs(9,25): warning CS8604: Possible null reference argument for parameter 's' in 'int int.Parse(string s)'.
+Before parsing
+What is your age?
+After parsing
+```
+
+In .NET 6 and later, nullable reference types are enabled by default, so you’ll see many such warnings. In production, add null checks:
+
+```csharp
+if (input is null)
+{
+  WriteLine("You did not enter a value so the app has ended.");
+  return; // Exit the app
+}
+```
+
+For book examples, null checks are often skipped to keep code short. In this case, ReadLine cannot return null unless redirected input is involved. At worst, it returns an empty string, not null. To suppress the warning, use the null-forgiving operator:
+
+```csharp
+int age = int.Parse(input!);
+```
+
+The `!` tells the compiler to ignore nullability warnings. It has no effect at runtime. If `input` were truly null, the program would still throw.
+
+This program prints “Before parsing” and “After parsing” to make control flow clear.
+
+Sample run with valid input:
+
+```
+Before parsing
+What is your age? 49
+You are 49 years old.
+After parsing
+```
+
+Sample run with invalid input:
+
+```
+Before parsing
+What is your age? Kermit
+After parsing
+```
+
+The exception was caught, so no error message or stack trace appeared, and the app continued running.
+
+**Good practice:** never use an empty catch in production. It hides exceptions and makes debugging harder. At minimum, log the exception or rethrow it so higher-level code can decide how to handle it.
+
+### Catching specific exceptions
