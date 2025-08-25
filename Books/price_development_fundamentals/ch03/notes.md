@@ -44,6 +44,9 @@
   - [Catching specific exceptions](#catching-specific-exceptions)
   - [Catching specific exceptions](#catching-specific-exceptions-1)
   - [Catching with filters](#catching-with-filters)
+  - [Checking for overflow](#checking-for-overflow)
+    - [Throwing overflow exceptions with the checked statement](#throwing-overflow-exceptions-with-the-checked-statement)
+    - [Disabling compiler overflow checks with the unchecked statement](#disabling-compiler-overflow-checks-with-the-unchecked-statement)
 
 
 ## Operating on Variables
@@ -1346,3 +1349,131 @@ catch (FormatException)
 ```
 
 **Good practice:** The `string.Contains` method has two overloads—one for a string (using double quotes) and one for a single character (using single quotes). If you only need to check one character, like the dollar sign, use the `char` overload because it is more efficient.
+
+### Checking for overflow
+
+When converting between numeric types, data can be lost if the value is too large for the target type. For example, casting from a `long` to an `int` can cause an overflow if the number doesn’t fit in the smaller type.
+
+#### Throwing overflow exceptions with the checked statement
+
+By default, .NET allows numeric overflows to happen silently for performance reasons. The `checked` statement changes this behavior, forcing .NET to throw an exception when an overflow occurs.
+
+First, try the code without `checked`:
+
+```csharp
+int x = int.MaxValue - 1;
+WriteLine($"Initial value: {x}");
+x++;
+WriteLine($"After incrementing: {x}");
+x++;
+WriteLine($"After incrementing: {x}");
+x++;
+WriteLine($"After incrementing: {x}");
+```
+
+```
+> dotnet run
+Initial value: 2147483646
+After incrementing: 2147483647
+After incrementing: -2147483648
+After incrementing: -2147483647
+```
+
+The value overflows and wraps into the negative range.
+
+Now wrap the same code in a `checked` block:
+
+```csharp
+checked
+{
+    int x = int.MaxValue - 1;
+    WriteLine($"Initial value: {x}");
+    x++;
+    WriteLine($"After incrementing: {x}");
+    x++;
+    WriteLine($"After incrementing: {x}");
+    x++;
+    WriteLine($"After incrementing: {x}");
+}
+```
+
+```
+> dotnet run
+Initial value: 2147483646
+After incrementing: 2147483647
+Unhandled exception. System.OverflowException: Arithmetic operation resulted in an overflow.
+   at Program.<Main>$(String[] args) in C:\Users\gregt\LocalCode\LearningDotNet\Books\price_development_fundamentals\ch03\code\HandlingExceptions\Program.cs:line 111
+```
+
+To handle this more gracefully, wrap it in a `try` block with a catch for `OverflowException`:
+
+```csharp
+try
+{
+    checked
+    {
+        int x = int.MaxValue - 1;
+        WriteLine($"Initial value: {x}");
+        x++;
+        WriteLine($"After incrementing: {x}");
+        x++;
+        WriteLine($"After incrementing: {x}");
+        x++;
+        WriteLine($"After incrementing: {x}");
+    }
+}
+catch (OverflowException)
+{
+    WriteLine("The code overflowed but I caught the exception.");
+}
+```
+
+```
+> dotnet run
+Initial value: 2147483646
+After incrementing: 2147483647
+The code overflowed but I caught the exception.
+```
+
+#### Disabling compiler overflow checks with the unchecked statement
+
+The earlier section covered runtime overflow behavior and how `checked` forces exceptions when it happens. At compile time, the compiler can also detect certain overflows and prevent the code from compiling.
+
+For example, this line will not compile because the compiler knows it causes an overflow:
+
+```csharp
+int y = int.MaxValue + 1;
+```
+
+```
+> dotnet run
+C:\Users\gregt\LocalCode\LearningDotNet\Books\price_development_fundamentals\ch03\code\HandlingExceptions\Program.cs(146,9): 
+error CS0220: The operation overflows at compile time in checked mode
+
+The build failed. Fix the build errors and run again.
+```
+
+Hovering over the error shows a compile-time overflow message.
+
+To override this, wrap the statement in an `unchecked` block. This disables compile-time checks, lets the overflow happen, and continues execution:
+
+```csharp
+unchecked
+{
+    int y = int.MaxValue + 1;
+    WriteLine($"Initial value: {y}");
+    y--;
+    WriteLine($"After decrementing: {y}");
+    y--;
+    WriteLine($"After decrementing: {y}");
+}
+```
+
+```
+> dotnet run
+Initial value: -2147483648
+After decrementing: 2147483647
+After decrementing: 2147483646
+```
+
+Although it’s rare to explicitly turn off overflow checks, `unchecked` can be useful in special cases where wraparound behavior is intended.

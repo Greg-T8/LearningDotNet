@@ -62,9 +62,6 @@ catch (Exception ex)
 
 #endregion
 
-#endif
-
-
 #region Catching with filters
 
 Write("Enter an amount: ");
@@ -83,6 +80,86 @@ catch (FormatException) when (amount.Contains('$'))         // Exception filter
 catch (FormatException)
 {
     WriteLine("Amounts must only contain digits!");
+}
+
+#endregion
+
+
+#region Throwing overflow exceptions with the checked statement - without checked
+
+int x = int.MaxValue - 1;
+WriteLine($"Initial value: {x}");
+x++;
+WriteLine($"After incrementing: {x}");
+x++;
+WriteLine($"After incrementing: {x}");
+x++;
+WriteLine($"After incrementing: {x}");
+
+#endregion
+
+
+#region Throwing overflow exceptions with the checked statement - with checked
+
+checked
+{
+    int x = int.MaxValue - 1;
+    WriteLine($"Initial value: {x}");
+    x++;
+    WriteLine($"After incrementing: {x}");
+    x++;
+    WriteLine($"After incrementing: {x}");
+    x++;
+    WriteLine($"After incrementing: {x}");
+}
+
+#endregion
+
+
+#region Throwing overflow exceptions with the checked statement - with try-catch
+
+try
+{
+    checked
+    {
+        int x = int.MaxValue - 1;
+        WriteLine($"Initial value: {x}");
+        x++;
+        WriteLine($"After incrementing: {x}");
+        x++;
+        WriteLine($"After incrementing: {x}");
+        x++;
+        WriteLine($"After incrementing: {x}");
+    }
+}
+catch (OverflowException)
+{
+    WriteLine("The code overflowed but I caught the exception.");
+}
+
+#endregion
+
+
+#region Disabling compiler overflow checks with the unchecked statement - without unchecked
+
+int y = int.MaxValue + 1;
+WriteLine($"y: {y}");
+
+#endregion
+
+
+#endif
+
+#region Disabling compiler overflow checks with the unchecked statement - with unchecked
+
+unchecked
+{
+    int y = int.MaxValue + 1;
+    WriteLine($"Initial value: {y}");
+    y--;
+    WriteLine($"After decrementing: {y}");
+    y--;
+    WriteLine($"After decrementing: {y}");
 }
 
 #endregion
