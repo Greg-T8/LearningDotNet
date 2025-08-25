@@ -54,6 +54,7 @@
     - [Discriminated Unions and Their Relation to the Discussion](#discriminated-unions-and-their-relation-to-the-discussion)
     - [Conclusion on Exceptions vs. Result Types](#conclusion-on-exceptions-vs-result-types)
   - [Exercises](#exercises)
+    - [Practice loops and operators](#practice-loops-and-operators)
 
 
 ## Operating on Variables
@@ -1631,3 +1632,12 @@ catch (OverflowException)
 255
 The loop has overflowed.
 ```
+
+#### Practice loops and operators
+
+FizzBuzz is a children’s group game that teaches division. Players take turns counting in sequence. Numbers divisible by 3 are replaced with “fizz,” numbers divisible by 5 with “buzz,” and numbers divisible by both 3 and 5 with “fizzbuzz.”
+
+Create a console app in Chapter03 named Exercise\_FizzBuzz that simulates the FizzBuzz game up to 100. The output should match the format shown in Figure 3.5.
+
+<img src='images/2025-08-25-03-45-43.png' width=700> 
+
