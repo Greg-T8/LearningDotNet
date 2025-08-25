@@ -47,6 +47,13 @@
   - [Checking for overflow](#checking-for-overflow)
     - [Throwing overflow exceptions with the checked statement](#throwing-overflow-exceptions-with-the-checked-statement)
     - [Disabling compiler overflow checks with the unchecked statement](#disabling-compiler-overflow-checks-with-the-unchecked-statement)
+  - [Returning result types versus throwing exceptions](#returning-result-types-versus-throwing-exceptions)
+    - [Exceptions in .NET](#exceptions-in-net)
+    - [Result Types in .NET](#result-types-in-net)
+    - [Libraries Available to Implement Result Types](#libraries-available-to-implement-result-types)
+    - [Discriminated Unions and Their Relation to the Discussion](#discriminated-unions-and-their-relation-to-the-discussion)
+    - [Conclusion on Exceptions vs. Result Types](#conclusion-on-exceptions-vs-result-types)
+  - [Exercises](#exercises)
 
 
 ## Operating on Variables
@@ -1477,3 +1484,150 @@ After decrementing: 2147483646
 ```
 
 Although it’s rare to explicitly turn off overflow checks, `unchecked` can be useful in special cases where wraparound behavior is intended.
+
+
+### Returning result types versus throwing exceptions
+
+Taken from https://github.com/markjprice/cs13net9/blob/main/docs/ch03-result-types.md
+
+In .NET, error handling mainly relies on two approaches: exceptions and result types. Each has its supporters, and the discussion around them often centers on software design, performance, and ease of use.
+
+#### Exceptions in .NET
+
+In .NET and many other languages, exceptions are the standard way to handle errors. When an error occurs, an exception is thrown, and execution jumps to the nearest matching handler. The exception system is built on a rich hierarchy with System.Exception as the base class.
+
+Pros of exceptions:
+
+* **Separation of concerns:** Error handling is kept apart from normal logic, making code more readable and keeping the main flow focused on the "happy path."
+* **Rich information:** Exceptions include stack traces and inner exceptions, which are valuable for debugging.
+* **Built-in support:** Exceptions are tightly integrated into .NET and provide a familiar, consistent model for handling errors.
+
+Cons of exceptions:
+
+* **Performance:** Throwing and catching exceptions is costly compared to normal control flow. It involves stack unwinding and can hurt performance if errors occur often.
+* **Hidden control flow:** Exceptions can make execution paths harder to follow, leading to bugs when developers overlook potential exception types.
+* **Overuse:** Using exceptions for normal operations, like checking for a value in a collection, goes against best practices and creates unnecessary overhead.
+
+
+#### Result Types in .NET
+
+Result types, also called option or either types, provide an alternative to exceptions and are common in functional programming. In .NET, they are used to explicitly represent success or failure without relying on exceptions.
+
+Example implementation:
+
+```csharp
+public class Result<T>
+{
+    public T Value { get; }
+    public bool IsSuccess { get; }
+    public string ErrorMessage { get; }
+
+    private Result(T value, bool isSuccess, string errorMessage)
+    {
+        Value = value;
+        IsSuccess = isSuccess;
+        ErrorMessage = errorMessage;
+    }
+
+    public static Result<T> Success(T value)     => new Result<T>(value, true, null);
+    public static Result<T> Failure(string error) => new Result<T>(default, false, error);
+}
+```
+
+Pros of result types:
+
+* **Explicit error handling:** APIs clearly signal both success and failure. Callers must handle both cases, which reduces missed errors.
+* **Performance:** They avoid the cost of stack unwinding, making them faster in scenarios with frequent failures.
+* **Easier testing:** The return type defines possible outcomes, which makes unit tests more straightforward.
+
+Cons of result types:
+
+* **Verbosity:** Code becomes more verbose since every operation requires explicit handling of success and failure.
+* **Cumbersome for complex flows:** Nested or chained operations can get messy compared to the simplicity of try-catch.
+* **Not idiomatic:** Most .NET libraries rely on exceptions, so mixing paradigms can lead to inconsistency.
+
+#### Libraries Available to Implement Result Types
+
+Several libraries provide ready-to-use result type implementations in .NET:
+
+- **LanguageExt:** - A functional programming library with Option, Either, and Try types for functional-style error handling and control flow.
+- **CSharpFunctionalExtensions:** – Provides a Result<T> type along with extension methods for functional-style operations. It also supports optional values and error chaining.
+- **OneOf:** – Implements a simple discriminated union, allowing a value to represent one of several types. Useful for modeling different failure modes with distinct result types.
+- **Optional:** – A lightweight library offering Option<T>, similar to Nullable<T> but for reference types and non-nullable value types.
+- **ErrorOr:** – A fluent discriminated union representing either an error or a result.
+- **FluentResults:** – A lightweight library that returns objects representing success or failure instead of using exceptions.
+
+#### Discriminated Unions and Their Relation to the Discussion
+
+Discriminated unions, also called sum types or tagged unions, represent a value that can be one of several predefined types. In F# (part of the .NET ecosystem), they are built into the language. For example:
+
+```fsharp
+type Result<'T> =
+    | Success of 'T
+    | Failure of string
+```
+
+For result types, discriminated unions make outcomes explicit by modeling both success and different failure modes. This is especially useful when a function can fail in multiple ways that need separate handling.
+
+C# does not currently support discriminated unions as a built-in feature, but they can be emulated with class hierarchies, enums, or libraries like OneOf. Their relevance to the exceptions vs. result types debate is that they make error handling explicit, type-safe, and closer to functional programming patterns.
+
+More information:
+
+* Proposal: [Type Unions for C#](https://github.com/dotnet/csharplang/blob/18a527bcc1f0bdaf542d8b9a189c50068615b439/proposals/TypeUnions.md)
+* Earlier discussion: [dotnet/csharplang#399](https://github.com/dotnet/csharplang/issues/399)
+
+#### Conclusion on Exceptions vs. Result Types
+
+Use exceptions in .NET when errors are rare and not part of normal control flow. This is the standard approach for libraries and APIs that integrate with .NET’s frameworks, which expect exceptions as the main error-handling mechanism.
+
+Use result types when failures are common and need to be handled explicitly. They make error handling type-safe and predictable, fitting well with functional programming styles or cases where control flow must remain clear.
+
+Discriminated unions extend the result type idea by modeling multiple possible outcomes in a type-safe way. Libraries like OneOf bring this pattern into C#.
+
+In practice, many .NET projects use a hybrid approach: exceptions for unexpected issues, and result types (or nullable references) for routine checks. The important part is consistency across the codebase and awareness of the performance and maintenance trade-offs.
+
+### Exercises
+
+What will happen if this code executes?
+
+```cs
+int max = 500;
+for (byte i = 0; i < max; i++)
+{
+  WriteLine(i);
+}
+```
+
+**My answer:** It will result in an infinite loop because the byte variable `i` will overflow after reaching its maximum value of 255 and wrap around to 0, causing the loop condition `i < max` to always be true.
+
+What code could you add (don’t change any of the preceding code) to warn us about the problem?
+
+```cs
+try
+{
+    checked
+    {
+        int max = 500;
+        for (byte i = 0; i < max; i++)
+        {
+            WriteLine(i);
+        }
+    }
+}
+catch (OverflowException)
+{
+    WriteLine("The loop has overflowed.");
+}
+```
+```
+> dotnet run
+0
+1
+2
+3
+...
+253
+254
+255
+The loop has overflowed.
+```
