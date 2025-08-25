@@ -42,6 +42,8 @@
 - [Handling exceptions](#handling-exceptions)
   - [Wrapping error-prone code in a try block and using the null-forgiving operator](#wrapping-error-prone-code-in-a-try-block-and-using-the-null-forgiving-operator)
   - [Catching specific exceptions](#catching-specific-exceptions)
+  - [Catching specific exceptions](#catching-specific-exceptions-1)
+  - [Catching with filters](#catching-with-filters)
 
 
 ## Operating on Variables
@@ -1241,3 +1243,106 @@ The exception was caught, so no error message or stack trace appeared, and the a
 **Good practice:** never use an empty catch in production. It hides exceptions and makes debugging harder. At minimum, log the exception or rethrow it so higher-level code can decide how to handle it.
 
 ### Catching specific exceptions
+
+To handle any type of exception, declare a variable of type `System.Exception` in the catch block. This allows you to display details about the error, as shown below:
+
+```csharp
+catch (Exception ex)        // Catch any type of exception
+{
+    WriteLine($"{ex.GetType()} says {ex.Message}");
+}
+```
+
+When you run the code, enter "Kermit," and observe the output:
+
+```
+> dotnet run
+Before parsing
+What is your age? Kermit
+System.FormatException says The input string 'Kermit' was not in a correct format.
+```
+
+### Catching specific exceptions
+
+Now that we know the specific exception type, we can improve the code by catching it directly and showing a clearer message. Keep the existing general catch block, but add a new one above it for `FormatException`:
+
+```csharp
+catch (FormatException)
+{
+    WriteLine("The age you entered is not a valid number format.");
+}
+catch (Exception ex)
+{
+    WriteLine($"{ex.GetType()} says {ex.Message}");
+}
+```
+
+Run the code, enter "Kermit," and you’ll see:
+
+```
+> dotnet run
+Before parsing
+What is your age? Kermit
+The aged you entered is not a valid number format.
+```
+
+We keep the general catch block below because other exception types may still occur. For example, enter `9876543210` and the output will be:
+
+```
+> dotnet run
+Before parsing
+What is your age? 9876543210
+System.OverflowException says Value was either too large or too small for an Int32.
+```
+
+To handle this case, add another catch block for `OverflowException` above the others:
+
+```csharp
+catch (OverflowException)
+{
+    WriteLine("Your age is a valid number format but it is either too big or small.");
+}
+catch (FormatException)
+{
+    WriteLine("The age you entered is not a valid number format.");
+}
+```
+
+Run the code again with `9876543210`, and you’ll see:
+
+```
+> dotnet run
+Before parsing
+What is your age? 9876543210
+Your age is a valid number format but is either too big or small.
+```
+
+The order of catch blocks matters because of the exception inheritance hierarchy. The compiler will warn you if they are in the wrong order.
+
+**Good practice:** Avoid catching exceptions unnecessarily. Often, they should be allowed to bubble up the call stack so they can be handled where more context is available.
+
+### Catching with filters
+
+You can use filters in a catch statement with the `when` keyword. Example:
+
+```csharp
+Write("Enter an amount: ");
+string amount = ReadLine()!;
+if (string.IsNullOrEmpty(amount)) return;
+
+try
+{
+    decimal amountValue = decimal.Parse(amount);
+    WriteLine($"Amount formatted as currency: {amountValue:C}");
+}
+catch (FormatException) when (amount.Contains('$'))         // Filter the catch
+{
+    WriteLine("Amounts cannot use the dollar sign!");
+}
+catch (FormatException)
+{
+    WriteLine("Amounts must only contain digits!");
+}
+```
+
+**Good practice:** The `string.Contains` method has two overloads—one for a string (using double quotes) and one for a single character (using single quotes). If you only need to check one character, like the dollar sign, use the `char` overload because it is more efficient.
