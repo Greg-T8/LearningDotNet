@@ -1,5 +1,4 @@
-﻿
-#region First exercise - Loops and Overflow
+﻿#region First exercise - Loops and Overflow
 
 int max = 500;
 for (byte i = 0; i < max; i++)
@@ -10,7 +9,6 @@ for (byte i = 0; i < max; i++)
 #endregion
 
 
-#endif
 
 #region Second exercise - Checked and unchecked
 

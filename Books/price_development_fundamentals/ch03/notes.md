@@ -55,6 +55,7 @@
     - [Conclusion on Exceptions vs. Result Types](#conclusion-on-exceptions-vs-result-types)
   - [Exercises](#exercises)
     - [Practice loops and operators](#practice-loops-and-operators)
+    - [Practice exception handling](#practice-exception-handling)
 
 
 ## Operating on Variables
@@ -1641,3 +1642,47 @@ Create a console app in Chapter03 named Exercise\_FizzBuzz that simulates the Fi
 
 <img src='images/2025-08-25-03-45-43.png' width=700> 
 
+```cs
+int MaxNum = 100;
+for (int i = 1; i <= MaxNum; i++)
+{
+    string message = "";
+    // Using switch expression
+    message = i switch
+    {
+        _ when i % 3 == 0 && i % 5 == 0 => "FizzBuzz",
+        _ when i % 3 == 0 => "Fizz",
+        _ when i % 5 == 0 => "Buzz",
+        _ => i.ToString()
+    };
+    // Using pattern matching in switch statement
+    switch (i)
+    {
+        case int _ when i == MaxNum:
+            Write($"{message}");
+            break;
+        case int _ when i % 10 == 0:
+            Write($"{message},\n");
+            break;
+        default:
+            Write($"{message}, ");
+            break;
+    }
+}
+```
+<img src='images/2025-08-26-03-11-46.png' width=500>
+
+
+#### Practice exception handling
+
+Create a console app in Chapter03 called Exercise\_Exceptions. The program should ask the user for two numbers between 0 and 255, then divide the first number by the second.
+
+**Example:**  
+Enter a number between 0 and 255: 100
+Enter another number between 0 and 255: 8
+100 divided by 8 is 12
+
+Add exception handlers to catch errors, such as:
+- Enter a number between 0 and 255: apples
+- Enter another number between 0 and 255: bananas
+- FormatException: Input string was not in a correct format.
