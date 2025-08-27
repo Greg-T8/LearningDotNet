@@ -1686,3 +1686,71 @@ Add exception handlers to catch errors, such as:
 - Enter a number between 0 and 255: apples
 - Enter another number between 0 and 255: bananas
 - FormatException: Input string was not in a correct format.
+
+
+```cs
+Console.Write("Enter a number between 0 and 255: ");
+string? firstInput = Console.ReadLine();
+
+// Prompt the user for the second number.
+Console.Write("Enter another number between 0 and 255: ");
+string? secondInput = Console.ReadLine();
+
+// Initialize parsing result variables and an error flag.
+int firstNumber = 0, secondNumber = 0;
+bool noError = false;
+try
+{
+    firstNumber = int.Parse(firstInput ?? "0");         // Default to 0 if null
+    secondNumber = int.Parse(secondInput ?? "0");
+    if (firstNumber is < 0 or > 255 || secondNumber is < 0 or > 255) { throw new OverflowException(); }
+    noError = true;
+}
+catch (FormatException)
+{
+    Console.WriteLine($"The input was not a valid number.");
+}
+catch (DivideByZeroException)
+{
+    Console.WriteLine("Division by zero is not allowed.");
+}
+catch (OverflowException) when (firstNumber is < 0 or > 255)
+{
+    Console.WriteLine($"The first number must be between 0 and 255.");
+}
+catch (OverflowException) when (secondNumber is < 0 or > 255)
+{
+    Console.WriteLine($"The second number must be between 0 and 255.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+}
+
+// If parsing and validation succeeded, display the division result.
+if (noError)
+{
+    Console.WriteLine($"{firstNumber} divided by {secondNumber} is {firstNumber / secondNumber}");
+}
+```
+```pwsh
+> dotnet run
+Enter a number between 0 and 255: 5
+Enter another number between 0 and 255: 256
+5 divided by 256 is 0
+
+> dotnet run
+Enter a number between 0 and 255: 45
+Enter another number between 0 and 255: 258
+The second number must be between 0 and 255.
+
+> dotnet run
+Enter a number between 0 and 255: 258
+Enter another number between 0 and 255: 45
+The first number must be between 0 and 255.
+
+> dotnet run
+Enter a number between 0 and 255: apples
+Enter another number between 0 and 255: oranges
+The input was not a valid number.
+```
